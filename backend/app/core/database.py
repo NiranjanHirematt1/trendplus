@@ -17,6 +17,7 @@ async def init_db() -> None:
             settings.DATABASE_URL,
             min_size=settings.DB_MIN_POOL,
             max_size=settings.DB_MAX_POOL,
+            statement_cache_size=settings.DB_STATEMENT_CACHE_SIZE,
             command_timeout=60,
             # Serialize datetime objects automatically
             init=_init_connection,

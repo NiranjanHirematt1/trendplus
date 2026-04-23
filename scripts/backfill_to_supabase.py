@@ -363,18 +363,34 @@ async def main():
         await upsert_symbols(
             conn, isin_series, NSE_MASTER_CSV, NSE_SECTOR_MASTER
         )
+        
+        # ── 4. Get dates already in Supabase — skip them ──────────────
+        log.info("Fetching dates already in Supabase...")
+        existing_dates = set()
+        rows_existing = await conn.fetch(
+            "SELECT DISTINCT trade_date FROM price_history"
+        )
+        for r in rows_existing:
+            existing_dates.add(r["trade_date"])
+        log.info("Already in Supabase: %d dates", len(existing_dates))
 
-        # ── 4. Now upsert price_history — FK constraint satisfied ─────
-        log.info("Starting price_history upsert (pass 2/2)...")
+# ── 5. Now upsert only MISSING dates ──────────────────────────
+        log.info("Starting price_history upsert (pass 2/2 — new dates only)...")
+        skipped = 0
         for i, fpath in enumerate(bhav_files, 1):
             m     = pattern.match(fpath.name)
             dstr  = m.group(1)
             tdate = pd.to_datetime(dstr, format="%Y%m%d").date()
 
+            # ← KEY CHANGE: skip if already uploaded
+            if tdate in existing_dates:
+                skipped += 1
+                continue
+
             df = load_csv_file(str(fpath), pd.Timestamp(tdate))
             if df.empty:
                 log.info("[%d/%d] %s — no EQ+BE rows, skipped",
-                         i, len(bhav_files), fpath.name)
+                        i, len(bhav_files), fpath.name)
                 continue
 
             rows = build_price_rows(df, tdate)
@@ -383,8 +399,12 @@ async def main():
 
             total_rows += len(rows)
             log.info("[%d/%d] %s → %d rows (total so far: %d)",
-                     i, len(bhav_files), fpath.name, len(rows), total_rows)
+                    i, len(bhav_files), fpath.name, len(rows), total_rows)
 
+        log.info("Skipped %d dates already in Supabase", skipped)
+
+        # ── 4. Now upsert price_history — FK constraint satisfied ─────
+        
     elapsed = time.monotonic() - t0
 
     log.info("=" * 60)

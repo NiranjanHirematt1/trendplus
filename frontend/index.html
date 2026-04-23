@@ -610,7 +610,7 @@ html.light tbody tr:hover td:nth-child(2){background:#f0f2f5}
 'use strict';
 
 // ── CONFIG ─────────────────────────────────────────────────────
-const API = 'https://trendplus-lvkt.onrender.com';
+const API = 'http://localhost:8000';
 
 // ── STATE ──────────────────────────────────────────────────────
 let VIEW     = 'screener';
@@ -649,14 +649,14 @@ function mbar(s) {
 
 // 12-day pct matrix — big readable cells
 // matCells: returns 12 individual <td> elements for scrollable matrix
-function matCells(pm, ema200, closePrice) {
+function matCells(pm, ema50, ema200) {
   if (!pm || typeof pm !== 'object') {
     return Array(12).fill('<td class="mat-td"><span style="color:var(--t3)">—</span></td>').join('');
   }
   // Latest (D1) on LEFT, oldest (D12) on RIGHT
   const allKeys = Object.keys(pm).slice(0, 12);
   const keys = [...allKeys].sort().reverse();  // newest first = D1 leftmost
-  const aboveEma = ema200 != null && closePrice != null && Number(closePrice) > Number(ema200);
+  const aboveEma = ema50 != null && ema200 != null && Number(ema50) > Number(ema200);
   const cells = [];
   for (let i = 0; i < 12; i++) {
     const k = keys[i];
@@ -673,13 +673,13 @@ function matCells(pm, ema200, closePrice) {
   return cells.join('');
 }
 
-function matPct(pm, ema200, closePrice) {
+function matPct(pm, ema50, ema200) {
   if (!pm || typeof pm !== 'object') return '—';
   const allKeys = Object.keys(pm).slice(0, 12);
   if (!allKeys.length) return '—';
   // FIX: sort newest→oldest (D1 leftmost, D12 rightmost)
   const keys = [...allKeys].sort().reverse();
-  const aboveEma = ema200 != null && closePrice != null && closePrice > ema200;
+  const aboveEma = ema50 != null && ema200 != null && Number(ema50) > Number(ema200);
   return '<div class="mat-row">' + keys.map(k => {
     const raw = pm[k];
     if (raw == null) return `<div class="mat-box neu" title="${k}">—</div>`;
@@ -884,7 +884,7 @@ function renderTable(rows) {
       <td class="${pCls(r.chg_12d)} mono">${fPct(r.chg_12d)}</td>
       <td class="${pCls(r.chg_5d)}  mono">${fPct(r.chg_5d)}</td>
       <td class="${pCls(r.chg_1d)}  mono">${fPct(r.chg_1d)}</td>
-      ${matCells(r.pct_matrix, r.ema_200, r.close_price)}
+      ${matCells(r.pct_matrix, r.ema_50, r.ema_200)}
     </tr>`).join('');
   return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
 }
@@ -984,7 +984,7 @@ function renderGrouped() {
           <td>${emaBadge(r.ema_signal)}</td>
           <td>${mbar(r.momentum_score)}</td>
           <td class="mono">${inr(r.close_price)}</td>
-          ${matCells(r.pct_matrix, r.ema_200, r.close_price)}
+          ${matCells(r.pct_matrix, r.ema_50, r.ema_200)}
         </tr>`).join('')}
       </tbody></table></div>`;
     return `<div>
@@ -1061,7 +1061,7 @@ async function openDP(sym) {
     const pm   = lat.pct_matrix || {};
     const bm   = lat.bool_matrix || {};
     const keys = Object.keys(pm).length ? Object.keys(pm).slice(0,12) : Object.keys(bm).slice(0,12);
-    const aboveEma = lat.ema_200 != null && lat.close_price != null && lat.close_price > lat.ema_200;
+    const aboveEma = lat.ema_50 != null && lat.ema_200 != null && Number(lat.ema_50) > Number(lat.ema_200);
     if (keys.length) {
       // Sort oldest→newest (left to right)
       const sortedKeys = [...keys].sort().reverse();  // D1 (latest) first

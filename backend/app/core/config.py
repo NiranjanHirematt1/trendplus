@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = ""
     DB_MIN_POOL:  int = 2
     DB_MAX_POOL:  int = 10
+    DB_STATEMENT_CACHE_SIZE: int = 0
 
     # ── Data paths (used by engine) ───────────────────────
     DATA_FOLDER:       str = ""   # folder with YYYYMMDD_NSE.csv files
