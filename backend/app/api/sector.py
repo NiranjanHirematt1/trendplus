@@ -107,12 +107,20 @@ async def get_sectors(
 async def get_sector_list(pool=Depends(get_pool)):
     async with pool.acquire() as conn:
         rows = await conn.fetch(
-            """select distinct sector, count(*) as symbol_count
+            """select sector, count(*) as symbol_count
                from symbols
                where sector != '' and is_active = true
                group by sector order by sector"""
         )
-    return {"sectors": [dict(r) for r in rows]}
+    # Normalize raw sector names and merge symbol counts under canonical names
+    merged: dict = {}
+    for r in rows:
+        canonical = normalize_sector_name(r["sector"])
+        if canonical not in merged:
+            merged[canonical] = {"sector": canonical, "symbol_count": 0}
+        merged[canonical]["symbol_count"] += int(r["symbol_count"] or 0)
+    sectors = sorted(merged.values(), key=lambda x: x["sector"])
+    return {"sectors": sectors}
 
 
 @router.get("/{sector_name}", summary="Sector detail with all stocks")
