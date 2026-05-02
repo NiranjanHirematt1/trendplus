@@ -45,6 +45,7 @@ from pathlib import Path
 import asyncpg
 import numpy as np
 import pandas as pd
+from backend.app.core.sector_mapping import normalize_sector_name
 from dotenv import load_dotenv
 
 # ─────────────────────────────────────────────────────────────────────

@@ -45,6 +45,7 @@ load_dotenv(BACKEND / ".env")
 import asyncpg
 import numpy as np
 import pandas as pd
+from backend.app.core.sector_mapping import normalize_sector_name
 
 logging.basicConfig(
     level=logging.INFO,
@@ -144,7 +145,48 @@ def compute_macd(close_piv: pd.DataFrame) -> pd.DataFrame:
             out.at[sym, "MACD Hist"]   = None
     return out
 
+# ════════════════════════════════════════════════════════════════════
+#  BHAV CLEANUP — keep only latest 255 trading dates
+# ════════════════════════════════════════════════════════════════════
+MAX_BHAV_DATES = 255  # 1 trading year ≈ 252, buffer of 3
 
+async def cleanup_old_bhav_dates(conn):
+    """
+    Check how many distinct trading dates exist in price_history.
+    If > MAX_BHAV_DATES, delete the oldest rows beyond that limit.
+    """
+    total = await conn.fetchval(
+        "SELECT COUNT(DISTINCT trade_date) FROM price_history"
+    )
+    logger.info("Bhav files in price_history: %d", total)
+
+    if total <= MAX_BHAV_DATES:
+        logger.info("✓ Bhav count %d ≤ %d — no cleanup needed", total, MAX_BHAV_DATES)
+        return
+
+    excess = total - MAX_BHAV_DATES
+    logger.info("⚠ Excess bhav dates: %d — deleting oldest %d...", total, excess)
+
+    # Find the cutoff date: keep only dates ranked in top MAX_BHAV_DATES (newest)
+    cutoff_date = await conn.fetchval(
+        """
+        SELECT trade_date FROM (
+            SELECT DISTINCT trade_date
+            FROM price_history
+            ORDER BY trade_date DESC
+            LIMIT $1
+        ) sub
+        ORDER BY trade_date ASC
+        LIMIT 1
+        """,
+        MAX_BHAV_DATES,
+    )
+
+    deleted = await conn.execute(
+        "DELETE FROM price_history WHERE trade_date < $1",
+        cutoff_date,
+    )
+    logger.info("✓ Deleted bhav rows older than %s  [%s]", cutoff_date, deleted)
 # ════════════════════════════════════════════════════════════════════
 #  DB HELPERS
 # ════════════════════════════════════════════════════════════════════
@@ -255,6 +297,7 @@ async def load_master_from_db(conn):
                 keep = ["Symbol", "Sector"] + (["CapCategory"] if cap_col else [])
                 sec_master = df[keep].dropna(subset=["Symbol"]).copy()
                 sec_master["Symbol"] = sec_master["Symbol"].str.strip().str.upper()
+                sec_master["Sector"] = sec_master["Sector"].map(normalize_sector_name)
                 sec_master = sec_master.set_index("Symbol")
                 logger.info("SECTOR_MASTER: %d symbols", len(sec_master))
         except Exception as e:
@@ -553,6 +596,8 @@ async def compute_and_upsert_today(
 
     if not sec_master.empty:
         result = result.join(sec_master, on="Symbol", how="left")
+        if "Sector" in result.columns:
+            result["Sector"] = result["Sector"].map(normalize_sector_name)
 
     for col in ["Company Name","ISIN","Sector","CapCategory"]:
         if col not in result.columns:
@@ -875,7 +920,11 @@ async def main():
             await conn.execute("TRUNCATE market_calendar")
             await conn.execute("UPDATE symbols SET is_active = true")
         logger.info("Tables cleared ✓")
-
+    
+    # ── Bhav cleanup (keep latest 255 dates only) ──────────────────────  ← ADD HERE
+    async with pool.acquire() as conn:                                    #
+        await cleanup_old_bhav_dates(conn)
+    
     # ── Load data ──────────────────────────────────────────────────────
     async with pool.acquire() as conn:
         hist      = await load_price_history(conn, trade_date)

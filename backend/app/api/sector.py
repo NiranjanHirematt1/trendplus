@@ -10,6 +10,7 @@ from urllib.parse import unquote
 
 from fastapi import APIRouter, Depends, Query, HTTPException
 from app.core.database import get_pool
+from backend.app.core.sector_mapping import normalize_sector_name
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -21,6 +22,35 @@ VALID_SECTOR_SORT = frozenset({
     "avg_rsi_14", "avg_adx_14",
 })
 
+
+def _aggregate_sector_rows(rows):
+    grouped = {}
+    avg_fields = ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"]
+    for r in rows:
+        d = dict(r)
+        canonical = normalize_sector_name(d.get("sector"))
+        stock_count = int(d.get("stock_count") or 0)
+        g = grouped.setdefault(canonical, {"sector": canonical, "stock_count": 0, "stocks_up": 0, "stocks_down": 0, "stocks_near_high": 0, "_w": 0})
+        g["stock_count"] += stock_count
+        g["stocks_up"] += int(d.get("stocks_up") or 0)
+        g["stocks_down"] += int(d.get("stocks_down") or 0)
+        g["stocks_near_high"] += int(d.get("stocks_near_high") or 0)
+        g["_w"] += stock_count
+        for f in avg_fields:
+            v = d.get(f)
+            if v is not None:
+                g[f] = g.get(f, 0.0) + float(v) * stock_count
+    out=[]
+    for g in grouped.values():
+        w=max(g.pop("_w"),1)
+        for f in avg_fields:
+            if f in g:
+                g[f]=g[f]/w
+            else:
+                g[f]=None
+        g["pct_stocks_up"]=(g["stocks_up"]*100.0/g["stock_count"]) if g["stock_count"] else 0.0
+        out.append(g)
+    return out
 
 def _resolve_date(raw) -> Optional[datetime.date]:
     """Return datetime.date regardless of whether input is str or date."""
@@ -56,22 +86,21 @@ async def get_sectors(
 
         sort_dir = "asc" if order == "asc" else "desc"
         rows = await conn.fetch(
-            f"""select
+            """select
                     sector, stock_count, stocks_up, stocks_down,
                     pct_stocks_up, avg_trending_days, avg_chg_12d,
                     avg_chg_5d, avg_chg_today, avg_rsi_14, avg_adx_14,
                     avg_rs_score, avg_momentum,
                     stocks_near_high, pct_near_high
                 from sector_daily
-                where trade_date = $1
-                order by {sort_by} {sort_dir} nulls last""",
+                where trade_date = $1""",
+
+                
             trade_date,
         )
-    return {
-        "date":  str(trade_date),
-        "total": len(rows),
-        "data":  [dict(r) for r in rows],
-    }
+    data = _aggregate_sector_rows(rows)
+    data.sort(key=lambda x: (x.get(sort_by) is None, x.get(sort_by)), reverse=(sort_dir=="desc"))
+    return {"date": str(trade_date), "total": len(data), "data": data}
 
 
 @router.get("/list", summary="Sector name list")
@@ -113,16 +142,18 @@ async def get_sector_detail(
         if not trade_date:
             raise HTTPException(404, "No trading data available")
 
-        summary = await conn.fetchrow(
+        raw_summary = await conn.fetch(
             "select * from sector_daily where trade_date = $1 and sector = $2",
-            trade_date, sector_name,
+            trade_date,
         )
-        if not summary:
-            raise HTTPException(404, f"Sector '{sector_name}' not found for {trade_date}")
+        summary_rows = [r for r in raw_summary if normalize_sector_name(r["sector"]) == sector_name]
+        if not summary_rows:
+                raise HTTPException(404, f"Sector '{sector_name}' not found for {trade_date}")
+        summary = _aggregate_sector_rows(summary_rows)[0]
 
-        stocks = await conn.fetch(
+        all_stocks = await conn.fetch(
             f"""select
-                    s.symbol, s.company_name, s.cap_category,
+                    s.symbol, s.company_name, s.cap_category,s.sector,
                     tr.trending_days, tr.chg_1d, tr.chg_5d, tr.chg_12d,
                     tr.rsi_14, tr.adx_14, tr.rs_score, tr.momentum_score,
                     tr.pct_from_high, tr.near_52w_high, tr.rank_52w,
@@ -131,14 +162,17 @@ async def get_sector_detail(
                     tr.ema_50, tr.ema_200
                 from trend_results tr
                 join symbols s on s.symbol = tr.symbol
-                where tr.trade_date = $1 and s.sector = $2
+                where tr.trade_date = $1
                 order by tr.{sort_by} desc nulls last""",
-            trade_date, sector_name,
+            trade_date,
         )
+        stocks = [dict(r) for r in all_stocks if normalize_sector_name(r["sector"]) == sector_name]
+        for r in stocks:
+            r.pop("sector", None)
 
     return {
         "sector":  sector_name,
         "date":    str(trade_date),
-        "summary": dict(summary),
-        "stocks":  [dict(r) for r in stocks],
+        "summary": summary,
+        "stocks":  stocks,
     }
