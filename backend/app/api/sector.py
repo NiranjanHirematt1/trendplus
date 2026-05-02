@@ -10,7 +10,7 @@ from urllib.parse import unquote
 
 from fastapi import APIRouter, Depends, Query, HTTPException
 from app.core.database import get_pool
-from backend.app.core.sector_mapping import normalize_sector_name
+from app.core.sector_mapping import normalize_sector_name
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

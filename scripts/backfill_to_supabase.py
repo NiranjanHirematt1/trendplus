@@ -218,9 +218,9 @@ async def upsert_symbols(conn, isin_map: pd.Series,
 
         if sym in sector_df.index:
             row = sector_df.loc[sym]
-            sector = _clean(
+            sector = normalize_sector_name(_clean(
                 row.get("SECTOR") if "SECTOR" in row.index else row.iloc[0]
-            )
+            ))
             for col in ["CAPCATEGORY", "CAP_CATEGORY", "CAP CATEGORY", "CAP"]:
                 if col in sector_df.columns:
                     cap = _clean(sector_df.at[sym, col])

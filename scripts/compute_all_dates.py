@@ -44,6 +44,7 @@ load_dotenv(BACKEND / ".env")
 import asyncpg
 import numpy as np
 import pandas as pd
+from backend.app.core.sector_mapping import normalize_sector_name
 
 logging.basicConfig(
     level=logging.INFO,
@@ -361,6 +362,8 @@ async def compute_and_upsert(
     # Merge sector master
     if not sec_master.empty:
         result = result.join(sec_master, on="Symbol", how="left")
+        if "Sector" in result.columns:
+            result["Sector"] = result["Sector"].map(normalize_sector_name)
     else:
         result["Sector"] = ""
         result["CapCategory"] = ""
