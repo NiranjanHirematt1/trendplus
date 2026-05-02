@@ -731,6 +731,9 @@ function strHash(s) {
   let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xfffffff; return h;
 }
 
+const SECTOR_MAP = {"Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture","Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture","Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture","Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries","Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries","Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries","Automobile and Auto Components":"Auto & Ancillaries"};
+function normSector(s){ s=(s||'').trim(); return SECTOR_MAP[s]||s; }
+
 // ── NAVIGATION ──────────────────────────────────────────────────
 function switchView(v) {
   VIEW = v;
@@ -917,7 +920,11 @@ async function loadSectors() {
   const sort = document.getElementById('secSort').value;
   try {
     const d = await apiFetch(`/api/sector?sort_by=${sort}&order=desc`);
-    const rows = d.data || [];
+    const raw = d.data || [];
+    const agg = {};
+    raw.forEach(r=>{ const k = normSector(r.sector); const n = Number(r.stock_count||0); if(!agg[k]) agg[k] = {sector:k,stock_count:0,stocks_up:0,stocks_down:0,stocks_near_high:0,_w:0}; const a=agg[k]; a.stock_count += n; a.stocks_up += Number(r.stocks_up||0); a.stocks_down += Number(r.stocks_down||0); a.stocks_near_high += Number(r.stocks_near_high||0); a._w += n; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=>{ if(r[f]!==null && r[f]!==undefined){ a[f]=(a[f]||0)+Number(r[f])*n; }}); });
+    const rows = Object.values(agg).map(a=>{ const w=Math.max(a._w,1); delete a._w; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=> a[f]=a[f]===undefined?null:(a[f]/w)); a.pct_stocks_up = a.stock_count ? (a.stocks_up*100/a.stock_count):0; return a; });
+    rows.sort((x,y)=> (Number(y[sort]??-1e18)-Number(x[sort]??-1e18)));
     document.getElementById('secCount').textContent = rows.length + ' sectors';
     if (!rows.length) { document.getElementById('secGrid').innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div>No sector data</div></div>'; return; }
     document.getElementById('secGrid').innerHTML = '<div class="sec-grid">' + rows.map(s => {
