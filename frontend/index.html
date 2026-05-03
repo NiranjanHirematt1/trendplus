@@ -195,70 +195,7 @@ td:first-child,td:nth-child(2){text-align:left}
 /* macd */
 .macd-bull{color:#4ade80}.macd-bear{color:var(--red)}
 
-/* ── SECTOR DASHBOARD ───────────────── */
-.sector-dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,.8fr);
-             gap:14px;padding:14px;background:var(--bg0)}
-.sector-main,.sector-side{min-width:0}
-.sector-kpis{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:8px;margin-bottom:12px}
-.sector-kpi{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
-            padding:10px 12px;min-height:72px}
-.sector-kpi-l{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.6px}
-.sector-kpi-v{font-family:var(--font-mono);font-size:19px;font-weight:700;margin-top:5px}
-.sector-kpi-s{font-size:11px;color:var(--t2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sector-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sector-panel + .sector-panel{margin-top:12px}
-.sector-panel-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);
-                background:var(--bg2)}
-.sector-panel-title{font-size:12px;font-weight:700;color:var(--t0)}
-.sector-panel-sub{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--t2)}
-.sector-table{width:100%;font-size:11.5px}
-.sector-table th{position:static;text-align:right;padding:7px 8px;background:var(--bg2);cursor:default}
-.sector-table th:first-child{position:static;left:auto;min-width:auto;text-align:left;background:var(--bg2)}
-.sector-table th:nth-child(2){position:static;left:auto;min-width:auto;background:var(--bg2);box-shadow:none}
-.sector-table td{padding:7px 8px}
-.sector-table td:first-child{position:static;left:auto;min-width:auto;background:transparent;text-align:left}
-.sector-table td:nth-child(2){position:static;left:auto;min-width:auto;background:transparent;box-shadow:none}
-.sector-table tr{cursor:pointer}
-.sector-table tr.active td{background:var(--bg3)}
-.sector-name-cell{font-weight:700;color:var(--t0);max-width:210px;white-space:normal;line-height:1.25}
-.sector-rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:7px;
-             border-radius:4px;background:var(--bg3);color:var(--t2);font-family:var(--font-mono);font-size:10px}
-.sector-score{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:22px;
-              border-radius:4px;font-family:var(--font-mono);font-weight:800}
-.sector-score.strong{background:var(--green-bg);color:#4ade80;border:1px solid var(--green-d)}
-.sector-score.neutral{background:var(--amber-bg);color:#fbbf24;border:1px solid var(--amber)}
-.sector-score.weak{background:var(--red-bg);color:var(--red);border:1px solid var(--red-d)}
-.sector-bar{height:7px;width:76px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-left:auto}
-.sector-bar-fill{height:100%;border-radius:4px}
-.sector-story{padding:13px 14px;font-size:13px;line-height:1.5;color:var(--t1)}
-.sector-story strong{color:var(--t0)}
-.sector-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 14px}
-.sector-chip{border:1px solid var(--border);background:var(--bg2);border-radius:4px;
-             padding:5px 7px;font-size:11px;color:var(--t1)}
-.sector-action-row{display:flex;gap:7px;padding:0 14px 14px}
-.sector-stock-list{padding:4px 0}
-.sector-stock-row{display:grid;grid-template-columns:76px minmax(0,1fr) 58px 58px;gap:8px;align-items:center;
-                  padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer}
-.sector-stock-row:last-child{border-bottom:none}
-.sector-stock-row:hover{background:var(--bg2)}
-.sector-stock-sym{font-family:var(--font-mono);font-weight:700;color:var(--blue)}
-.sector-stock-name{font-size:11px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sector-tabs{display:flex;gap:0;margin-left:auto;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sector-tab{background:transparent;color:var(--t2);font-size:11px;padding:4px 8px}
-.sector-tab.active{background:var(--bg4);color:var(--t0)}
-.ss-v{font-family:var(--font-mono);font-size:12.5px;font-weight:500;text-align:center}
-.ss-l{font-size:10px;color:var(--t2);text-align:center;margin-top:1px}
-@media(max-width:1100px){
-  .sector-dash{grid-template-columns:1fr}
-  .sector-kpis{grid-template-columns:repeat(2,minmax(130px,1fr))}
-}
-@media(max-width:680px){
-  .sector-dash{padding:8px}
-  .sector-kpis{grid-template-columns:1fr}
-  .sector-table{font-size:11px}
-  .sector-table th:nth-child(4),.sector-table td:nth-child(4),
-  .sector-table th:nth-child(6),.sector-table td:nth-child(6){display:none}
-}
+/* ── SECTOR GRID ────────────────────── */
 
 /* ── GROUPED ────────────────────────── */
 .grp-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;
@@ -574,8 +511,6 @@ html.light tbody tr:hover td:nth-child(2){background:#f0f2f5}
       <div class="toolbar">
         <span class="cnt-badge" id="secCount">— sectors</span>
         <select class="tb-sel" id="secSort" onchange="loadSectors()">
-          <option value="sector_score">Sector Strength</option>
-          <option value="avg_chg_today">Today Move</option>
           <option value="avg_momentum">Avg Momentum</option>
           <option value="avg_trending_days">Avg Trending Days</option>
           <option value="avg_chg_12d">Avg 12d%</option>
@@ -784,40 +719,7 @@ function strHash(s) {
   let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xfffffff; return h;
 }
 
-const SECTOR_MAP = {
-  "Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture",
-  "Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture",
-  "Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture",
-  "Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries",
-  "Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries",
-  "Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries",
-  "Automobile and Auto Components":"Auto & Ancillaries",
-  "Financials - Private Bank":"Banking","Financials - PSU Bank":"Banking","Financials - Housing":"Banking",
-  "Engineering":"Capital Goods","Electronic - Equipment":"Capital Goods","Industrial - Bearings":"Capital Goods",
-  "Industrial - Consumables":"Capital Goods","Industrial - Pumps/Engines":"Capital Goods",
-  "Chemicals - Bulk":"Chemicals","Chemicals - Misc":"Chemicals","Chemicals - Petro":"Chemicals","Chemicals - Specialty":"Chemicals",
-  "Construction Materials":"Construction","Infra - Cement":"Construction","Infra - Ceramics":"Construction",
-  "Infra - Construction":"Construction","Infra - Diversified":"Construction","Infra - Granites/Marbles":"Construction","Infra - Plastic Pipes":"Construction",
-  "Consumption - Appliances":"Consumer Durables","Consumption - Electronics":"Consumer Durables","Consumption - Jewelry":"Consumer Durables",
-  "Consumption - Misc":"Consumer Durables","Consumption - Paints":"Consumer Durables","Consumption - Retail":"Consumer Durables",
-  "Leisure - Hotels":"Consumer Services","Leisure - Misc":"Consumer Services","Human Resources":"Consumer Services","Services":"Consumer Services",
-  "Defense - Misc":"Defence","Defense - Ship Building":"Defence","Defense - Technology":"Defence",
-  "Others":"Diversified",
-  "Fast Moving Consumer Goods":"FMCG","Beverages - Alcohol":"FMCG","Consumption - FMCG":"FMCG","Consumption - Dairy":"FMCG","Consumption - Personal":"FMCG","Forest Materials":"FMCG",
-  "Financials - AMC":"Financial Services","Financials - Broking":"Financial Services","Financials - Life":"Financial Services","Financials - MFI":"Financial Services",
-  "Financials - Misc":"Financial Services","Financials - NBFC":"Financial Services","Financials - Non-Life":"Financial Services","Financials - Ratings":"Financial Services",
-  "Healthcare":"Healthcare & Pharma","Healthcare - Biotech":"Healthcare & Pharma","Healthcare - Hospitals":"Healthcare & Pharma","Healthcare - Pharma":"Healthcare & Pharma",
-  "IT - Equipments":"Information Technology","IT - Product/Platform":"Information Technology","IT - Services":"Information Technology","IT - Software/Consulting":"Information Technology",
-  "Media - Films":"Media & Entertainment","Media - Publishing":"Media & Entertainment","Media - TV Broadcast":"Media & Entertainment","Media Entertainment & Publication":"Media & Entertainment",
-  "Metals - Aluminium":"Metals & Mining","Metals - Casting/Forging":"Metals & Mining","Metals - Copper":"Metals & Mining","Metals - Iron & Steel":"Metals & Mining",
-  "Metals - Misc":"Metals & Mining","Metals - Pipe & Tube":"Metals & Mining","Mining - Coal":"Metals & Mining",
-  "Oil and Gas":"Oil, Gas & Energy","Oil Gas & Consumable Fuels":"Oil, Gas & Energy","Petro - Refineries":"Oil, Gas & Energy",
-  "Paper":"Paper & Packaging","Packaging":"Paper & Packaging",
-  "Power - Equipment":"Power","Power - Misc":"Power","Power - Wiring":"Power","Utilities":"Power","Utility - Gas":"Power","Utility - Misc":"Power",
-  "Realty":"Real Estate","Telecommunication":"Telecom",
-  "Textile - Apparels":"Textiles","Textile - Misc":"Textiles","Textile - Spinning/Yarn":"Textiles","Textiles - Polyester":"Textiles","Leather Products":"Textiles",
-  "Transport - Logistics":"Transport & Logistics","Transport - Shipping":"Transport & Logistics",
-};
+const SECTOR_MAP = {"Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture","Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture","Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture","Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries","Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries","Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries","Automobile and Auto Components":"Auto & Ancillaries"};
 function normSector(s){ s=(s||'').trim(); return SECTOR_MAP[s]||s; }
 
 // ── NAVIGATION ──────────────────────────────────────────────────
@@ -1001,36 +903,7 @@ function renderPagination(page, pages, total) {
 function goPage(n) { PAGE = n; loadScreener(); document.querySelector('.content-area').scrollTop = 0; }
 
 // ── SECTORS ──────────────────────────────────────────────────────
-async function loadSectorsLegacyCards() {
-  loading('secGrid');
-  const sort = document.getElementById('secSort').value;
-  try {
-    const d = await apiFetch(`/api/sector?sort_by=${sort}&order=desc`);
-    const raw = d.data || [];
-    const agg = {};
-    raw.forEach(r=>{ const k = normSector(r.sector); const n = Number(r.stock_count||0); if(!agg[k]) agg[k] = {sector:k,stock_count:0,stocks_up:0,stocks_down:0,stocks_near_high:0,_w:0}; const a=agg[k]; a.stock_count += n; a.stocks_up += Number(r.stocks_up||0); a.stocks_down += Number(r.stocks_down||0); a.stocks_near_high += Number(r.stocks_near_high||0); a._w += n; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=>{ if(r[f]!==null && r[f]!==undefined){ a[f]=(a[f]||0)+Number(r[f])*n; }}); });
-    const rows = Object.values(agg).map(a=>{ const w=Math.max(a._w,1); delete a._w; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=> a[f]=a[f]===undefined?null:(a[f]/w)); a.pct_stocks_up = a.stock_count ? (a.stocks_up*100/a.stock_count):0; return a; });
-    rows.sort((x,y)=> (Number(y[sort]??-1e18)-Number(x[sort]??-1e18)));
-    document.getElementById('secCount').textContent = rows.length + ' sectors';
-    if (!rows.length) { document.getElementById('secGrid').innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div>No sector data</div></div>'; return; }
-    document.getElementById('secGrid').innerHTML = '<div class="sec-grid">' + rows.map(s => {
-      const mom = s.avg_momentum != null ? Math.round(Number(s.avg_momentum)) : null;
-      const col = mom==null?'var(--t2)':mom>=70?'#4ade80':mom>=40?'#fbbf24':'#f85149';
-      const up  = s.pct_stocks_up != null ? Math.round(Number(s.pct_stocks_up)) : 0;
-      const bCol = up>=60?'#4ade80':up>=40?'#fbbf24':'#f85149';
-      return `<div class="scard" onclick="drillSector('${encodeURIComponent(s.sector)}')">
-        <div class="scard-hdr"><div class="scard-name">${s.sector}</div><div class="scard-mom" style="color:${col}">${mom??'—'}</div></div>
-        <div class="scard-stats">
-          <div><div class="ss-v">${s.stock_count}</div><div class="ss-l">Stocks</div></div>
-          <div><div class="ss-v ${pCls(s.avg_chg_12d)}">${fPct(s.avg_chg_12d)}</div><div class="ss-l">Avg 12d%</div></div>
-          <div><div class="ss-v">${f1(s.avg_trending_days)}</div><div class="ss-l">Avg Trend</div></div>
-        </div>
-        <div class="breadth-bar" title="${up}% stocks up"><div class="breadth-fill" style="width:${up}%;background:${bCol}"></div></div>
-      </div>`;
-    }).join('') + '</div>';
-  } catch(e) { document.getElementById('secGrid').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`; }
-}
-
+// ── HELPERS ──────────────────────────────────────────────────────
 function drillSector(enc) {
   const name = decodeURIComponent(enc);
   document.getElementById('fSec').value = name;
@@ -1265,13 +1138,6 @@ document.getElementById('srchInput').addEventListener('blur', () => {
 });
 
 // ── SUPER STRENGTH ───────────────────────────────────────────────
-function setSStab(tab) {
-  SS_TAB = tab;
-  document.getElementById('ssTabDetails').classList.toggle('active', tab === 'details');
-  document.getElementById('ssTabTrend').classList.toggle('active',   tab === 'trend');
-  loadSuperStrength();
-}
-
 async function loadSuperStrength() {
   loading('ssGrid');
   const minC   = document.getElementById('ssMinC').value || '5';
@@ -1335,97 +1201,6 @@ function renderSSGrid(rows) {
   return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
 }
 
-function renderSSDetails(rows) {
-  const hasWRPI = rows.some(r => r.weighted_rpi != null);
-  if (!hasWRPI) {
-    return `<div style="padding:20px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:var(--r);margin:16px;color:var(--amber);font-size:13px">
-      ⚠ Weighted RPI not computed yet. Run migration_v3.sql in Supabase, then:<br>
-      <code style="font-size:11px">python scripts/compute_today.py --date 2026-03-20</code>
-    </div>` + renderSSDetailsTable(rows);
-  }
-  return renderSSDetailsTable(rows);
-}
-function renderSSDetailsTable(rows) {
-  const hdr = `<thead><tr>
-    <th style="text-align:left">Company</th>
-    <th style="text-align:left">Sector</th>
-    <th>Market Cap</th><th>Symbol</th><th>ISIN</th>
-    <th style="color:#bc8cff">W.RPI</th>
-    <th title="Near 52W High with strong RPI">52WK HIGH W.RPI</th>
-    <th>Latest Price</th>
-    <th title="At 52-Week High">52WK HIGH</th>
-  </tr></thead>`;
-  const body = rows.map(r => `
-    <tr data-sym="${r.symbol}">
-      <td style="text-align:left">
-        <div style="font-weight:600;color:var(--blue);cursor:pointer"
-             onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div>
-      </td>
-      <td style="text-align:left;font-size:11.5px;color:var(--t1)">${r.sector ? '<span style="background:var(--bg4);border-radius:3px;padding:1px 6px">'+r.sector+'</span>' : '<span style="color:var(--t3)">—</span>'}</td>
-      <td>${capBadge(r.cap_category)}</td>
-      <td><span class="sym-cell" style="color:var(--blue);cursor:pointer"
-               onclick="openDP('${r.symbol}')">${r.symbol}</span></td>
-      <td class="mono" style="font-size:11px;color:var(--t2)">${r.isin||'—'}</td>
-      <td><span class="rpi-val">${f1(r.weighted_rpi)}</span></td>
-      <td style="text-align:center">${r.rocket_52w_wrpi ? '🚀' : '—'}</td>
-      <td class="mono">${inr(r.latest_price)}</td>
-      <td style="text-align:center">${r.rocket_52w ? '🚀' : '—'}</td>
-    </tr>`).join('');
-  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
-}
-
-function renderSSTrend(rows) {
-  // Check if new columns have data
-  const hasNewCols = rows.some(r => r.rpi_2w != null || r.ema_9 != null || r.rsi_1d != null);
-  if (!hasNewCols) {
-    return `<div class="empty" style="padding:40px">
-      <div class="empty-icon">⚠</div>
-      <div style="font-size:13px;color:var(--t1);text-align:center">
-        New indicator columns not yet computed.<br>
-        <span style="color:var(--t2);font-size:11px">Run: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px">python scripts/compute_today.py --date 2026-03-20</code></span>
-      </div>
-    </div>`;
-  }
-  const hdr = `<thead><tr>
-    <th style="text-align:left">Company</th>
-    <th>Price</th><th>52WK</th>
-    <th>EMA 9</th><th>EMA 21</th>
-    <th>ADX 14</th><th>RSI 14</th>
-    <th style="color:#4ade80">RSI 1D</th>
-    <th style="color:#4ade80">RSI 1W</th>
-    <th style="color:#bc8cff">2W RPI</th>
-    <th style="color:#bc8cff">3M RPI</th>
-    <th style="color:#bc8cff">6M RPI</th>
-    <th style="color:#bc8cff">2WK SMA 6M</th>
-  </tr></thead>`;
-  const body = rows.map(r => {
-    const aboveEma = r.ema_200 != null && r.latest_price != null && r.latest_price > r.ema_200;
-    const priceCls = aboveEma ? 'above200' : 'mono';
-    const r1dCls = r.rsi_1d != null && r.rsi_1d > 60 ? 'rsi-hi' : 'mono';
-    const r1wCls = r.rsi_1w != null && r.rsi_1w > 60 ? 'rsi-hi' : 'mono';
-    return `<tr data-sym="${r.symbol}">
-      <td style="text-align:left">
-        <div style="font-weight:600;color:var(--blue);cursor:pointer;font-size:13px"
-             onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div>
-        <div style="font-size:10px;color:var(--t2)">${r.sector||''}</div>
-      </td>
-      <td class="${priceCls}">${inr(r.latest_price)}</td>
-      <td style="text-align:center">${r.rocket_52w ? '🚀' : ''}</td>
-      <td class="mono">${inr(r.ema_9)}</td>
-      <td class="mono">${inr(r.ema_21)}</td>
-      <td class="mono">${f1(r.adx_14)}</td>
-      <td class="mono">${f1(r.rsi_14)}</td>
-      <td><span class="${r1dCls}">${f1(r.rsi_1d)}</span></td>
-      <td><span class="${r1wCls}">${f1(r.rsi_1w)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_2w)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_3m)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_6m)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_6m_sma2w)}</span></td>
-    </tr>`;
-  }).join('');
-  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
-}
-
 // ── SIDEBAR SECTOR LIST ──────────────────────────────────────────
 async function loadSectorList() {
   try {
@@ -1433,7 +1208,6 @@ async function loadSectorList() {
     const sel = document.getElementById('fSec');
     const lst = document.getElementById('sbSecList');
     const ssSel = document.getElementById('ssSec');
-    // Normalize raw sector names and merge symbol counts under canonical names
     const normMap = {};
     (d.sectors || []).forEach(s => {
       const canonical = normSector(s.sector);
@@ -1442,17 +1216,14 @@ async function loadSectorList() {
     });
     const sectors = Object.values(normMap).sort((a,b) => a.sector.localeCompare(b.sector));
     sectors.forEach(s => {
-      // main filter dropdown
       const opt = document.createElement('option');
       opt.value = s.sector; opt.textContent = s.sector;
       sel.appendChild(opt);
-      // super strength dropdown
       if (ssSel) {
         const ssOpt = document.createElement('option');
         ssOpt.value = s.sector; ssOpt.textContent = s.sector;
         ssSel.appendChild(ssOpt);
       }
-      // sidebar item
       const div = document.createElement('div');
       div.className = 'sec-item'; div.dataset.sec = s.sector;
       const hue = strHash(s.sector) * 137 % 360;
@@ -1480,142 +1251,6 @@ if (localStorage.getItem('tp_theme') === 'light') {
 }
 
 // ── INIT ─────────────────────────────────────────────────────────
-// Sector dashboard override: ranked movers, breadth, strength, and top stocks.
-let SECTOR_ROWS = [];
-let SELECTED_SECTOR = '';
-let SECTOR_STOCK_TAB = 'gainers';
-
-function sectorScore(s) {
-  const today = Math.max(-5, Math.min(5, Number(s.avg_chg_today || 0)));
-  const breadth = Math.max(0, Math.min(100, Number(s.pct_stocks_up || 0)));
-  const momentum = Math.max(0, Math.min(100, Number(s.avg_momentum || 0)));
-  const nearHigh = Math.max(0, Math.min(100, Number(s.pct_near_high || 0)));
-  return Math.round(((today + 5) * 4) + (breadth * .25) + (momentum * .25) + (nearHigh * .10));
-}
-function scoreClass(v){ return v >= 70 ? 'strong' : v >= 45 ? 'neutral' : 'weak'; }
-function breadthColor(v){ return v >= 60 ? '#4ade80' : v >= 40 ? '#fbbf24' : '#f85149'; }
-function sectorSortVal(s, sort){ return sort === 'sector_score' ? s.sector_score : Number(s[sort] ?? -1e18); }
-
-async function loadSectors() {
-  loading('secGrid');
-  const sort = document.getElementById('secSort').value;
-  try {
-    const apiSort = sort === 'sector_score' ? 'avg_momentum' : sort;
-    const d = await apiFetch(`/api/sector?sort_by=${apiSort}&order=desc`);
-    const raw = d.data || [];
-    const agg = {};
-    raw.forEach(r=>{ const k = normSector(r.sector); const n = Number(r.stock_count||0); if(!agg[k]) agg[k] = {sector:k,stock_count:0,stocks_up:0,stocks_down:0,stocks_near_high:0,_w:0}; const a=agg[k]; a.stock_count += n; a.stocks_up += Number(r.stocks_up||0); a.stocks_down += Number(r.stocks_down||0); a.stocks_near_high += Number(r.stocks_near_high||0); a._w += n; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=>{ if(r[f]!==null && r[f]!==undefined){ a[f]=(a[f]||0)+Number(r[f])*n; }}); });
-    SECTOR_ROWS = Object.values(agg).map(a=>{ const w=Math.max(a._w,1); delete a._w; ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today","avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=> a[f]=a[f]===undefined?null:(a[f]/w)); a.pct_stocks_up = a.stock_count ? (a.stocks_up*100/a.stock_count):0; a.sector_score = sectorScore(a); return a; });
-    SECTOR_ROWS.sort((x,y)=> sectorSortVal(y, sort)-sectorSortVal(x, sort));
-    if (!SELECTED_SECTOR || !SECTOR_ROWS.some(s => s.sector === SELECTED_SECTOR)) SELECTED_SECTOR = SECTOR_ROWS[0]?.sector || '';
-    document.getElementById('secCount').textContent = SECTOR_ROWS.length + ' sectors';
-    if (!SECTOR_ROWS.length) { document.getElementById('secGrid').innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div>No sector data</div></div>'; return; }
-    renderSectorDashboard(d.date || '');
-    if (SELECTED_SECTOR) loadSectorDetail(SELECTED_SECTOR);
-  } catch(e) { document.getElementById('secGrid').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`; }
-}
-
-function renderSectorDashboard(date) {
-  const top = SECTOR_ROWS[0];
-  const weak = [...SECTOR_ROWS].sort((a,b)=>Number(a.avg_chg_today||0)-Number(b.avg_chg_today||0))[0];
-  const adv = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stocks_up||0),0);
-  const total = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stock_count||0),0);
-  const broad = total ? Math.round(adv*100/total) : 0;
-  const hot = SECTOR_ROWS.filter(s=>s.sector_score>=70).length;
-  document.getElementById('secGrid').innerHTML = `
-    <div class="sector-dash">
-      <div class="sector-main">
-        <div class="sector-kpis">
-          ${sectorKpi('Top sector today', top?.sector || '-', fPct(top?.avg_chg_today), pCls(top?.avg_chg_today))}
-          ${sectorKpi('Weakest sector', weak?.sector || '-', fPct(weak?.avg_chg_today), pCls(weak?.avg_chg_today))}
-          ${sectorKpi('Market breadth', broad + '%', `${adv}/${total} stocks positive`, broad>=55?'pos':broad>=45?'neu':'neg')}
-          ${sectorKpi('Strong sectors', hot, 'score 70+', hot ? 'pos' : 'neu')}
-        </div>
-        <div class="sector-panel">
-          <div class="sector-panel-h"><div class="sector-panel-title">Daily Sector Movers</div><div class="sector-panel-sub">${date || 'latest session'}</div></div>
-          ${sectorMoverTable()}
-        </div>
-      </div>
-      <div class="sector-side">
-        <div class="sector-panel" id="sectorStoryPanel"></div>
-        <div class="sector-panel" id="sectorStockPanel"><div class="ld"><div class="spin"></div> Loading stocks...</div></div>
-      </div>
-    </div>`;
-  renderSectorStory();
-}
-
-function sectorKpi(label, value, sub, cls='') {
-  return `<div class="sector-kpi"><div class="sector-kpi-l">${label}</div><div class="sector-kpi-v ${cls}">${value ?? '-'}</div><div class="sector-kpi-s">${sub ?? ''}</div></div>`;
-}
-
-function sectorMoverTable() {
-  return `<div class="twrap"><table class="sector-table">
-    <thead><tr><th>Sector</th><th>Score</th><th>Today</th><th>5d</th><th>Breadth</th><th>Near High</th><th>Momentum</th></tr></thead>
-    <tbody>${SECTOR_ROWS.map((s,i)=>{
-      const up = Math.round(Number(s.pct_stocks_up||0));
-      const selected = s.sector === SELECTED_SECTOR ? ' active' : '';
-      return `<tr class="${selected}" onclick="selectSector('${encodeURIComponent(s.sector)}')">
-        <td><div class="sector-name-cell"><span class="sector-rank">${i+1}</span>${s.sector}</div></td>
-        <td><span class="sector-score ${scoreClass(s.sector_score)}">${s.sector_score}</span></td>
-        <td class="${pCls(s.avg_chg_today)} mono">${fPct(s.avg_chg_today)}</td>
-        <td class="${pCls(s.avg_chg_5d)} mono">${fPct(s.avg_chg_5d)}</td>
-        <td><div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><span class="mono">${up}%</span><div class="sector-bar"><div class="sector-bar-fill" style="width:${up}%;background:${breadthColor(up)}"></div></div></div></td>
-        <td class="mono">${Math.round(Number(s.pct_near_high||0))}%</td>
-        <td class="mono">${Math.round(Number(s.avg_momentum||0))}</td>
-      </tr>`;
-    }).join('')}</tbody></table></div>`;
-}
-
-function selectSector(enc) {
-  SELECTED_SECTOR = decodeURIComponent(enc);
-  renderSectorDashboard(document.getElementById('datePill').textContent);
-  loadSectorDetail(SELECTED_SECTOR);
-}
-
-function renderSectorStory() {
-  const s = SECTOR_ROWS.find(x=>x.sector===SELECTED_SECTOR) || SECTOR_ROWS[0];
-  if (!s) return;
-  const up = Math.round(Number(s.pct_stocks_up||0));
-  const todayCls = pCls(s.avg_chg_today);
-  document.getElementById('sectorStoryPanel').innerHTML = `
-    <div class="sector-panel-h"><div class="sector-panel-title">${s.sector}</div><div class="sector-panel-sub">sector story</div></div>
-    <div class="sector-story"><strong>${s.sector}</strong> is ${Number(s.avg_chg_today||0) >= 0 ? 'leading positive action' : 'under pressure'} today with <strong class="${todayCls}">${fPct(s.avg_chg_today)}</strong>. Breadth is <strong>${up}%</strong> (${s.stocks_up}/${s.stock_count} stocks up), momentum score is <strong>${Math.round(Number(s.avg_momentum||0))}</strong>, and <strong>${s.stocks_near_high}</strong> stocks are near 52-week highs.</div>
-    <div class="sector-chips"><span class="sector-chip">Score ${s.sector_score}</span><span class="sector-chip">12d ${fPct(s.avg_chg_12d)}</span><span class="sector-chip">Avg RSI ${f1(s.avg_rsi_14)}</span><span class="sector-chip">Avg ADX ${f1(s.avg_adx_14)}</span></div>
-    <div class="sector-action-row"><button class="pb" onclick="drillSector('${encodeURIComponent(s.sector)}')">Open Screener</button><button class="pb" onclick="switchView('grouped')">Compare Groups</button></div>`;
-}
-
-async function loadSectorDetail(name) {
-  const panel = document.getElementById('sectorStockPanel');
-  if (!panel) return;
-  panel.innerHTML = '<div class="ld"><div class="spin"></div> Loading stocks...</div>';
-  try {
-    const d = await apiFetch(`/api/sector/${encodeURIComponent(name)}?sort_by=momentum_score`);
-    renderSectorStocks(d.stocks || []);
-  } catch(e) {
-    panel.innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
-  }
-}
-
-function renderSectorStocks(stocks) {
-  const sorted = [...stocks].sort((a,b)=>{
-    if (SECTOR_STOCK_TAB === 'losers') return Number(a.chg_1d||0)-Number(b.chg_1d||0);
-    if (SECTOR_STOCK_TAB === 'volume') return Number(b.total_trades||0)-Number(a.total_trades||0);
-    return Number(b.chg_1d||0)-Number(a.chg_1d||0);
-  }).slice(0,8);
-  document.getElementById('sectorStockPanel').innerHTML = `
-    <div class="sector-panel-h"><div class="sector-panel-title">Top Stocks</div><div class="sector-tabs">${sectorTab('gainers','Gainers')}${sectorTab('losers','Losers')}${sectorTab('volume','Volume')}</div></div>
-    <div class="sector-stock-list">${sorted.map(r=>`<div class="sector-stock-row" onclick="openDP('${r.symbol}')"><div class="sector-stock-sym">${r.symbol}</div><div class="sector-stock-name">${r.company_name || ''}</div><div class="${pCls(r.chg_1d)} mono">${fPct(r.chg_1d)}</div><div class="mono">${Math.round(Number(r.momentum_score||0))}</div></div>`).join('') || '<div class="empty">No stocks</div>'}</div>`;
-}
-
-function sectorTab(tab,label) {
-  return `<button class="sector-tab ${SECTOR_STOCK_TAB===tab?'active':''}" onclick="setSectorStockTab('${tab}')">${label}</button>`;
-}
-
-function setSectorStockTab(tab) {
-  SECTOR_STOCK_TAB = tab;
-  loadSectorDetail(SELECTED_SECTOR);
-}
-
 (async () => {
   await loadSectorList();
   await loadScreener();
