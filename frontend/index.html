@@ -1285,7 +1285,7 @@ async function loadSuperStrength() {
   qs.set('order', 'desc');
   qs.set('page_size', '200');
   try {
-    const d = await apiFetch('/api/trend?' + qs.toString());
+    const d = await apiFetch('/api/superstrength?' + qs.toString());
     document.getElementById('ssCount').textContent = (d.total||0).toLocaleString() + ' stocks';
     if (!d.data || !d.data.length) {
       document.getElementById('ssGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚡</div><div>No results</div></div>';
@@ -1485,6 +1485,19 @@ let SECTOR_ROWS = [];
 let SELECTED_SECTOR = '';
 let SECTOR_STOCK_TAB = 'gainers';
 
+function sectorMomentumSignal(s) {
+  const t1 = Number(s.avg_chg_today || 0);
+  const t5 = Number(s.avg_chg_5d || 0);
+  const t12 = Number(s.avg_chg_12d || 0);
+  const breadth = Number(s.pct_stocks_up || 0);
+  const nearHigh = Number(s.pct_near_high || 0);
+  const momentum = Number(s.avg_momentum || 0);
+  const build = (t1 > 0 ? 1 : 0) + (t5 > 0 ? 1 : 0) + (t12 > 0 ? 1 : 0) + (breadth >= 50 ? 1 : 0) + (nearHigh >= 25 ? 1 : 0) + (momentum >= 35 ? 1 : 0);
+  if (build >= 5) return { label: 'Strong Build', cls: 'pos', score: build };
+  if (build >= 3) return { label: 'Building', cls: 'neu', score: build };
+  return { label: 'Weak', cls: 'neg', score: build };
+}
+
 function sectorScore(s) {
   const today = Math.max(-5, Math.min(5, Number(s.avg_chg_today || 0)));
   const breadth = Math.max(0, Math.min(100, Number(s.pct_stocks_up || 0)));
@@ -1521,7 +1534,9 @@ function renderSectorDashboard(date) {
   const adv = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stocks_up||0),0);
   const total = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stock_count||0),0);
   const broad = total ? Math.round(adv*100/total) : 0;
-  const hot = SECTOR_ROWS.filter(s=>s.sector_score>=70).length;
+  const hot = SECTOR_ROWS.filter(s=>sectorMomentumSignal(s).score>=5).length;
+  const top5 = [...SECTOR_ROWS].sort((a,b)=>Number(b.avg_chg_5d||0)-Number(a.avg_chg_5d||0))[0];
+  const top12 = [...SECTOR_ROWS].sort((a,b)=>Number(b.avg_chg_12d||0)-Number(a.avg_chg_12d||0))[0];
   document.getElementById('secGrid').innerHTML = `
     <div class="sector-dash">
       <div class="sector-main">
@@ -1529,7 +1544,9 @@ function renderSectorDashboard(date) {
           ${sectorKpi('Top sector today', top?.sector || '-', fPct(top?.avg_chg_today), pCls(top?.avg_chg_today))}
           ${sectorKpi('Weakest sector', weak?.sector || '-', fPct(weak?.avg_chg_today), pCls(weak?.avg_chg_today))}
           ${sectorKpi('Market breadth', broad + '%', `${adv}/${total} stocks positive`, broad>=55?'pos':broad>=45?'neu':'neg')}
-          ${sectorKpi('Strong sectors', hot, 'score 70+', hot ? 'pos' : 'neu')}
+          ${sectorKpi('Top 5d mover', top5?.sector || '-', fPct(top5?.avg_chg_5d), pCls(top5?.avg_chg_5d))}
+          ${sectorKpi('Top 12d mover', top12?.sector || '-', fPct(top12?.avg_chg_12d), pCls(top12?.avg_chg_12d))}
+          ${sectorKpi('Momentum builders', hot, 'multi-timeframe build', hot ? 'pos' : 'neu')}
         </div>
         <div class="sector-panel">
           <div class="sector-panel-h"><div class="sector-panel-title">Daily Sector Movers</div><div class="sector-panel-sub">${date || 'latest session'}</div></div>
@@ -1550,7 +1567,7 @@ function sectorKpi(label, value, sub, cls='') {
 
 function sectorMoverTable() {
   return `<div class="twrap"><table class="sector-table">
-    <thead><tr><th>Sector</th><th>Score</th><th>Today</th><th>5d</th><th>Breadth</th><th>Near High</th><th>Momentum</th></tr></thead>
+    <thead><tr><th>Sector</th><th>Score</th><th>Today</th><th>5d</th><th>12d</th><th>Breadth</th><th>Near High</th><th>Momentum</th><th>Signal</th></tr></thead>
     <tbody>${SECTOR_ROWS.map((s,i)=>{
       const up = Math.round(Number(s.pct_stocks_up||0));
       const selected = s.sector === SELECTED_SECTOR ? ' active' : '';
@@ -1559,9 +1576,11 @@ function sectorMoverTable() {
         <td><span class="sector-score ${scoreClass(s.sector_score)}">${s.sector_score}</span></td>
         <td class="${pCls(s.avg_chg_today)} mono">${fPct(s.avg_chg_today)}</td>
         <td class="${pCls(s.avg_chg_5d)} mono">${fPct(s.avg_chg_5d)}</td>
+        <td class="${pCls(s.avg_chg_12d)} mono">${fPct(s.avg_chg_12d)}</td>
         <td><div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><span class="mono">${up}%</span><div class="sector-bar"><div class="sector-bar-fill" style="width:${up}%;background:${breadthColor(up)}"></div></div></div></td>
         <td class="mono">${Math.round(Number(s.pct_near_high||0))}%</td>
         <td class="mono">${Math.round(Number(s.avg_momentum||0))}</td>
+         <td><span class="sector-score ${signal.cls==='pos'?'strong':signal.cls==='neu'?'neutral':'weak'}">${signal.label}</span></td>
       </tr>`;
     }).join('')}</tbody></table></div>`;
 }
@@ -1579,8 +1598,8 @@ function renderSectorStory() {
   const todayCls = pCls(s.avg_chg_today);
   document.getElementById('sectorStoryPanel').innerHTML = `
     <div class="sector-panel-h"><div class="sector-panel-title">${s.sector}</div><div class="sector-panel-sub">sector story</div></div>
-    <div class="sector-story"><strong>${s.sector}</strong> is ${Number(s.avg_chg_today||0) >= 0 ? 'leading positive action' : 'under pressure'} today with <strong class="${todayCls}">${fPct(s.avg_chg_today)}</strong>. Breadth is <strong>${up}%</strong> (${s.stocks_up}/${s.stock_count} stocks up), momentum score is <strong>${Math.round(Number(s.avg_momentum||0))}</strong>, and <strong>${s.stocks_near_high}</strong> stocks are near 52-week highs.</div>
-    <div class="sector-chips"><span class="sector-chip">Score ${s.sector_score}</span><span class="sector-chip">12d ${fPct(s.avg_chg_12d)}</span><span class="sector-chip">Avg RSI ${f1(s.avg_rsi_14)}</span><span class="sector-chip">Avg ADX ${f1(s.avg_adx_14)}</span></div>
+    <div class="sector-story"><strong>${s.sector}</strong> is ${Number(s.avg_chg_today||0) >= 0 ? 'leading positive action' : 'under pressure'} today with <strong class="${todayCls}">${fPct(s.avg_chg_today)}</strong>. 5-day move is <strong class="${pCls(s.avg_chg_5d)}">${fPct(s.avg_chg_5d)}</strong> and 12-day move is <strong class="${pCls(s.avg_chg_12d)}">${fPct(s.avg_chg_12d)}</strong>. Breadth is <strong>${up}%</strong> (${s.stocks_up}/${s.stock_count} stocks up), momentum score is <strong>${Math.round(Number(s.avg_momentum||0))}</strong>, and <strong>${s.stocks_near_high}</strong> stocks are near 52-week highs.</div>
+    <div class="sector-chips"><span class="sector-chip">Score ${s.sector_score}</span><span class="sector-chip">Signal ${signal.label}</span><span class="sector-chip">Avg RSI ${f1(s.avg_rsi_14)}</span><span class="sector-chip">Avg ADX ${f1(s.avg_adx_14)}</span></div>
     <div class="sector-action-row"><button class="pb" onclick="drillSector('${encodeURIComponent(s.sector)}')">Open Screener</button><button class="pb" onclick="switchView('grouped')">Compare Groups</button></div>`;
 }
 
@@ -1590,9 +1609,21 @@ async function loadSectorDetail(name) {
   panel.innerHTML = '<div class="ld"><div class="spin"></div> Loading stocks...</div>';
   try {
     const d = await apiFetch(`/api/sector/${encodeURIComponent(name)}?sort_by=momentum_score`);
-    renderSectorStocks(d.stocks || []);
+    const stocks = d.stocks || [];
+    if (stocks.length) { renderSectorStocks(stocks); return; }
+    throw new Error('No stocks from sector endpoint');
   } catch(e) {
-    panel.innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+    try {
+      const fallback = await apiFetch('/api/trend?page_size=600&sort_by=momentum_score&order=desc');
+      const stocks = (fallback.data || []).filter(r => normSector(r.sector) === name);
+      if (stocks.length) {
+        renderSectorStocks(stocks);
+      } else {
+        panel.innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>No stocks found for ${name}</div></div>`;
+      }
+    } catch(e2) {
+      panel.innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e2.message}</div></div>`;
+    }
   }
 }
 
