@@ -274,8 +274,9 @@ async def main():
     db_url = os.environ.get("DATABASE_URL", "")
     if not db_url:
         try:
-            from app.core.config import settings
+            from backend.app.core.config import settings
             db_url = settings.DATABASE_URL
+            
         except Exception:
             pass
     if not db_url:
