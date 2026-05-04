@@ -45,8 +45,16 @@ from pathlib import Path
 import asyncpg
 import numpy as np
 import pandas as pd
-from backend.app.core.sector_mapping import normalize_sector_name
 from dotenv import load_dotenv
+
+ROOT = Path(__file__).resolve().parent.parent
+# Make script runnable both from repo root and as a direct script path
+for candidate in (ROOT, ROOT / "backend"):
+    c = str(candidate)
+    if c not in sys.path:
+        sys.path.insert(0, c)
+
+from backend.app.core.sector_mapping import normalize_sector_name
 
 # ─────────────────────────────────────────────────────────────────────
 #  CONFIGURATION — set these three paths before running
@@ -66,7 +74,6 @@ logging.basicConfig(
 )
 log = logging.getLogger("backfill")
 
-ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / "backend" / ".env")
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
