@@ -209,67 +209,6 @@ td:first-child,td:nth-child(2){text-align:left}
 .breadth-bar{height:3px;background:var(--bg4);border-radius:2px;margin-top:8px;overflow:hidden}
 .breadth-fill{height:100%;border-radius:2px;transition:width .4s}
 
-/* ── SECTOR DASHBOARD ───────────────── */
-.sector-dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.75fr);gap:14px;padding:14px;background:var(--bg0)}
-.sector-main,.sector-side{min-width:0}
-.sector-kpis{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:8px;margin-bottom:12px}
-.sector-kpi{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;min-height:68px}
-.sector-kpi-l{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.6px}
-.sector-kpi-v{font-family:var(--font-mono);font-size:18px;font-weight:700;margin-top:4px}
-.sector-kpi-s{font-size:11px;color:var(--t2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sector-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sector-panel+.sector-panel{margin-top:12px}
-.sector-panel-h{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--bg2)}
-.sector-panel-title{font-size:12px;font-weight:700;color:var(--t0)}
-.sector-panel-sub{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--t2)}
-.sector-table{width:100%;font-size:11.5px;border-collapse:collapse}
-.sector-table th{position:static;text-align:right;padding:6px 8px;background:var(--bg2);cursor:default;border-bottom:1px solid var(--border);font-weight:500;color:var(--t2);white-space:nowrap}
-.sector-table th:first-child{text-align:left;min-width:auto;left:auto;box-shadow:none}
-.sector-table th:nth-child(2){left:auto;box-shadow:none;min-width:auto}
-.sector-table td{padding:6px 8px;text-align:right;white-space:nowrap}
-.sector-table td:first-child{text-align:left;background:transparent!important;left:auto;box-shadow:none}
-.sector-table td:nth-child(2){background:transparent!important;left:auto;box-shadow:none}
-.sector-table tr{cursor:pointer;border-bottom:1px solid var(--border)}
-.sector-table tr:hover td{background:var(--bg2)!important}
-.sector-table tr.active td{background:var(--bg3)!important}
-.sector-name-cell{font-weight:700;color:var(--t0);display:flex;align-items:center;white-space:nowrap}
-.sector-rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:7px;flex-shrink:0;
-             border-radius:4px;background:var(--bg4);color:var(--t2);font-family:var(--font-mono);font-size:10px}
-.sector-score{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:20px;
-              border-radius:4px;font-family:var(--font-mono);font-weight:800;font-size:11px}
-.sector-score.strong{background:var(--green-bg);color:#4ade80;border:1px solid var(--green-d)}
-.sector-score.neutral{background:var(--amber-bg);color:#fbbf24;border:1px solid var(--amber)}
-.sector-score.weak{background:var(--red-bg);color:var(--red);border:1px solid var(--red-d)}
-.sector-bar{height:6px;width:70px;background:var(--bg4);border-radius:3px;overflow:hidden}
-.sector-bar-fill{height:100%;border-radius:3px}
-.sector-story{padding:12px 14px;font-size:12.5px;line-height:1.6;color:var(--t1)}
-.sector-story strong{color:var(--t0)}
-.sector-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 12px}
-.sector-chip{border:1px solid var(--border);background:var(--bg2);border-radius:4px;padding:4px 7px;font-size:11px;color:var(--t1)}
-.sector-action-row{display:flex;gap:7px;padding:0 14px 12px}
-.sector-stock-list{padding:2px 0;overflow-y:auto;max-height:380px}
-.sector-stock-row{display:grid;grid-template-columns:80px minmax(0,1fr) 58px 40px;gap:8px;align-items:center;
-                  padding:7px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--tr)}
-.sector-stock-row:last-child{border-bottom:none}
-.sector-stock-row:hover{background:var(--bg2)}
-.sector-stock-sym{font-family:var(--font-mono);font-weight:700;color:var(--blue);font-size:12px}
-.sector-stock-name{font-size:11px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sector-tabs{display:flex;gap:0;margin-left:auto;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sector-tab{background:transparent;color:var(--t2);font-size:11px;padding:3px 8px;cursor:pointer;border:none;font-family:var(--font)}
-.sector-tab:hover{color:var(--t0)}
-.sector-tab.active{background:var(--bg4);color:var(--t0)}
-.ss-v{font-family:var(--font-mono);font-size:12.5px;font-weight:500;text-align:center}
-.ss-l{font-size:10px;color:var(--t2);text-align:center;margin-top:1px}
-@media(max-width:1100px){
-  .sector-dash{grid-template-columns:1fr}
-  .sector-kpis{grid-template-columns:repeat(2,minmax(110px,1fr))}
-}
-@media(max-width:680px){
-  .sector-dash{padding:8px}
-  .sector-kpis{grid-template-columns:1fr}
-  .sector-table th:nth-child(n+4),.sector-table td:nth-child(n+4){display:none}
-}
-
 /* ── GROUPED ────────────────────────── */
 .grp-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;
          background:var(--bg2);border-bottom:1px solid var(--border);
@@ -430,6 +369,54 @@ html.light tbody td:first-child,
 html.light tbody td:nth-child(2){background:#ffffff}
 html.light tbody tr:hover td:first-child,
 html.light tbody tr:hover td:nth-child(2){background:#f0f2f5}
+
+/* ── SECTOR DASHBOARD ───────────────── */
+.sector-dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.75fr);gap:14px;padding:14px;background:var(--bg0)}
+.sector-main,.sector-side{min-width:0}
+.sector-kpis{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:8px;margin-bottom:12px}
+.sector-kpi{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;min-height:68px}
+.sector-kpi-l{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.6px}
+.sector-kpi-v{font-family:var(--font-mono);font-size:18px;font-weight:700;margin-top:4px}
+.sector-kpi-s{font-size:11px;color:var(--t2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sector-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sector-panel+.sector-panel{margin-top:12px}
+.sector-panel-h{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.sector-panel-title{font-size:12px;font-weight:700;color:var(--t0)}
+.sector-panel-sub{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--t2)}
+.sector-table{width:100%;font-size:11.5px;border-collapse:collapse}
+.sector-table th{position:static;text-align:right;padding:6px 8px;background:var(--bg2);cursor:default;border-bottom:1px solid var(--border);font-weight:500;color:var(--t2);white-space:nowrap}
+.sector-table th:first-child,.sector-table th:nth-child(2){text-align:left;left:auto;box-shadow:none;min-width:auto}
+.sector-table td{padding:6px 8px;text-align:right;white-space:nowrap}
+.sector-table td:first-child,.sector-table td:nth-child(2){text-align:left;background:transparent!important;left:auto;box-shadow:none}
+.sector-table tr{cursor:pointer;border-bottom:1px solid var(--border)}
+.sector-table tr:hover td{background:var(--bg2)!important}
+.sector-table tr.active td{background:var(--bg3)!important}
+.sector-name-cell{font-weight:700;color:var(--t0);display:flex;align-items:center;white-space:nowrap}
+.sector-rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:7px;flex-shrink:0;border-radius:4px;background:var(--bg4);color:var(--t2);font-family:var(--font-mono);font-size:10px}
+.sector-score{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:20px;border-radius:4px;font-family:var(--font-mono);font-weight:800;font-size:11px}
+.sector-score.strong{background:var(--green-bg);color:#4ade80;border:1px solid var(--green-d)}
+.sector-score.neutral{background:var(--amber-bg);color:#fbbf24;border:1px solid var(--amber)}
+.sector-score.weak{background:var(--red-bg);color:var(--red);border:1px solid var(--red-d)}
+.sector-bar{height:6px;width:70px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.sector-bar-fill{height:100%;border-radius:3px}
+.sector-story{padding:12px 14px;font-size:12.5px;line-height:1.6;color:var(--t1)}
+.sector-story strong{color:var(--t0)}
+.sector-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 12px}
+.sector-chip{border:1px solid var(--border);background:var(--bg2);border-radius:4px;padding:4px 7px;font-size:11px;color:var(--t1)}
+.sector-action-row{display:flex;gap:7px;padding:0 14px 12px}
+.sector-stock-list{padding:2px 0;overflow-y:auto;max-height:380px}
+.sector-stock-row{display:grid;grid-template-columns:80px minmax(0,1fr) 58px 40px;gap:8px;align-items:center;padding:7px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--tr)}
+.sector-stock-row:last-child{border-bottom:none}
+.sector-stock-row:hover{background:var(--bg2)}
+.sector-stock-sym{font-family:var(--font-mono);font-weight:700;color:var(--blue);font-size:12px}
+.sector-stock-name{font-size:11px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sector-tabs{display:flex;gap:0;margin-left:auto;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sector-tab{background:transparent;color:var(--t2);font-size:11px;padding:3px 8px;cursor:pointer;border:none;font-family:var(--font)}
+.sector-tab:hover{color:var(--t0)}
+.sector-tab.active{background:var(--bg4);color:var(--t0)}
+@media(max-width:1100px){.sector-dash{grid-template-columns:1fr}.sector-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){.sector-dash{padding:8px}.sector-kpis{grid-template-columns:1fr}
+  .sector-table th:nth-child(n+4),.sector-table td:nth-child(n+4){display:none}}
 </style>
 </head>
 <body>
@@ -584,9 +571,12 @@ html.light tbody tr:hover td:nth-child(2){background:#f0f2f5}
       <div class="toolbar">
         <span class="cnt-badge" id="secCount">— sectors</span>
         <select class="tb-sel" id="secSort" onchange="loadSectors()">
-          <option value="avg_momentum">Avg Momentum</option>
-          <option value="avg_trending_days">Avg Trending Days</option>
+          <option value="sector_score">Sector Strength</option>
+          <option value="avg_chg_today">Today Move</option>
+          <option value="avg_rs_score">Avg RS Score</option>
           <option value="avg_chg_12d">Avg 12d%</option>
+          <option value="avg_chg_5d">Avg 5d%</option>
+          <option value="avg_trending_days">Avg Trending Days</option>
           <option value="pct_stocks_up">% Stocks Up</option>
           <option value="avg_rsi_14">Avg RSI</option>
           <option value="stock_count">Stock Count</option>
@@ -680,7 +670,6 @@ let SORT_BY  = 'momentum_score';
 let SORT_ORD = 'desc';
 let GRP_DATA = {};
 let GRP_OPEN = {};
-let SS_TAB   = 'details';
 let srchTimer = null;
 
 // ── FORMAT HELPERS ──────────────────────────────────────────────
@@ -702,21 +691,12 @@ function mbar(s) {
   if (s == null || isNaN(s)) return '—';
   const n = Math.round(Number(s));
   const col = n >= 70 ? '#4ade80' : n >= 40 ? '#fbbf24' : '#f85149';
-  return `<div class="mbar">
-    <span class="mono" style="font-size:11px;color:${col};min-width:22px">${n}</span>
-    <div class="mbar-bg"><div class="mbar-fg" style="width:${n}%;background:${col}"></div></div>
-  </div>`;
+  return `<div class="mbar"><span class="mono" style="font-size:11px;color:${col};min-width:22px">${n}</span><div class="mbar-bg"><div class="mbar-fg" style="width:${n}%;background:${col}"></div></div></div>`;
 }
 
-// 12-day pct matrix — big readable cells
-// matCells: returns 12 individual <td> elements for scrollable matrix
 function matCells(pm, ema50, ema200) {
-  if (!pm || typeof pm !== 'object') {
-    return Array(12).fill('<td class="mat-td"><span style="color:var(--t3)">—</span></td>').join('');
-  }
-  // Latest (D1) on LEFT, oldest (D12) on RIGHT
-  const allKeys = Object.keys(pm).slice(0, 12);
-  const keys = [...allKeys].sort().reverse();  // newest first = D1 leftmost
+  if (!pm || typeof pm !== 'object') return Array(12).fill('<td class="mat-td"><span style="color:var(--t3)">—</span></td>').join('');
+  const keys = [...Object.keys(pm).slice(0,12)].sort().reverse();
   const aboveEma = ema50 != null && ema200 != null && Number(ema50) > Number(ema200);
   const cells = [];
   for (let i = 0; i < 12; i++) {
@@ -725,32 +705,12 @@ function matCells(pm, ema50, ema200) {
     if (!k) { cells.push(`<td class="mat-td" style="${borderL}"><span style="color:var(--t3)">—</span></td>`); continue; }
     const raw = pm[k];
     if (raw == null) { cells.push(`<td class="mat-td" style="${borderL}"><span style="color:var(--t3)">—</span></td>`); continue; }
-    const n   = Number(raw);
-    const pct = n;
-    const cls = pct > 0 ? (aboveEma ? 'mat-dg' : 'mat-g') : pct < 0 ? 'mat-r' : 'neu';
+    const pct = Number(raw);
+    const cls = pct > 0 ? (aboveEma ? 'mat-dg' : 'mat-g') : pct < 0 ? 'mat-r' : 'mat-n';
     const lbl = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
     cells.push(`<td class="mat-td" style="${borderL}" title="${k}: ${lbl}"><div class="mat-box ${cls}">${lbl}</div></td>`);
   }
   return cells.join('');
-}
-
-function matPct(pm, ema50, ema200) {
-  if (!pm || typeof pm !== 'object') return '—';
-  const allKeys = Object.keys(pm).slice(0, 12);
-  if (!allKeys.length) return '—';
-  // FIX: sort newest→oldest (D1 leftmost, D12 rightmost)
-  const keys = [...allKeys].sort().reverse();
-  const aboveEma = ema50 != null && ema200 != null && Number(ema50) > Number(ema200);
-  return '<div class="mat-row">' + keys.map(k => {
-    const raw = pm[k];
-    if (raw == null) return `<div class="mat-box neu" title="${k}">—</div>`;
-    const n = Number(raw);
-    const pct = n;
-    const up  = pct > 0;
-    const cls = up ? (aboveEma ? 'mat-dg' : 'mat-g') : pct < 0 ? 'mat-r' : 'mat-n';
-    const lbl = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
-    return `<div class="mat-box ${cls}" title="${k}">${lbl}</div>`;
-  }).join('') + '</div>';
 }
 
 function emaBadge(sig) {
@@ -784,15 +744,46 @@ async function apiFetch(path) {
   return r.json();
 }
 
-function loading(id) {
-  document.getElementById(id).innerHTML = '<div class="ld"><div class="spin"></div> Loading…</div>';
-}
+function loading(id) { document.getElementById(id).innerHTML = '<div class="ld"><div class="spin"></div> Loading…</div>'; }
 
 function strHash(s) {
   let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xfffffff; return h;
 }
 
-const SECTOR_MAP = {"Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture","Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture","Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture","Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries","Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries","Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries","Automobile and Auto Components":"Auto & Ancillaries"};
+const SECTOR_MAP = {
+  "Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture",
+  "Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture",
+  "Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture",
+  "Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries",
+  "Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries",
+  "Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries",
+  "Automobile and Auto Components":"Auto & Ancillaries",
+  "Financials - Private Bank":"Banking","Financials - PSU Bank":"Banking","Financials - Housing":"Banking",
+  "Engineering":"Capital Goods","Electronic - Equipment":"Capital Goods","Industrial - Bearings":"Capital Goods",
+  "Industrial - Consumables":"Capital Goods","Industrial - Pumps/Engines":"Capital Goods",
+  "Chemicals - Bulk":"Chemicals","Chemicals - Misc":"Chemicals","Chemicals - Petro":"Chemicals","Chemicals - Specialty":"Chemicals",
+  "Construction Materials":"Construction","Infra - Cement":"Construction","Infra - Ceramics":"Construction",
+  "Infra - Construction":"Construction","Infra - Diversified":"Construction","Infra - Granites/Marbles":"Construction","Infra - Plastic Pipes":"Construction",
+  "Consumption - Appliances":"Consumer Durables","Consumption - Electronics":"Consumer Durables","Consumption - Jewelry":"Consumer Durables",
+  "Consumption - Misc":"Consumer Durables","Consumption - Paints":"Consumer Durables","Consumption - Retail":"Consumer Durables",
+  "Leisure - Hotels":"Consumer Services","Leisure - Misc":"Consumer Services","Human Resources":"Consumer Services","Services":"Consumer Services",
+  "Defense - Misc":"Defence","Defense - Ship Building":"Defence","Defense - Technology":"Defence",
+  "Others":"Diversified",
+  "Fast Moving Consumer Goods":"FMCG","Beverages - Alcohol":"FMCG","Consumption - FMCG":"FMCG","Consumption - Dairy":"FMCG","Consumption - Personal":"FMCG","Forest Materials":"FMCG",
+  "Financials - AMC":"Financial Services","Financials - Broking":"Financial Services","Financials - Life":"Financial Services","Financials - MFI":"Financial Services",
+  "Financials - Misc":"Financial Services","Financials - NBFC":"Financial Services","Financials - Non-Life":"Financial Services","Financials - Ratings":"Financial Services",
+  "Healthcare":"Healthcare & Pharma","Healthcare - Biotech":"Healthcare & Pharma","Healthcare - Hospitals":"Healthcare & Pharma","Healthcare - Pharma":"Healthcare & Pharma",
+  "IT - Equipments":"Information Technology","IT - Product/Platform":"Information Technology","IT - Services":"Information Technology","IT - Software/Consulting":"Information Technology",
+  "Media - Films":"Media & Entertainment","Media - Publishing":"Media & Entertainment","Media - TV Broadcast":"Media & Entertainment","Media Entertainment & Publication":"Media & Entertainment",
+  "Metals - Aluminium":"Metals & Mining","Metals - Casting/Forging":"Metals & Mining","Metals - Copper":"Metals & Mining","Metals - Iron & Steel":"Metals & Mining",
+  "Metals - Misc":"Metals & Mining","Metals - Pipe & Tube":"Metals & Mining","Mining - Coal":"Metals & Mining",
+  "Oil and Gas":"Oil, Gas & Energy","Oil Gas & Consumable Fuels":"Oil, Gas & Energy","Petro - Refineries":"Oil, Gas & Energy",
+  "Paper":"Paper & Packaging","Packaging":"Paper & Packaging",
+  "Power - Equipment":"Power","Power - Misc":"Power","Power - Wiring":"Power","Utilities":"Power","Utility - Gas":"Power","Utility - Misc":"Power",
+  "Realty":"Real Estate","Telecommunication":"Telecom",
+  "Textile - Apparels":"Textiles","Textile - Misc":"Textiles","Textile - Spinning/Yarn":"Textiles","Textiles - Polyester":"Textiles","Leather Products":"Textiles",
+  "Transport - Logistics":"Transport & Logistics","Transport - Shipping":"Transport & Logistics",
+};
 function normSector(s){ s=(s||'').trim(); return SECTOR_MAP[s]||s; }
 
 // ── NAVIGATION ──────────────────────────────────────────────────
@@ -813,18 +804,13 @@ function onSortChange() {
   PAGE = 1; loadScreener();
 }
 
-// Click column header to sort — toggles asc/desc
 function sortBy(col) {
   const validCols = ['momentum_score','rs_score','trending_days','chg_12d','chg_5d',
-  'chg_1d','rsi_14','rsi_1d','adx_14','rank_52w','macd_hist','weighted_rpi',
-  'rpi_2w','rpi_3m','rpi_6m','total_trades','close_price','ema_signal'];
+    'chg_1d','rsi_14','rsi_1d','adx_14','rank_52w','macd_hist','weighted_rpi',
+    'rpi_2w','rpi_3m','rpi_6m','total_trades','close_price','ema_signal'];
   if (!validCols.includes(col)) return;
-  if (SORT_BY === col) {
-    SORT_ORD = SORT_ORD === 'desc' ? 'asc' : 'desc';
-  } else {
-    SORT_BY  = col;
-    SORT_ORD = 'desc';
-  }
+  SORT_ORD = SORT_BY === col ? (SORT_ORD === 'desc' ? 'asc' : 'desc') : 'desc';
+  SORT_BY  = col;
   document.getElementById('sortBy').value  = SORT_BY;
   document.getElementById('sortOrd').value = SORT_ORD;
   PAGE = 1; loadScreener();
@@ -883,8 +869,7 @@ async function loadScreener() {
     document.getElementById('totalCount').textContent = (d.total || 0).toLocaleString() + ' stocks';
     if (d.date) document.getElementById('datePill').textContent = d.date;
     if (!d.data || !d.data.length) {
-      document.getElementById('tableWrap').innerHTML =
-        '<div class="empty"><div class="empty-icon">🔍</div><div>No stocks match filters</div></div>';
+      document.getElementById('tableWrap').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No stocks match filters</div></div>';
       return;
     }
     document.getElementById('tableWrap').innerHTML = renderTable(d.data);
@@ -893,8 +878,7 @@ async function loadScreener() {
     });
     renderPagination(d.page, d.pages, d.total);
   } catch (e) {
-    document.getElementById('tableWrap').innerHTML =
-      `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+    document.getElementById('tableWrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
   }
 }
 
@@ -902,31 +886,24 @@ function renderTable(rows) {
   const hdr = `<thead><tr>
     <th style="text-align:left" onclick="sortBy('symbol')">Symbol ⇅</th>
     <th style="text-align:left" onclick="sortBy('company_name')">Company ⇅</th>
-    <th onclick="sortBy('trending_days')" title="Trending Days — click to sort">Trend ⇅</th>
-    <th onclick="sortBy('rsi_14')"  title="RSI 14 — click to sort">RSI14 ⇅</th>
-    <th onclick="sortBy('rsi_1d')"  title="RSI 1-Day — click to sort">RSI1D ⇅</th>
-    <th onclick="sortBy('adx_14')"  title="ADX 14 — click to sort">ADX ⇅</th>
-    <th onclick="sortBy('ema_signal')" title="EMA Signal">EMA</th>
-    <th onclick="sortBy('macd_hist')" title="MACD Histogram — click to sort">MACD ⇅</th>
-    <th onclick="sortBy('rs_score')" title="RS Score — click to sort">RS ⇅</th>
-    <th onclick="sortBy('weighted_rpi')" style="color:#bc8cff" title="Weighted RPI — click to sort">wRPI ⇅</th>
-    <th onclick="sortBy('momentum_score')" title="Momentum Score — click to sort">Mom ⇅</th>
-    <th onclick="sortBy('close_price')" title="Price — click to sort">Price ⇅</th>
-    <th onclick="sortBy('chg_12d')" title="12-day Change% — click to sort">12d% ⇅</th>
-    <th onclick="sortBy('chg_5d')"  title="5-day Change% — click to sort">5d% ⇅</th>
-    <th onclick="sortBy('chg_1d')"  title="1-day Change% — click to sort">1d% ⇅</th>
-    <th class="mat-th" style="border-left:2px solid var(--border2)" title="Day 12 (oldest)">D12</th>
-    <th class="mat-th" title="Day 11">D11</th>
-    <th class="mat-th" title="Day 10">D10</th>
-    <th class="mat-th" title="Day 9">D9</th>
-    <th class="mat-th" title="Day 8">D8</th>
-    <th class="mat-th" title="Day 7">D7</th>
-    <th class="mat-th" title="Day 6">D6</th>
-    <th class="mat-th" title="Day 5">D5</th>
-    <th class="mat-th" title="Day 4">D4</th>
-    <th class="mat-th" title="Day 3">D3</th>
-    <th class="mat-th" title="Day 2">D2</th>
-    <th class="mat-th" title="Day 1 (latest)">D1</th>
+    <th onclick="sortBy('trending_days')">Trend ⇅</th>
+    <th onclick="sortBy('rsi_14')">RSI14 ⇅</th>
+    <th onclick="sortBy('rsi_1d')">RSI1D ⇅</th>
+    <th onclick="sortBy('adx_14')">ADX ⇅</th>
+    <th onclick="sortBy('ema_signal')">EMA</th>
+    <th onclick="sortBy('macd_hist')">MACD ⇅</th>
+    <th onclick="sortBy('rs_score')">RS ⇅</th>
+    <th onclick="sortBy('weighted_rpi')" style="color:#bc8cff">wRPI ⇅</th>
+    <th onclick="sortBy('momentum_score')">Mom ⇅</th>
+    <th onclick="sortBy('close_price')">Price ⇅</th>
+    <th onclick="sortBy('chg_12d')">12d% ⇅</th>
+    <th onclick="sortBy('chg_5d')">5d% ⇅</th>
+    <th onclick="sortBy('chg_1d')">1d% ⇅</th>
+    <th class="mat-th" style="border-left:2px solid var(--border2)">D12</th>
+    <th class="mat-th">D11</th><th class="mat-th">D10</th><th class="mat-th">D9</th>
+    <th class="mat-th">D8</th><th class="mat-th">D7</th><th class="mat-th">D6</th>
+    <th class="mat-th">D5</th><th class="mat-th">D4</th><th class="mat-th">D3</th>
+    <th class="mat-th">D2</th><th class="mat-th">D1</th>
   </tr></thead>`;
   const body = rows.map(r => `
     <tr data-sym="${r.symbol}">
@@ -946,8 +923,8 @@ function renderTable(rows) {
       <td>${mbar(r.momentum_score)}</td>
       <td class="mono">${inr(r.close_price)}</td>
       <td class="${pCls(r.chg_12d)} mono">${fPct(r.chg_12d)}</td>
-      <td class="${pCls(r.chg_5d)}  mono">${fPct(r.chg_5d)}</td>
-      <td class="${pCls(r.chg_1d)}  mono">${fPct(r.chg_1d)}</td>
+      <td class="${pCls(r.chg_5d)} mono">${fPct(r.chg_5d)}</td>
+      <td class="${pCls(r.chg_1d)} mono">${fPct(r.chg_1d)}</td>
       ${matCells(r.pct_matrix, r.ema_50, r.ema_200)}
     </tr>`).join('');
   return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
@@ -975,24 +952,32 @@ function renderPagination(page, pages, total) {
 
 function goPage(n) { PAGE = n; loadScreener(); document.querySelector('.content-area').scrollTop = 0; }
 
-// ── SECTORS ──────────────────────────────────────────────────────
 // ── SECTOR DASHBOARD ─────────────────────────────────────────────
 let SECTOR_ROWS = [];
 let SELECTED_SECTOR = '';
 let SECTOR_STOCK_TAB = 'gainers';
 
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, Number(v || 0))); }
+
 function sectorScore(s) {
-  const today    = Math.max(-5,  Math.min(5,   Number(s.avg_chg_today    || 0)));
-  const breadth  = Math.max(0,   Math.min(100, Number(s.pct_stocks_up    || 0)));
-  const rs       = Math.max(0,   Math.min(100, Number(s.avg_rs_score     || 0)));
-  const trend    = Math.max(0,   Math.min(12,  Number(s.avg_trending_days|| 0)));
-  const nearHigh = Math.max(0,   Math.min(100, Number(s.pct_near_high    || 0)));
+  // Uses only fields that ARE stored in sector_daily (avg_momentum=0, so excluded)
+  const chg12 = clamp(s.avg_chg_12d,  -20,  20);
+  const chg5  = clamp(s.avg_chg_5d,   -10,  10);
+  const chgT  = clamp(s.avg_chg_today, -5,   5);
+  const bread = clamp(s.pct_stocks_up,   0, 100);
+  const rs    = clamp(s.avg_rs_score,    0, 100);
+  const trend = clamp(s.avg_trending_days, 0, 12);
+  const nearH = clamp(s.pct_near_high,   0, 100);
+  const adx   = clamp(s.avg_adx_14,      0,  50);
   return Math.round(
-    ((today + 5) * 4)      // 0–40: today's direction
-    + (breadth * 0.25)     // 0–25: stock breadth
-    + (rs * 0.20)          // 0–20: relative strength
-    + (trend / 12 * 10)    // 0–10: trending consistency
-    + (nearHigh * 0.05)    // 0–5:  near 52w high
+    ((chg12 + 20) / 40 * 28)   // 28 pts — 12d price move
+    + ((chg5 + 10) / 20 * 18)  // 18 pts — 5d price move
+    + ((chgT +  5) / 10 * 14)  // 14 pts — today move
+    + (bread * 0.18)            // 18 pts — breadth
+    + (rs    * 0.12)            // 12 pts — RS score
+    + (trend / 12 * 6)          //  6 pts — trending days
+    + (nearH * 0.02)            //  2 pts — near 52w high
+    + (adx   / 50 * 2)          //  2 pts — ADX
   );
 }
 function scoreClass(v){ return v >= 60 ? 'strong' : v >= 38 ? 'neutral' : 'weak'; }
@@ -1003,7 +988,7 @@ async function loadSectors() {
   loading('secGrid');
   const sort = document.getElementById('secSort').value;
   try {
-    const apiSort = sort === 'sector_score' ? 'avg_rs_score' : sort;
+    const apiSort = sort === 'sector_score' ? 'avg_chg_12d' : sort;
     const d = await apiFetch(`/api/sector?sort_by=${apiSort}&order=desc`);
     const raw = d.data || [];
     const agg = {};
@@ -1040,11 +1025,15 @@ async function loadSectors() {
     }
     renderSectorDashboard(d.date || '');
     if(SELECTED_SECTOR) loadSectorDetail(SELECTED_SECTOR);
-  } catch(e){ document.getElementById('secGrid').innerHTML=`<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`; }
+  } catch(e){
+    document.getElementById('secGrid').innerHTML=`<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+  }
 }
 
 function renderSectorDashboard(date) {
-  const top  = SECTOR_ROWS[0];
+  const sorted = [...SECTOR_ROWS].sort((a,b)=>sectorSortVal(b,'sector_score')-sectorSortVal(a,'sector_score'));
+  const top  = sorted[0];
+  const topToday = [...SECTOR_ROWS].sort((a,b)=>Number(b.avg_chg_today||0)-Number(a.avg_chg_today||0))[0];
   const weak = [...SECTOR_ROWS].sort((a,b)=>Number(a.avg_chg_today||0)-Number(b.avg_chg_today||0))[0];
   const adv  = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stocks_up||0),0);
   const tot  = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stock_count||0),0);
@@ -1054,14 +1043,14 @@ function renderSectorDashboard(date) {
     <div class="sector-dash">
       <div class="sector-main">
         <div class="sector-kpis">
-          ${sectorKpi('Top sector today', top?.sector||'—', fPct(top?.avg_chg_today), pCls(top?.avg_chg_today))}
-          ${sectorKpi('Weakest sector', weak?.sector||'—', fPct(weak?.avg_chg_today), pCls(weak?.avg_chg_today))}
+          ${sectorKpi('Strongest sector', top?.sector||'—', 'Score ' + (top?.sector_score||'—'), 'pos')}
+          ${sectorKpi('Best today', topToday?.sector||'—', fPct(topToday?.avg_chg_today), pCls(topToday?.avg_chg_today))}
           ${sectorKpi('Market breadth', broad+'%', `${adv}/${tot} stocks positive`, broad>=55?'pos':broad>=45?'neu':'neg')}
           ${sectorKpi('Strong sectors', hot, 'score 60+', hot?'pos':'neu')}
         </div>
         <div class="sector-panel">
           <div class="sector-panel-h">
-            <div class="sector-panel-title">Daily Sector Movers</div>
+            <div class="sector-panel-title">Sector Rankings</div>
             <div class="sector-panel-sub">${date||'latest session'}</div>
           </div>
           ${sectorMoverTable()}
@@ -1078,18 +1067,14 @@ function renderSectorDashboard(date) {
 }
 
 function sectorKpi(label, value, sub, cls='') {
-  return `<div class="sector-kpi">
-    <div class="sector-kpi-l">${label}</div>
-    <div class="sector-kpi-v ${cls}">${value??'—'}</div>
-    <div class="sector-kpi-s">${sub??''}</div>
-  </div>`;
+  return `<div class="sector-kpi"><div class="sector-kpi-l">${label}</div><div class="sector-kpi-v ${cls}">${value??'—'}</div><div class="sector-kpi-s">${sub??''}</div></div>`;
 }
 
 function sectorMoverTable() {
   return `<div class="twrap"><table class="sector-table">
     <thead><tr>
-      <th>Sector</th><th>Score</th><th>Today</th><th>5d</th>
-      <th>Breadth</th><th>Near High</th><th>RS Score</th>
+      <th>Sector</th><th>Score</th><th>Today</th><th>5d</th><th>12d</th>
+      <th>Breadth</th><th>RS Score</th>
     </tr></thead>
     <tbody>${SECTOR_ROWS.map((s,i)=>{
       const up  = Math.round(Number(s.pct_stocks_up||0));
@@ -1099,13 +1084,13 @@ function sectorMoverTable() {
         <td><span class="sector-score ${scoreClass(s.sector_score)}">${s.sector_score}</span></td>
         <td class="${pCls(s.avg_chg_today)} mono">${fPct(s.avg_chg_today)}</td>
         <td class="${pCls(s.avg_chg_5d)} mono">${fPct(s.avg_chg_5d)}</td>
+        <td class="${pCls(s.avg_chg_12d)} mono">${fPct(s.avg_chg_12d)}</td>
         <td>
           <div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">
-            <span class="mono">${up}%</span>
+            <span class="mono" style="display:inline-block; width:32px; text-align:right;">${up}%</span>
             <div class="sector-bar"><div class="sector-bar-fill" style="width:${up}%;background:${breadthColor(up)}"></div></div>
           </div>
         </td>
-        <td class="mono">${Math.round(Number(s.pct_near_high||0))}%</td>
         <td class="mono" style="color:var(--blue)">${f1(s.avg_rs_score)}</td>
       </tr>`;
     }).join('')}</tbody>
@@ -1134,8 +1119,9 @@ function renderSectorStory() {
       <strong>${s.sector}</strong> is ${Number(s.avg_chg_today||0)>=0?'leading positive action':'under pressure'} today
       with <strong class="${todayCls}">${fPct(s.avg_chg_today)}</strong>.
       Breadth is <strong>${up}%</strong> (${s.stocks_up}/${s.stock_count} stocks up),
-      avg RS score is <strong style="color:var(--blue)">${f1(s.avg_rs_score)}</strong>,
-      and <strong>${s.stocks_near_high}</strong> stocks are near 52-week highs.
+      avg RS score <strong style="color:var(--blue)">${f1(s.avg_rs_score)}</strong>,
+      12d move <strong class="${pCls(s.avg_chg_12d)}">${fPct(s.avg_chg_12d)}</strong>,
+      and <strong>${s.stocks_near_high}</strong> stocks near 52-week highs.
     </div>
     <div class="sector-chips">
       <span class="sector-chip">Score ${s.sector_score}</span>
@@ -1155,10 +1141,7 @@ async function loadSectorDetail(name) {
   if (!panel) return;
   panel.innerHTML = '<div class="ld"><div class="spin"></div> Loading stocks…</div>';
   try {
-    // Use /api/trend with sector filter — avoids URL encoding issues with & chars in names
-    const qs = new URLSearchParams({
-      sector: name, sort_by: 'momentum_score', order: 'desc', page_size: '30'
-    });
+    const qs = new URLSearchParams({ sector: name, sort_by: 'momentum_score', order: 'desc', page_size: '30' });
     const d = await apiFetch('/api/trend?' + qs.toString());
     renderSectorStocks(d.data || [], d.total || 0);
   } catch(e) {
@@ -1174,56 +1157,33 @@ function renderSectorStocks(stocks, total) {
   }).slice(0,10);
   const rows = sorted.map(r=>`
     <div class="sector-stock-row" onclick="openDP('${r.symbol}')">
-      <div>
-        <div class="sector-stock-sym">${r.symbol}</div>
-        <div style="margin-top:2px">${tpill(r.trending_days)}</div>
-      </div>
+      <div><div class="sector-stock-sym">${r.symbol}</div><div style="margin-top:2px">${tpill(r.trending_days)}</div></div>
       <div class="sector-stock-name" title="${r.company_name||''}">${r.company_name||''}</div>
       <div class="${pCls(r.chg_1d)} mono" style="font-size:12px;font-weight:700">${fPct(r.chg_1d)}</div>
       <div class="mono" style="font-size:11px;color:var(--blue)">${f1(r.rs_score)}</div>
-    </div>`).join('') ||
-    '<div style="padding:20px;color:var(--t2);font-size:12px;text-align:center">No stocks found</div>';
-
+    </div>`).join('') || '<div style="padding:20px;color:var(--t2);font-size:12px;text-align:center">No stocks found</div>';
   document.getElementById('sectorStockPanel').innerHTML = `
     <div class="sector-panel-h">
-      <div class="sector-panel-title">
-        Top Stocks
-        ${total>10?`<span style="font-size:10px;color:var(--t2);font-weight:400;margin-left:5px">${total} total</span>`:''}
-      </div>
-      <div class="sector-tabs">
-        ${sectorTab('gainers','Gainers')}${sectorTab('losers','Losers')}${sectorTab('volume','Volume')}
-      </div>
+      <div class="sector-panel-title">Top Stocks${total>10?` <span style="font-size:10px;color:var(--t2);font-weight:400">${total} total</span>`:''}</div>
+      <div class="sector-tabs">${sectorTab('gainers','Gainers')}${sectorTab('losers','Losers')}${sectorTab('volume','Volume')}</div>
     </div>
-    <div style="display:grid;grid-template-columns:80px minmax(0,1fr) 58px 40px;
-                font-size:9.5px;color:var(--t3);padding:4px 12px 3px;
-                border-bottom:1px solid var(--border);letter-spacing:.4px;text-transform:uppercase">
-      <span>Symbol</span><span>Company</span>
-      <span style="text-align:right">1d%</span><span style="text-align:right">RS</span>
+    <div style="display:grid;grid-template-columns:80px minmax(0,1fr) 58px 40px;font-size:9.5px;color:var(--t3);padding:4px 12px 3px;border-bottom:1px solid var(--border);letter-spacing:.4px;text-transform:uppercase">
+      <span>Symbol</span><span>Company</span><span style="text-align:right">1d%</span><span style="text-align:right">RS</span>
     </div>
     <div class="sector-stock-list">${rows}</div>`;
 }
 
 function sectorTab(tab, label) {
-  return `<button class="sector-tab ${SECTOR_STOCK_TAB===tab?'active':''}"
-    onclick="setSectorStockTab('${tab}')">${label}</button>`;
+  return `<button class="sector-tab ${SECTOR_STOCK_TAB===tab?'active':''}" onclick="setSectorStockTab('${tab}')">${label}</button>`;
 }
-
-function setSectorStockTab(tab) {
-  SECTOR_STOCK_TAB = tab;
-  loadSectorDetail(SELECTED_SECTOR);
-}
-
-function drillSector(enc) {
-  const name = decodeURIComponent(enc);
-  document.getElementById('fSec').value = name;
-  switchView('screener'); applyFilters();
-}
+function setSectorStockTab(tab) { SECTOR_STOCK_TAB = tab; loadSectorDetail(SELECTED_SECTOR); }
+function drillSector(enc) { const name = decodeURIComponent(enc); document.getElementById('fSec').value = name; switchView('screener'); applyFilters(); }
 
 // ── GROUPED ───────────────────────────────────────────────────────
 async function loadGrouped() {
   loading('grpWrap');
   try {
-    const d = await apiFetch('/api/trend?page_size=200&sort_by=momentum_score&order=desc');
+    const d = await apiFetch('/api/trend?page_size=500&sort_by=momentum_score&order=desc');
     if (!d.data || !d.data.length) { document.getElementById('grpWrap').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No data</div></div>'; return; }
     GRP_DATA = {};
     d.data.forEach(r => { const s = normSector(r.sector)||'(No Sector)'; (GRP_DATA[s]=GRP_DATA[s]||[]).push(r); });
@@ -1246,7 +1206,7 @@ function renderGrouped() {
       <th class="mat-th">D11</th><th class="mat-th">D10</th><th class="mat-th">D9</th>
       <th class="mat-th">D8</th><th class="mat-th">D7</th><th class="mat-th">D6</th>
       <th class="mat-th">D5</th><th class="mat-th">D4</th><th class="mat-th">D3</th>
-      <th class="mat-th">D2</th><th class="mat-th" title="latest">D1</th>
+      <th class="mat-th">D2</th><th class="mat-th">D1</th>
       </tr></thead>
       <tbody>${stocks.slice(0,30).map(r=>`
         <tr data-sym="${r.symbol}">
@@ -1254,8 +1214,8 @@ function renderGrouped() {
           <td class="name-cell">${r.company_name||''}</td>
           <td>${tpill(r.trending_days)}</td>
           <td class="${pCls(r.chg_12d)} mono">${fPct(r.chg_12d)}</td>
-          <td class="${pCls(r.chg_5d)}  mono">${fPct(r.chg_5d)}</td>
-          <td class="${pCls(r.chg_1d)}  mono">${fPct(r.chg_1d)}</td>
+          <td class="${pCls(r.chg_5d)} mono">${fPct(r.chg_5d)}</td>
+          <td class="${pCls(r.chg_1d)} mono">${fPct(r.chg_1d)}</td>
           <td>${emaBadge(r.ema_signal)}</td>
           <td>${mbar(r.momentum_score)}</td>
           <td class="mono">${inr(r.close_price)}</td>
@@ -1284,37 +1244,24 @@ function collapseAll() { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = false)
 async function openDP(sym) {
   const dp = document.getElementById('dp');
   dp.classList.add('open');
-  document.getElementById('dpSym').textContent  = sym;
-  document.getElementById('dpName').textContent = '…';
-  document.getElementById('dpPrice').innerHTML  = '';
-  document.getElementById('dpMeta').innerHTML   = '';
-  document.getElementById('dpMetrics').innerHTML = '<div class="ld"><div class="spin"></div></div>';
-  document.getElementById('dpMACDEMA').innerHTML = '';
-  document.getElementById('dpMatrix').innerHTML  = '';
-  document.getElementById('dpPeers').innerHTML   = '';
-
-  // TradingView link — opens in NEW TAB
+  ['dpSym','dpName','dpPrice','dpMeta','dpMetrics','dpMACDEMA','dpMatrix','dpPeers'].forEach(id => {
+    document.getElementById(id).innerHTML = id === 'dpMetrics' ? '<div class="ld"><div class="spin"></div></div>' : '';
+  });
+  document.getElementById('dpSym').textContent = sym;
   const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
   const dpSymEl = document.getElementById('dpSym');
-  dpSymEl.style.cursor  = 'pointer';
-  dpSymEl.style.color   = 'var(--blue)';
-  dpSymEl.title         = `Open ${sym} on TradingView ↗`;
-  dpSymEl.onclick       = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
-
+  dpSymEl.style.cursor = 'pointer'; dpSymEl.style.color = 'var(--blue)';
+  dpSymEl.title = `Open ${sym} on TradingView ↗`;
+  dpSymEl.onclick = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
     const info = d.info   || {};
     const lat  = d.latest || {};
-
     document.getElementById('dpName').textContent = info.company_name || '';
-    document.getElementById('dpPrice').innerHTML  =
-      `<span class="mono">${inr(lat.close_price)}</span>`
-    + ` <span class="${pCls(lat.chg_1d)} mono" style="font-size:14px">${fPct(lat.chg_1d)}</span>`;
+    document.getElementById('dpPrice').innerHTML =
+      `<span class="mono">${inr(lat.close_price)}</span> <span class="${pCls(lat.chg_1d)} mono" style="font-size:14px">${fPct(lat.chg_1d)}</span>`;
     document.getElementById('dpMeta').innerHTML =
-      `<span>${info.sector||''}</span> `
-    + capBadge(info.cap_category)
-    + ` <span class="mono" style="margin-left:6px;color:var(--t2)">Trades: ${fNum(lat.total_trades)}</span>`;
-
+      `<span>${info.sector||''}</span> ${capBadge(info.cap_category)} <span class="mono" style="margin-left:6px;color:var(--t2)">Trades: ${fNum(lat.total_trades)}</span>`;
     document.getElementById('dpMetrics').innerHTML = `
       <div class="mbox"><div class="mbox-l">Trending Days</div><div class="mbox-v lg">${tpill(lat.trending_days)}</div></div>
       <div class="mbox"><div class="mbox-l">Momentum Score</div><div class="mbox-v">${mbar(lat.momentum_score)}</div></div>
@@ -1324,60 +1271,41 @@ async function openDP(sym) {
       <div class="mbox"><div class="mbox-l">ADX 14</div><div class="mbox-v">${f1(lat.adx_14)}</div></div>
       <div class="mbox"><div class="mbox-l">52W High %</div><div class="mbox-v ${pCls(lat.pct_from_high)}">${fPct(lat.pct_from_high)}</div></div>
       <div class="mbox"><div class="mbox-l">12d Change</div><div class="mbox-v ${pCls(lat.chg_12d)}">${fPct(lat.chg_12d)}</div></div>`;
-
     document.getElementById('dpMACDEMA').innerHTML = `
       <div class="mbox"><div class="mbox-l">MACD Hist</div><div class="mbox-v">${macdCell(lat.macd_hist)}</div></div>
       <div class="mbox"><div class="mbox-l">MACD Line/Sig</div><div class="mbox-v mono" style="font-size:12px">${f2(lat.macd_line)} / ${f2(lat.macd_signal)}</div></div>
       <div class="mbox"><div class="mbox-l">EMA 50</div><div class="mbox-v mono">${inr(lat.ema_50)}</div></div>
       <div class="mbox"><div class="mbox-l">EMA 200</div><div class="mbox-v mono">${inr(lat.ema_200)}</div></div>
       <div class="mbox span2"><div class="mbox-l">EMA Signal</div><div class="mbox-v">${emaBadge(lat.ema_signal)||'—'}</div></div>`;
-
-    // 12-day matrix in detail panel
-    const pm   = lat.pct_matrix || {};
-    const bm   = lat.bool_matrix || {};
+    const pm  = lat.pct_matrix  || {};
+    const bm  = lat.bool_matrix || {};
     const keys = Object.keys(pm).length ? Object.keys(pm).slice(0,12) : Object.keys(bm).slice(0,12);
     const aboveEma = lat.ema_50 != null && lat.ema_200 != null && Number(lat.ema_50) > Number(lat.ema_200);
     if (keys.length) {
-      // Sort oldest→newest (left to right)
-      const sortedKeys = [...keys].sort().reverse();  // D1 (latest) first
+      const sortedKeys = [...keys].sort().reverse();
       document.getElementById('dpMatrix').innerHTML = sortedKeys.map(k => {
-        const raw = pm[k];
-        const v   = bm[k];
-        const cls = v === true ? 't' : v === false ? 'f' : 'n';
-        let pv = '?';
-        if (raw != null) {
-          const n = Number(raw);
-          pv = (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
-        }
+        const raw = pm[k]; const v = bm[k];
+        let pv = raw != null ? ((Number(raw)>=0?'+':'')+Number(raw).toFixed(1)+'%') : '?';
         const matCls = v === true ? (aboveEma ? 'mdc-dg' : 'mdc t') : v === false ? 'mdc f' : 'mdc n';
         return `<div class="${matCls}"><div class="mdc-date">${k.slice(5)}</div><div class="mdc-val">${pv}</div></div>`;
       }).join('');
     } else {
-      document.getElementById('dpMatrix').innerHTML =
-        '<div style="color:var(--t2);font-size:12px;padding:4px 0">'
-      + 'No matrix stored. <button class="pb" onclick="downloadExcel()" style="font-size:11px;margin-left:6px">⬇ Download Excel</button></div>';
+      document.getElementById('dpMatrix').innerHTML = '<div style="color:var(--t2);font-size:12px;padding:4px 0">No matrix stored. <button class="pb" onclick="downloadExcel()" style="font-size:11px;margin-left:6px">⬇ Download Excel</button></div>';
     }
-
     if (d.peers && d.peers.length) {
       document.getElementById('dpPeers').innerHTML =
-        `<table class="peers-tbl"><thead><tr>
-          <th>Symbol</th><th>12d%</th><th>RSI</th><th>EMA</th><th>Mom</th>
-        </tr></thead><tbody>${d.peers.map(p => `
+        `<table class="peers-tbl"><thead><tr><th>Symbol</th><th>12d%</th><th>RSI</th><th>EMA</th><th>Mom</th></tr></thead>
+        <tbody>${d.peers.map(p=>`
           <tr class="${p.symbol===sym?'self':''}">
-            <td onclick="openDP('${p.symbol}')" style="cursor:pointer">${p.symbol}</td>
+            <td onclick="openDP('${p.symbol}')">${p.symbol}</td>
             <td class="${pCls(p.chg_12d)}">${fPct(p.chg_12d)}</td>
-            <td>${f1(p.rsi_14)}</td>
-            <td>${emaBadge(p.ema_signal)}</td>
-            <td>${mbar(p.momentum_score)}</td>
-          </tr>`).join('')}
-        </tbody></table>`;
+            <td>${f1(p.rsi_14)}</td><td>${emaBadge(p.ema_signal)}</td><td>${mbar(p.momentum_score)}</td>
+          </tr>`).join('')}</tbody></table>`;
     } else {
-      document.getElementById('dpPeers').innerHTML =
-        '<div style="color:var(--t2);font-size:12px;padding:4px 0">No peers found</div>';
+      document.getElementById('dpPeers').innerHTML = '<div style="color:var(--t2);font-size:12px;padding:4px 0">No peers found</div>';
     }
   } catch(e) {
-    document.getElementById('dpMetrics').innerHTML =
-      `<div style="color:var(--red);padding:8px;font-size:12px">Error: ${e.message}</div>`;
+    document.getElementById('dpMetrics').innerHTML = `<div style="color:var(--red);padding:8px;font-size:12px">Error: ${e.message}</div>`;
   }
 }
 
@@ -1399,16 +1327,11 @@ async function downloadExcel() {
     a.href = url;
     const cd = resp.headers.get('content-disposition') || '';
     a.download = cd.match(/filename="(.+?)"/)?.[1] || `${datePill || 'today'}_trend_matrix.xlsx`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
     toast('Excel downloaded ✓');
-  } catch(e) {
-    toast('Excel failed: ' + e.message);
-  } finally {
-    if (btn) { btn.textContent = orig || '⬇ Excel'; btn.disabled = false; }
-  }
+  } catch(e) { toast('Excel failed: ' + e.message); }
+  finally { if (btn) { btn.textContent = orig || '⬇ Excel'; btn.disabled = false; } }
 }
 
 // ── SEARCH ───────────────────────────────────────────────────────
@@ -1441,26 +1364,34 @@ document.getElementById('srchInput').addEventListener('input', function() {
     } catch(e) {}
   }, 280);
 });
-
 document.getElementById('srchInput').addEventListener('blur', () => {
   setTimeout(() => document.getElementById('srchDD').classList.remove('open'), 400);
 });
 
 // ── SUPER STRENGTH ───────────────────────────────────────────────
+let SS_SORT_BY = 'momentum_score';
+let SS_SORT_ORD = 'desc';
+
+function ssSortBy(col) {
+  SS_SORT_ORD = SS_SORT_BY === col ? (SS_SORT_ORD === 'desc' ? 'asc' : 'desc') : 'desc';
+  SS_SORT_BY  = col;
+  loadSuperStrength();
+}
+
 async function loadSuperStrength() {
   loading('ssGrid');
   const minC   = document.getElementById('ssMinC').value || '5';
   const cap    = document.getElementById('ssCap').value;
   const sector = document.getElementById('ssSec').value;
   const qs = new URLSearchParams();
-  qs.set('min_trending', minC);   // use trending days as proxy for "score"
+  qs.set('min_trending', minC);
   if (cap)    qs.set('cap_category', cap);
   if (sector) qs.set('sector', sector);
-  qs.set('sort_by', 'momentum_score');
-  qs.set('order', 'desc');
+  qs.set('sort_by', SS_SORT_BY);
+  qs.set('order', SS_SORT_ORD);
   qs.set('page_size', '200');
   try {
-    const d = await apiFetch('/api/trend?' + qs.toString());
+    const d = await apiFetch('/api/superstrength?' + qs.toString());
     document.getElementById('ssCount').textContent = (d.total||0).toLocaleString() + ' stocks';
     if (!d.data || !d.data.length) {
       document.getElementById('ssGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚡</div><div>No results</div></div>';
@@ -1476,25 +1407,23 @@ async function loadSuperStrength() {
 }
 
 function renderSSGrid(rows) {
+  const arrow = col => col === SS_SORT_BY ? (SS_SORT_ORD === 'desc' ? ' ↓' : ' ↑') : ' ⇅';
   const hdr = `<thead><tr>
     <th style="text-align:left">Company</th>
     <th style="text-align:left">Sector</th>
     <th>Cap</th>
-    <th onclick="sortBy('trending_days')" style="cursor:pointer">Trend ⇅</th>
-    <th onclick="sortBy('weighted_rpi')" style="color:#bc8cff;cursor:pointer">wRPI ⇅</th>
-    <th onclick="sortBy('momentum_score')" style="cursor:pointer">Mom ⇅</th>
-    <th onclick="sortBy('rsi_14')" style="cursor:pointer">RSI14 ⇅</th>
-    <th onclick="sortBy('adx_14')" style="cursor:pointer">ADX ⇅</th>
-    <th onclick="sortBy('chg_12d')" style="cursor:pointer">12d% ⇅</th>
-    <th onclick="sortBy('close_price')" style="cursor:pointer">Price ⇅</th>
-    <th>EMA</th>
-    <th>MACD</th>
+    <th onclick="ssSortBy('trending_days')" style="cursor:pointer">Trend${arrow('trending_days')}</th>
+    <th onclick="ssSortBy('weighted_rpi')" style="color:#bc8cff;cursor:pointer">wRPI${arrow('weighted_rpi')}</th>
+    <th onclick="ssSortBy('momentum_score')" style="cursor:pointer">Mom${arrow('momentum_score')}</th>
+    <th onclick="ssSortBy('rsi_14')" style="cursor:pointer">RSI14${arrow('rsi_14')}</th>
+    <th onclick="ssSortBy('adx_14')" style="cursor:pointer">ADX${arrow('adx_14')}</th>
+    <th onclick="ssSortBy('chg_12d')" style="cursor:pointer">12d%${arrow('chg_12d')}</th>
+    <th onclick="ssSortBy('close_price')" style="cursor:pointer">Price${arrow('close_price')}</th>
+    <th>EMA</th><th>MACD</th>
   </tr></thead>`;
   const body = rows.map(r => `
     <tr data-sym="${r.symbol}">
-      <td style="text-align:left">
-        <div style="font-weight:600;color:var(--blue);cursor:pointer" onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div>
-      </td>
+      <td style="text-align:left"><div style="font-weight:600;color:var(--blue);cursor:pointer" onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div></td>
       <td style="text-align:left;font-size:11px;color:var(--t1)">${r.sector||'—'}</td>
       <td>${capBadge(r.cap_category)}</td>
       <td>${tpill(r.trending_days)}</td>
@@ -1507,97 +1436,6 @@ function renderSSGrid(rows) {
       <td>${emaBadge(r.ema_signal)}</td>
       <td>${macdCell(r.macd_hist)}</td>
     </tr>`).join('');
-  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
-}
-
-function renderSSDetails(rows) {
-  const hasWRPI = rows.some(r => r.weighted_rpi != null);
-  if (!hasWRPI) {
-    return `<div style="padding:20px;background:var(--amber-bg);border:1px solid var(--amber);border-radius:var(--r);margin:16px;color:var(--amber);font-size:13px">
-      ⚠ Weighted RPI not computed yet. Run migration_v3.sql in Supabase, then:<br>
-      <code style="font-size:11px">python scripts/compute_today.py --date 2026-03-20</code>
-    </div>` + renderSSDetailsTable(rows);
-  }
-  return renderSSDetailsTable(rows);
-}
-function renderSSDetailsTable(rows) {
-  const hdr = `<thead><tr>
-    <th style="text-align:left">Company</th>
-    <th style="text-align:left">Sector</th>
-    <th>Market Cap</th><th>Symbol</th><th>ISIN</th>
-    <th style="color:#bc8cff">W.RPI</th>
-    <th title="Near 52W High with strong RPI">52WK HIGH W.RPI</th>
-    <th>Latest Price</th>
-    <th title="At 52-Week High">52WK HIGH</th>
-  </tr></thead>`;
-  const body = rows.map(r => `
-    <tr data-sym="${r.symbol}">
-      <td style="text-align:left">
-        <div style="font-weight:600;color:var(--blue);cursor:pointer"
-             onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div>
-      </td>
-      <td style="text-align:left;font-size:11.5px;color:var(--t1)">${r.sector ? '<span style="background:var(--bg4);border-radius:3px;padding:1px 6px">'+r.sector+'</span>' : '<span style="color:var(--t3)">—</span>'}</td>
-      <td>${capBadge(r.cap_category)}</td>
-      <td><span class="sym-cell" style="color:var(--blue);cursor:pointer"
-               onclick="openDP('${r.symbol}')">${r.symbol}</span></td>
-      <td class="mono" style="font-size:11px;color:var(--t2)">${r.isin||'—'}</td>
-      <td><span class="rpi-val">${f1(r.weighted_rpi)}</span></td>
-      <td style="text-align:center">${r.rocket_52w_wrpi ? '🚀' : '—'}</td>
-      <td class="mono">${inr(r.latest_price)}</td>
-      <td style="text-align:center">${r.rocket_52w ? '🚀' : '—'}</td>
-    </tr>`).join('');
-  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
-}
-
-function renderSSTrend(rows) {
-  // Check if new columns have data
-  const hasNewCols = rows.some(r => r.rpi_2w != null || r.ema_9 != null || r.rsi_1d != null);
-  if (!hasNewCols) {
-    return `<div class="empty" style="padding:40px">
-      <div class="empty-icon">⚠</div>
-      <div style="font-size:13px;color:var(--t1);text-align:center">
-        New indicator columns not yet computed.<br>
-        <span style="color:var(--t2);font-size:11px">Run: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px">python scripts/compute_today.py --date 2026-03-20</code></span>
-      </div>
-    </div>`;
-  }
-  const hdr = `<thead><tr>
-    <th style="text-align:left">Company</th>
-    <th>Price</th><th>52WK</th>
-    <th>EMA 9</th><th>EMA 21</th>
-    <th>ADX 14</th><th>RSI 14</th>
-    <th style="color:#4ade80">RSI 1D</th>
-    <th style="color:#4ade80">RSI 1W</th>
-    <th style="color:#bc8cff">2W RPI</th>
-    <th style="color:#bc8cff">3M RPI</th>
-    <th style="color:#bc8cff">6M RPI</th>
-    <th style="color:#bc8cff">2WK SMA 6M</th>
-  </tr></thead>`;
-  const body = rows.map(r => {
-    const aboveEma = r.ema_200 != null && r.latest_price != null && r.latest_price > r.ema_200;
-    const priceCls = aboveEma ? 'above200' : 'mono';
-    const r1dCls = r.rsi_1d != null && r.rsi_1d > 60 ? 'rsi-hi' : 'mono';
-    const r1wCls = r.rsi_1w != null && r.rsi_1w > 60 ? 'rsi-hi' : 'mono';
-    return `<tr data-sym="${r.symbol}">
-      <td style="text-align:left">
-        <div style="font-weight:600;color:var(--blue);cursor:pointer;font-size:13px"
-             onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div>
-        <div style="font-size:10px;color:var(--t2)">${r.sector||''}</div>
-      </td>
-      <td class="${priceCls}">${inr(r.latest_price)}</td>
-      <td style="text-align:center">${r.rocket_52w ? '🚀' : ''}</td>
-      <td class="mono">${inr(r.ema_9)}</td>
-      <td class="mono">${inr(r.ema_21)}</td>
-      <td class="mono">${f1(r.adx_14)}</td>
-      <td class="mono">${f1(r.rsi_14)}</td>
-      <td><span class="${r1dCls}">${f1(r.rsi_1d)}</span></td>
-      <td><span class="${r1wCls}">${f1(r.rsi_1w)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_2w)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_3m)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_6m)}</span></td>
-      <td><span class="rpi-val">${f1(r.rpi_6m_sma2w)}</span></td>
-    </tr>`;
-  }).join('');
   return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
 }
 
@@ -1619,11 +1457,7 @@ async function loadSectorList() {
       const opt = document.createElement('option');
       opt.value = s.sector; opt.textContent = s.sector;
       sel.appendChild(opt);
-      if(ssSel){
-        const ssOpt = document.createElement('option');
-        ssOpt.value = s.sector; ssOpt.textContent = s.sector;
-        ssSel.appendChild(ssOpt);
-      }
+      if(ssSel){ const ssOpt = document.createElement('option'); ssOpt.value = s.sector; ssOpt.textContent = s.sector; ssSel.appendChild(ssOpt); }
       const div = document.createElement('div');
       div.className = 'sec-item'; div.dataset.sec = s.sector;
       const hue = strHash(s.sector) * 137 % 360;
@@ -1640,15 +1474,12 @@ async function loadSectorList() {
 }
 
 // ── THEME ────────────────────────────────────────────────────────
-
 function toggleTheme() {
   const isLight = document.documentElement.classList.toggle('light');
   document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
   localStorage.setItem('tp_theme', isLight ? 'light' : 'dark');
 }
-if (localStorage.getItem('tp_theme') === 'light') {
-  document.documentElement.classList.add('light');
-}
+if (localStorage.getItem('tp_theme') === 'light') document.documentElement.classList.add('light');
 
 // ── INIT ─────────────────────────────────────────────────────────
 (async () => {
