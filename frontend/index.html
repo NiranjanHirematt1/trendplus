@@ -1183,7 +1183,7 @@ function drillSector(enc) { const name = decodeURIComponent(enc); document.getEl
 async function loadGrouped() {
   loading('grpWrap');
   try {
-    const d = await apiFetch('/api/trend?page_size=500&sort_by=momentum_score&order=desc');
+    const d = await apiFetch('/api/trend?page_size=200&sort_by=momentum_score&order=desc');
     if (!d.data || !d.data.length) { document.getElementById('grpWrap').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No data</div></div>'; return; }
     GRP_DATA = {};
     d.data.forEach(r => { const s = normSector(r.sector)||'(No Sector)'; (GRP_DATA[s]=GRP_DATA[s]||[]).push(r); });
