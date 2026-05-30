@@ -1169,12 +1169,6 @@ async function openDP(sym) {
   dpSymEl.style.cursor = 'pointer'; dpSymEl.style.color = 'var(--blue)';
   dpSymEl.title = `Open ${sym} on TradingView ↗`;
   dpSymEl.onclick = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
-  document.getElementById('dpSym').textContent = sym;
-  const tvUrl2 = `https://www.screener.in/company/PRECWIRE/${sym}`;
-  const dpSymEl2 = document.getElementById('dpSym');
-  dpSymEl2.title = `Open ${sym} on Screener ↗`;
-  dpSymEl2.onclick = () => window.open(tvUrl2, '_blank', 'noopener,noreferrer');
-  document.getElementById('dpSym').textContent = sym;
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
     const info = d.info   || {};
