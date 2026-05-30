@@ -1169,6 +1169,13 @@ async function openDP(sym) {
   dpSymEl.style.cursor = 'pointer'; dpSymEl.style.color = 'var(--blue)';
   dpSymEl.title = `Open ${sym} on TradingView ↗`;
   dpSymEl.onclick = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
+
+  document.getElementById('dpName').textContent = sym;
+  const routUrl = `https://www.screener.in/company/${sym}/`;
+  const dpNameEl = document.getElementById('dpName');
+  dpNameEl.style.cursor = 'pointer'; dpNameEl.style.color = 'var(--blue)';
+  dpNameEl.title = `Open ${sym} on Screener ↗`;
+  dpNameEl.onclick = () => window.open(routUrl, '_blank', 'noopener,noreferrer');
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
     const info = d.info   || {};
