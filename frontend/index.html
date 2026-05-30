@@ -1163,28 +1163,37 @@ async function openDP(sym) {
   ['dpSym','dpName','dpPrice','dpMeta','dpMetrics','dpMACDEMA','dpMatrix','dpPeers'].forEach(id => {
     document.getElementById(id).innerHTML = id === 'dpMetrics' ? '<div class="ld"><div class="spin"></div></div>' : '';
   });
+  
+  // 1. TRADINGVIEW LINK (Symbol)
   document.getElementById('dpSym').textContent = sym;
   const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
   const dpSymEl = document.getElementById('dpSym');
   dpSymEl.style.cursor = 'pointer'; dpSymEl.style.color = 'var(--blue)';
   dpSymEl.title = `Open ${sym} on TradingView ↗`;
   dpSymEl.onclick = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
-
-  document.getElementById('dpName').textContent = sym;
-  const routUrl = `https://www.screener.in/company/${sym}/`;
-  const dpNameEl = document.getElementById('dpName');
-  dpNameEl.style.cursor = 'pointer'; dpNameEl.style.color = 'var(--blue)';
-  dpNameEl.title = `Open ${sym} on Screener ↗`;
-  dpNameEl.onclick = () => window.open(routUrl, '_blank', 'noopener,noreferrer');
+  
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
     const info = d.info   || {};
     const lat  = d.latest || {};
-    document.getElementById('dpName').textContent = info.company_name || '';
+    
+    // 2. SCREENER.IN LINK (Company Name)
+    // Placed here so it doesn't get overwritten by the fetch
+    const dpNameEl = document.getElementById('dpName');
+    const compName = info.company_name || sym;
+    const screenerId = info.screener_slug || info.isin || sym;
+    dpNameEl.textContent = compName + ' ↗';
+    dpNameEl.style.cursor = 'pointer';
+    dpNameEl.style.transition = 'color 0.2s';
+    dpNameEl.title = `Open ${compName} on Screener ↗`;
+    dpNameEl.onclick = () => window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
+
     document.getElementById('dpPrice').innerHTML =
       `<span class="mono">${inr(lat.close_price)}</span> <span class="${pCls(lat.chg_1d)} mono" style="font-size:16px;margin-left:8px;">${fPct(lat.chg_1d)}</span>`;
+      
     document.getElementById('dpMeta').innerHTML =
       `<span style="font-weight:600;color:var(--t1)">${info.sector||''}</span> ${capBadge(info.cap_category)} <span class="mono" style="margin-left:12px;color:var(--t2)">Vol: ${fNum(lat.total_trades)}</span>`;
+      
     document.getElementById('dpMetrics').innerHTML = `
       <div class="mbox"><div class="mbox-l">Trending Days</div><div class="mbox-v lg">${tpill(lat.trending_days)}</div></div>
       <div class="mbox"><div class="mbox-l">Momentum Score</div><div class="mbox-v">${mbar(lat.momentum_score)}</div></div>
@@ -1194,16 +1203,19 @@ async function openDP(sym) {
       <div class="mbox"><div class="mbox-l">ADX 14</div><div class="mbox-v">${f1(lat.adx_14)}</div></div>
       <div class="mbox"><div class="mbox-l">52W High %</div><div class="mbox-v ${pCls(lat.pct_from_high)}">${fPct(lat.pct_from_high)}</div></div>
       <div class="mbox"><div class="mbox-l">12d Change</div><div class="mbox-v ${pCls(lat.chg_12d)}">${fPct(lat.chg_12d)}</div></div>`;
+      
     document.getElementById('dpMACDEMA').innerHTML = `
       <div class="mbox"><div class="mbox-l">MACD Hist</div><div class="mbox-v">${macdCell(lat.macd_hist)}</div></div>
       <div class="mbox"><div class="mbox-l">MACD Line/Sig</div><div class="mbox-v mono" style="font-size:13px">${f2(lat.macd_line)} / ${f2(lat.macd_signal)}</div></div>
       <div class="mbox"><div class="mbox-l">EMA 50</div><div class="mbox-v mono">${inr(lat.ema_50)}</div></div>
       <div class="mbox"><div class="mbox-l">EMA 200</div><div class="mbox-v mono">${inr(lat.ema_200)}</div></div>
       <div class="mbox span2"><div class="mbox-l">EMA Signal</div><div class="mbox-v">${emaBadge(lat.ema_signal)||'—'}</div></div>`;
+      
     const pm  = lat.pct_matrix  || {};
     const bm  = lat.bool_matrix || {};
     const keys = Object.keys(pm).length ? Object.keys(pm).slice(0,12) : Object.keys(bm).slice(0,12);
     const aboveEma = lat.ema_50 != null && lat.ema_200 != null && Number(lat.ema_50) > Number(lat.ema_200);
+    
     if (keys.length) {
       const sortedKeys = [...keys].sort().reverse();
       document.getElementById('dpMatrix').innerHTML = sortedKeys.map(k => {
@@ -1215,6 +1227,7 @@ async function openDP(sym) {
     } else {
       document.getElementById('dpMatrix').innerHTML = '<div style="color:var(--t2);font-size:13px;padding:8px 0;font-weight:500;">No matrix stored. <button class="pb" onclick="downloadExcel()" style="font-size:12px;margin-left:8px;background:var(--blue-d);color:#fff;border-color:var(--blue-d);">⬇ Download Excel</button></div>';
     }
+    
     if (d.peers && d.peers.length) {
       document.getElementById('dpPeers').innerHTML =
         `<table class="peers-tbl"><thead><tr><th>Symbol</th><th>12d%</th><th>RSI</th><th>EMA</th><th>Mom</th></tr></thead>
