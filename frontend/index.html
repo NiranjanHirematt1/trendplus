@@ -1181,7 +1181,7 @@ async function openDP(sym) {
     // Placed here so it doesn't get overwritten by the fetch
     const dpNameEl = document.getElementById('dpName');
     const compName = info.company_name || sym;
-    const screenerId = dpnametoScreenerId(compName);
+    const screenerId = sym;
     dpNameEl.textContent = compName + ' ↗';
     dpNameEl.style.cursor = 'pointer';
     dpNameEl.style.transition = 'color 0.2s';
