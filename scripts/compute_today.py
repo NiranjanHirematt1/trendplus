@@ -59,6 +59,7 @@ from analytics_engine import (
     get_matrix_dates,
     compute_matrices,
     compute_period_changes,
+    fill_flexible_period_changes,
     compute_52w_high,
     compute_rs_score,
     compute_weighted_rpi,
@@ -192,58 +193,81 @@ async def cleanup_old_bhav_dates(conn):
 # ════════════════════════════════════════════════════════════════════
 async def load_price_history(conn, trade_date: datetime.date) -> pd.DataFrame:
     """
-    Load price history from DB for indicator calculation.
-    Applies per-day liquidity filter (total_trades >= 5000).
+    Load price history in date chunks to avoid statement timeout.
+    Applies per-day liquidity filter (total_trades >= 3000).
     Restricts to last YEAR_DAYS if more than MAX_DATES available.
     """
-    # Count total distinct trading dates
     total_dates = await conn.fetchval(
         "SELECT COUNT(DISTINCT trade_date) FROM price_history"
     )
     logger.info("Total trading dates in price_history: %d", total_dates)
 
+    # Fetch all relevant dates first (cheap query)
     restrict = total_dates > MAX_DATES
     if restrict:
-        logger.info(
-            "Dataset > %d dates → restricting to last %d days for accuracy",
-            MAX_DATES, YEAR_DAYS
+        logger.info("Dataset > %d dates → restricting to last %d days", MAX_DATES, YEAR_DAYS)
+        date_rows = await conn.fetch(
+            """
+            SELECT trade_date FROM (
+                SELECT DISTINCT trade_date FROM price_history
+                ORDER BY trade_date DESC LIMIT $1
+            ) sub ORDER BY trade_date ASC
+            """,
+            YEAR_DAYS,
         )
-        limit_clause = f"""
-            WITH date_window AS (
-                SELECT trade_date FROM (
-                    SELECT DISTINCT trade_date FROM price_history
-                    ORDER BY trade_date DESC LIMIT {YEAR_DAYS}
-                ) sub ORDER BY trade_date
-            )
-        """
-        where_extra = "AND ph.trade_date IN (SELECT trade_date FROM date_window)"
     else:
-        limit_clause = ""
-        where_extra  = ""
+        date_rows = await conn.fetch(
+            """
+            SELECT DISTINCT trade_date FROM price_history
+            ORDER BY trade_date ASC
+            """
+        )
 
-    sql = f"""
-        {limit_clause}
-        SELECT ph.symbol      AS "SYMBOL",
-               ph.trade_date  AS "DATE",
-               ph.high_price  AS "HIGH",
-               ph.low_price   AS "LOW",
-               ph.close_price AS "CLOSE",
-               ph.volume      AS "TOTTRDQTY",
-               ph.total_trades AS "TOTALTRADES"
-        FROM price_history ph
-        JOIN symbols s ON s.symbol = ph.symbol
-        WHERE ph.close_price IS NOT NULL
-          AND ph.total_trades >= 5000
-          {where_extra}
-        ORDER BY ph.trade_date ASC
-    """
-    rows = await conn.fetch(sql)
-    if not rows:
+    all_dates = [r["trade_date"] for r in date_rows]
+    if not all_dates:
         raise RuntimeError("price_history is empty — run backfill first")
 
-    df = pd.DataFrame([dict(r) for r in rows])
+    # ── Fetch in chunks of 30 dates to avoid timeout ──────────────────
+    CHUNK = 30
+    all_rows = []
+
+    for i in range(0, len(all_dates), CHUNK):
+        chunk      = all_dates[i : i + CHUNK]
+        date_from  = chunk[0]
+        date_to    = chunk[-1]
+
+        rows = await conn.fetch(
+            """
+            SELECT ph.symbol       AS "SYMBOL",
+                   ph.trade_date   AS "DATE",
+                   ph.open_price   AS "OPEN",
+                   ph.high_price   AS "HIGH",
+                   ph.low_price    AS "LOW",
+                   ph.close_price  AS "CLOSE",
+                   ph.volume       AS "TOTTRDQTY",
+                   ph.total_trades AS "TOTALTRADES"
+            FROM price_history ph
+            JOIN symbols s ON s.symbol = ph.symbol
+            WHERE ph.close_price  IS NOT NULL
+              AND ph.total_trades >= 3000
+              AND ph.trade_date BETWEEN $1 AND $2
+            ORDER BY ph.trade_date ASC
+            """,
+            date_from, date_to,
+        )
+        all_rows.extend(rows)
+        logger.info(
+            "  Chunk %d-%d / %d  (%s → %s): %d rows",
+            i + 1, min(i + CHUNK, len(all_dates)), len(all_dates),
+            date_from, date_to, len(rows),
+        )
+
+    if not all_rows:
+        raise RuntimeError("price_history returned no rows after filtering")
+
+    df = pd.DataFrame([dict(r) for r in all_rows])
     df["DATE"] = pd.to_datetime(df["DATE"])
-    for col in ["HIGH", "LOW", "CLOSE"]:
+    for col in ["OPEN", "HIGH", "LOW", "CLOSE"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
     for col in ["TOTTRDQTY", "TOTALTRADES"]:
         if col in df.columns:
@@ -251,7 +275,7 @@ async def load_price_history(conn, trade_date: datetime.date) -> pd.DataFrame:
 
     logger.info(
         "Loaded: %d rows, %d symbols, %d dates (restricted=%s)",
-        len(df), df["SYMBOL"].nunique(), df["DATE"].nunique(), restrict
+        len(df), df["SYMBOL"].nunique(), df["DATE"].nunique(), restrict,
     )
     return df
 
@@ -531,7 +555,7 @@ async def compute_and_upsert_today(
         return {"symbols": 0, "elapsed": 0}
 
     # Build pivots
-    close_piv, high_piv, low_piv = build_price_pivots(hist_to_date)
+    close_piv, high_piv, low_piv, open_piv = build_price_pivots(hist_to_date)
 
     if close_piv.columns[-1] != target_ts:
         logger.warning("[%s] Last pivot col is %s — skipping",
@@ -542,6 +566,8 @@ async def compute_and_upsert_today(
     matrix_dates = get_matrix_dates(close_piv, LOOKBACK_DAYS)
     trending, bool_matrix, pct_matrix = compute_matrices(close_piv, matrix_dates)
     chg_12d, chg_5d = compute_period_changes(close_piv, matrix_dates)
+    # Flexible fallback: symbols with < N days history use earliest-in-window base
+    chg_12d, chg_5d = fill_flexible_period_changes(close_piv, chg_12d, chg_5d)
 
     high_52w, pct_from_high, near_high, rank_52w = compute_52w_high(close_piv, W52_DAYS)
     rs_score     = compute_rs_score(close_piv)
@@ -606,6 +632,7 @@ async def compute_and_upsert_today(
             result[col] = result[col].fillna("").astype(str).str.strip()
 
     # Price columns (after joins so lengths match)
+    result["Open"]  = open_piv.iloc[:, -1].reindex(result["Symbol"].values).values
     result["Close"] = close_piv.iloc[:, -1].reindex(result["Symbol"].values).values
     result["High"]  = high_piv.iloc[:, -1].reindex(result["Symbol"].values).values
     result["Low"]   = low_piv.iloc[:, -1].reindex(result["Symbol"].values).values
@@ -708,7 +735,7 @@ async def compute_and_upsert_today(
                 _clamp(row.get("Momentum Score"), 0, 100),              # $29
                 json.dumps(bm),                                         # $30 bool_matrix
                 json.dumps(pm),                                         # $31 pct_matrix
-                _sf(row.get("Close")),                                  # $32 open proxy
+                _sf(row.get("Open")),                                   # $32 open_price (real)
                 _sf(row.get("High")),                                   # $33
                 _sf(row.get("Low")),                                    # $34
                 _sf(row.get("Close")),                                  # $35
@@ -906,10 +933,16 @@ async def main():
     logger.info("="*55)
 
     pool = await asyncpg.create_pool(
-        db_url, min_size=1, max_size=5,
-        command_timeout=180,
-        max_inactive_connection_lifetime=60,
-    )
+    db_url, min_size=1, max_size=5,
+    command_timeout=180,
+    max_inactive_connection_lifetime=60,
+    server_settings={
+        "statement_timeout": "0",        # 0 = no timeout (overrides Supabase default)
+        "tcp_keepalives_idle": "60",     # fixes WinError 121 (Windows TCP drop)
+        "tcp_keepalives_interval": "10",
+        "tcp_keepalives_count": "5",
+    }
+)
 
     # ── Optional full reset ────────────────────────────────────────────
     if args.recompute:

@@ -77,7 +77,7 @@ LOOKBACK_DAYS    = 12
 RSI_PERIOD       = 14
 ADX_PERIOD       = 14
 MIN_ROWS_ADX     = ADX_PERIOD * 2
-MIN_TOTAL_TRADES = 0
+MIN_TOTAL_TRADES = 3000   # only EQ+BE rows with TOTALTRADES >= 3000 are used
 W52_DAYS         = 252
 
 # EMA parameters
@@ -110,38 +110,57 @@ def load_bhav_files(folder):
             continue
 
         df.columns = df.columns.str.strip().str.upper()
-        required = {"SYMBOL", "SERIES", "HIGH", "LOW", "CLOSE"}
+
+        # ── OPEN is now required — bhav CSVs have always had it ───────
+        required = {"SYMBOL", "SERIES", "OPEN", "HIGH", "LOW", "CLOSE"}
         if not required.issubset(df.columns):
-            print(f"  [WARN] {fname} missing cols — skipped")
+            print(f"  [WARN] {fname} missing cols {required - set(df.columns)} — skipped")
             continue
 
-        # ── SERIES FILTER: EQ + BE ────────────────────────────────
+        # ── Validate TIMESTAMP vs filename to catch mis-named files ───
+        if "TIMESTAMP" in df.columns:
+            sample = df["TIMESTAMP"].dropna()
+            if not sample.empty:
+                try:
+                    parsed = pd.to_datetime(sample.iloc[0], dayfirst=True).date()
+                    if parsed != trade_date.date():
+                        print(f"  [ERROR] {fname}: TIMESTAMP {parsed} ≠ filename "
+                              f"{trade_date.date()} — SKIPPED (would corrupt data)")
+                        continue
+                except Exception:
+                    pass   # unparseable TIMESTAMP — trust filename
+
+        # ── SERIES FILTER: EQ + BE ────────────────────────────────────
         total_before = len(df)
         df["SERIES"] = df["SERIES"].str.strip().str.upper()
         df = df[df["SERIES"].isin(ALLOWED_SERIES)].copy()
-        print(f"  {fname}: {total_before} rows → {len(df)} EQ+BE rows")
-        if df.empty:
-            continue
 
-        if MIN_TOTAL_TRADES > 0 and "TOTALTRADES" in df.columns:
+        # ── LIQUIDITY FILTER — always applied (MIN_TOTAL_TRADES = 3000) ─
+        if "TOTALTRADES" in df.columns:
             df["TOTALTRADES"] = pd.to_numeric(
                 df["TOTALTRADES"], errors="coerce"
             ).fillna(0)
+            before_liq = len(df)
             df = df[df["TOTALTRADES"] >= MIN_TOTAL_TRADES].copy()
-            if df.empty:
-                continue
+            print(f"  {fname}: {total_before} rows → {before_liq} EQ+BE → "
+                  f"{len(df)} after TOTALTRADES≥{MIN_TOTAL_TRADES}")
+        else:
+            print(f"  {fname}: {total_before} rows → {len(df)} EQ+BE "
+                  f"(no TOTALTRADES col — liquidity filter skipped)")
+
+        if df.empty:
+            continue
 
         df["DATE"] = trade_date
-        for col in ["HIGH", "LOW", "CLOSE"]:
+        for col in ["OPEN", "HIGH", "LOW", "CLOSE"]:
             df[col] = pd.to_numeric(df[col], errors="coerce")
+        if "PREVCLOSE" in df.columns:
+            df["PREVCLOSE"] = pd.to_numeric(df["PREVCLOSE"], errors="coerce")
 
-        keep = ["SYMBOL", "SERIES", "DATE", "HIGH", "LOW", "CLOSE"]
-        if "ISIN" in df.columns:
-            keep.append("ISIN")
-        if "TOTTRDQTY" in df.columns:
-            keep.append("TOTTRDQTY")
-        if "TOTALTRADES" in df.columns:
-            keep.append("TOTALTRADES")
+        keep = ["SYMBOL", "SERIES", "DATE", "OPEN", "HIGH", "LOW", "CLOSE"]
+        for optional in ["PREVCLOSE", "ISIN", "TOTTRDQTY", "TOTALTRADES"]:
+            if optional in df.columns:
+                keep.append(optional)
         frames.append(df[keep])
 
     if not frames:
@@ -149,7 +168,7 @@ def load_bhav_files(folder):
 
     combined = pd.concat(frames, ignore_index=True)
 
-    # Safety check
+    # Safety check — no unexpected series should have leaked through
     leaked = combined[~combined["SERIES"].isin(ALLOWED_SERIES)]
     if not leaked.empty:
         raise AssertionError(
@@ -192,7 +211,14 @@ def build_price_pivots(df):
     close = df.pivot_table(index="SYMBOL", columns="DATE", values="CLOSE", **kw)
     high  = df.pivot_table(index="SYMBOL", columns="DATE", values="HIGH",  **kw)
     low   = df.pivot_table(index="SYMBOL", columns="DATE", values="LOW",   **kw)
-    return close, high, low
+    # OPEN is now included in the combined df; pivot it so callers can use it
+    # (compute_today uses it for open_price; analytics_engine standalone doesn't need it
+    #  for indicators but returns it for completeness)
+    if "OPEN" in df.columns:
+        open_ = df.pivot_table(index="SYMBOL", columns="DATE", values="OPEN", **kw)
+    else:
+        open_ = close.copy() * np.nan  # empty same-shape frame as fallback
+    return close, high, low, open_
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -263,8 +289,67 @@ def compute_period_changes(close_pivot, matrix_dates):
 
 
 # ─────────────────────────────────────────────────────────────────────
-#  WILDER SMOOTHING — used by RSI and ADX
+#  STEP 5b — FLEXIBLE PERIOD-CHANGE FALLBACK
 # ─────────────────────────────────────────────────────────────────────
+def fill_flexible_period_changes(
+    close_pivot: pd.DataFrame,
+    chg_12d:    pd.Series,
+    chg_5d:     pd.Series,
+    window_5:   int = 5,
+    window_12:  int = 12,
+) -> tuple:
+    """
+    For symbols where compute_period_changes returned NaN because they
+    have fewer than N days of history, fill using the EARLIEST available
+    close WITHIN the window.
+
+    Rules:
+      • 5d  change → earliest non-NaN close in last 5  trading-day columns
+      • 12d change → earliest non-NaN close in last 12 trading-day columns
+      • If the symbol has ONLY today's data (no prior point in window) → stays NaN
+      • If the symbol's only data is OUTSIDE the window → stays NaN
+        (prevents stale historical data inflating short-term momentum)
+      • Only fills NaN slots — symbols with existing values are never touched.
+
+    The 12d window cap is intentional: a stock reappearing after 3 months of
+    illiquidity would otherwise show its entire price run as a "12d change".
+    """
+    if close_pivot.shape[1] < 2:
+        return chg_12d, chg_5d
+
+    today_vals = close_pivot.iloc[:, -1]
+    n          = len(close_pivot.columns)
+    win12_cols = close_pivot.columns[max(0, n - window_12):]
+    win5_cols  = close_pivot.columns[max(0, n - window_5):]
+
+    def _earliest_base(sym, window_cols):
+        prior = window_cols[:-1]          # everything except today
+        if len(prior) == 0:
+            return float("nan")
+        valid = close_pivot.loc[sym, prior].dropna()
+        return float(valid.iloc[0]) if not valid.empty else float("nan")
+
+    chg_12d = chg_12d.copy()
+    for sym in chg_12d[chg_12d.isna()].index:
+        tc = float(today_vals.get(sym, float("nan")))
+        if pd.isna(tc):
+            continue
+        base = _earliest_base(sym, win12_cols)
+        if pd.isna(base) or base == 0:
+            continue
+        chg_12d.at[sym] = round((tc / base - 1) * 100, 2)
+
+    chg_5d = chg_5d.copy()
+    for sym in chg_5d[chg_5d.isna()].index:
+        tc = float(today_vals.get(sym, float("nan")))
+        if pd.isna(tc):
+            continue
+        base = _earliest_base(sym, win5_cols)
+        if pd.isna(base) or base == 0:
+            continue
+        chg_5d.at[sym] = round((tc / base - 1) * 100, 2)
+
+    return chg_12d, chg_5d
 def wilder_smooth(series, period):
     result = np.full(len(series), np.nan)
     if len(series) < period:
@@ -1178,7 +1263,7 @@ def main():
 
     # 2. Pivots
     print("STEP 2 — Building price pivots...")
-    close_piv, high_piv, low_piv = build_price_pivots(raw)
+    close_piv, high_piv, low_piv, open_piv = build_price_pivots(raw)
     print(f"  Pivot : {close_piv.shape[0]} symbols × {close_piv.shape[1]} dates\n")
 
     # 3. Matrix dates
@@ -1189,9 +1274,11 @@ def main():
     print("STEP 4 — Computing matrices...")
     trending, bool_matrix, pct_matrix = compute_matrices(close_piv, matrix_dates)
 
-    # 5. Period changes
+    # 5. Period changes — fixed N-day lookback first, then flexible fallback
     print("STEP 5 — Computing 12d and 5d Change%...")
     chg_12d, chg_5d = compute_period_changes(close_piv, matrix_dates)
+    # Flexible fallback: symbols with < N days history get earliest-in-window base
+    chg_12d, chg_5d = fill_flexible_period_changes(close_piv, chg_12d, chg_5d)
 
     # 6. RSI
     print(f"STEP 6 — RSI({RSI_PERIOD})...")

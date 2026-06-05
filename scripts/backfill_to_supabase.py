@@ -99,8 +99,21 @@ def _si(val):
         return None
 
 
+MIN_TOTAL_TRADES = 3000   # only rows with TOTALTRADES >= this are stored
+
+
 def load_csv_file(fpath: str, trade_date: pd.Timestamp) -> pd.DataFrame:
-    """Read one bhav CSV, filter series, return clean DataFrame."""
+    """Read one bhav CSV, filter series + liquidity, return clean DataFrame.
+
+    Key fixes vs original:
+      • Reads OPEN column (original silently fell back to CLOSE as the open proxy,
+        causing every open_price in Supabase to equal close_price).
+      • Validates the in-file TIMESTAMP against the filename date and RAISES if
+        they disagree — prevents silent insertion of wrong-date data.
+      • Applies TOTALTRADES >= MIN_TOTAL_TRADES filter here so dirty rows are
+        never sent to Supabase.
+      • Keeps PREVCLOSE so we can store a real prev_close value instead of NULL.
+    """
     try:
         df = pd.read_csv(fpath, dtype=str)
     except Exception as e:
@@ -108,23 +121,59 @@ def load_csv_file(fpath: str, trade_date: pd.Timestamp) -> pd.DataFrame:
         return pd.DataFrame()
 
     df.columns = df.columns.str.strip().str.upper()
-    required = {"SYMBOL", "SERIES", "HIGH", "LOW", "CLOSE"}
-    if not required.issubset(df.columns):
-        log.warning("%s missing required columns — skipped", fpath)
+
+    required = {"SYMBOL", "SERIES", "OPEN", "HIGH", "LOW", "CLOSE"}
+    missing = required - set(df.columns)
+    if missing:
+        log.warning("%s missing required columns %s — skipped", fpath, missing)
         return pd.DataFrame()
 
+    # ── Validate in-file TIMESTAMP against filename date ──────────────
+    # The CSV has a TIMESTAMP column like "19-May-2026".  The filename is
+    # "20260519_NSE.csv".  If they disagree we must NOT import the file —
+    # importing it under the wrong date would corrupt every indicator that
+    # uses price history.
+    if "TIMESTAMP" in df.columns:
+        sample_ts = df["TIMESTAMP"].dropna().iloc[0] if not df["TIMESTAMP"].dropna().empty else None
+        if sample_ts:
+            try:
+                parsed_ts = pd.to_datetime(sample_ts, dayfirst=True).date()
+                if parsed_ts != trade_date.date():
+                    raise ValueError(
+                        f"TIMESTAMP in file ({parsed_ts}) does not match "
+                        f"filename date ({trade_date.date()}).  "
+                        f"File: {fpath}  — ABORTED to prevent data corruption."
+                    )
+            except ValueError:
+                raise   # re-raise the date mismatch error
+            except Exception as e:
+                log.warning("Could not parse TIMESTAMP '%s' in %s: %s — continuing", sample_ts, fpath, e)
+
+    # ── Series filter ─────────────────────────────────────────────────
     df["SERIES"] = df["SERIES"].str.strip().str.upper()
     df = df[df["SERIES"].isin(ALLOWED_SERIES)].copy()
     if df.empty:
         return df
 
-    for col in ["HIGH", "LOW", "CLOSE"]:
+    # ── Numeric conversion ────────────────────────────────────────────
+    for col in ["OPEN", "HIGH", "LOW", "CLOSE"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
+    if "PREVCLOSE" in df.columns:
+        df["PREVCLOSE"] = pd.to_numeric(df["PREVCLOSE"], errors="coerce")
     if "TOTTRDQTY" in df.columns:
         df["TOTTRDQTY"] = pd.to_numeric(df["TOTTRDQTY"], errors="coerce")
     if "TOTALTRADES" in df.columns:
         df["TOTALTRADES"] = pd.to_numeric(df["TOTALTRADES"], errors="coerce")
+
+    # ── Liquidity filter — only keep liquid stocks ────────────────────
+    if "TOTALTRADES" in df.columns:
+        before = len(df)
+        df = df[df["TOTALTRADES"] >= MIN_TOTAL_TRADES].copy()
+        log.debug("%s: liquidity filter removed %d rows (%d kept)",
+                  fpath, before - len(df), len(df))
+    else:
+        log.warning("%s has no TOTALTRADES column — liquidity filter skipped", fpath)
 
     df["DATE"] = trade_date
     return df
@@ -132,30 +181,46 @@ def load_csv_file(fpath: str, trade_date: pd.Timestamp) -> pd.DataFrame:
 
 def build_price_rows(df: pd.DataFrame, trade_date) -> list[tuple]:
     """
-    Convert a single day's DataFrame into rows ready for
-    price_history upsert. Computes prev_close from the previous
-    day's CLOSE value within the passed-in full combined DataFrame.
-    (We pass prev_close=None here; the engine will fill it from DB
-    on subsequent runs. For backfill it's acceptable to leave it NULL
-    since the value is only used for display, not for any metric.)
+    Convert a single day's DataFrame into rows ready for price_history upsert.
+
+    Key fixes vs original:
+      • open_price now comes from the OPEN column (the original used CLOSE as a
+        proxy for open, so every row had open_price == close_price).
+      • prev_close is populated from PREVCLOSE when available instead of always
+        being NULL — this gives the engine accurate daily-change data from day 1.
     """
     rows = []
+    has_open      = "OPEN"      in df.columns
+    has_prevclose = "PREVCLOSE" in df.columns
+
     for _, r in df.iterrows():
+        open_px = _sf(r.get("OPEN"))  if has_open      else _sf(r.get("CLOSE"))
+        prev_cl = _sf(r.get("PREVCLOSE")) if has_prevclose else None
+
         rows.append((
-            str(r["SYMBOL"]),
+            str(r["SYMBOL"]).strip(),
             trade_date,
-            _sf(r.get("CLOSE")),   # open_price proxy (bhav has no OPEN)
-            _sf(r.get("HIGH")),
-            _sf(r.get("LOW")),
-            _sf(r.get("CLOSE")),
-            _si(r.get("TOTTRDQTY"))   if "TOTTRDQTY"   in r.index else None,
-            _si(r.get("TOTALTRADES")) if "TOTALTRADES" in r.index else None,
-            None,                  # prev_close — left NULL for backfill
+            open_px,                                                       # open_price
+            _sf(r.get("HIGH")),                                            # high_price
+            _sf(r.get("LOW")),                                             # low_price
+            _sf(r.get("CLOSE")),                                           # close_price
+            _si(r.get("TOTTRDQTY"))   if "TOTTRDQTY"   in r.index else None,  # volume
+            _si(r.get("TOTALTRADES")) if "TOTALTRADES" in r.index else None,  # total_trades
+            prev_cl,                                                       # prev_close
         ))
     return rows
 
 
 async def upsert_price_batch(conn, rows: list[tuple]) -> None:
+    """
+    Upsert a batch of price_history rows.
+
+    Fix vs original: prev_close is now updated on conflict (it was
+    silently ignored before, so correcting a row via re-backfill would
+    leave the stale prev_close in place).  Also removed the COALESCE
+    trick for volume/total_trades — if the CSV has a value we want it,
+    not the old DB value.
+    """
     await conn.executemany(
         """
         insert into price_history
@@ -167,8 +232,9 @@ async def upsert_price_batch(conn, rows: list[tuple]) -> None:
             high_price   = excluded.high_price,
             low_price    = excluded.low_price,
             close_price  = excluded.close_price,
-            volume       = coalesce(excluded.volume,       price_history.volume),
-            total_trades = coalesce(excluded.total_trades, price_history.total_trades)
+            volume       = excluded.volume,
+            total_trades = excluded.total_trades,
+            prev_close   = excluded.prev_close
         """,
         rows,
     )
@@ -372,33 +438,46 @@ async def main():
             conn, isin_series, NSE_MASTER_CSV, NSE_SECTOR_MASTER
         )
         
-        # ── 4. Get dates already in Supabase — skip them ──────────────
-        log.info("Fetching dates already in Supabase...")
+       # ── 4. Fetch dates already in Supabase ───────────────────────
+        log.info("Fetching already-uploaded dates from Supabase...")
         existing_dates = set()
-        rows_existing = await conn.fetch(
-            "SELECT DISTINCT trade_date FROM price_history"
-        )
-        for r in rows_existing:
-            existing_dates.add(r["trade_date"])
-        log.info("Already in Supabase: %d dates", len(existing_dates))
+        rows_db = await conn.fetch("select distinct trade_date from price_history")
+        for row in rows_db:
+            existing_dates.add(row["trade_date"])   # datetime.date objects
+        log.info("Dates already in Supabase: %d — will skip these", len(existing_dates))
 
-# ── 5. Now upsert only MISSING dates ──────────────────────────
         log.info("Starting price_history upsert (pass 2/2 — new dates only)...")
-        skipped = 0
+        date_errors  = []   # collect date-mismatch filenames for final report
         for i, fpath in enumerate(bhav_files, 1):
-            m     = pattern.match(fpath.name)
-            dstr  = m.group(1)
-            tdate = pd.to_datetime(dstr, format="%Y%m%d").date()
+            m    = pattern.match(fpath.name)
+            dstr = m.group(1)
 
-            # ← KEY CHANGE: skip if already uploaded
-            if tdate in existing_dates:
-                skipped += 1
+            try:
+                tdate = pd.to_datetime(dstr, format="%Y%m%d").date()
+            except ValueError as exc:
+                log.error("[%d/%d] Cannot parse date from %s: %s — skipped",
+                          i, len(bhav_files), fpath.name, exc)
+                date_errors.append(fpath.name)
                 continue
 
-            df = load_csv_file(str(fpath), pd.Timestamp(tdate))
+            if tdate in existing_dates:
+                log.info("[%d/%d] %s — already in Supabase, skipping",
+                         i, len(bhav_files), fpath.name)
+                continue
+
+            try:
+                df = load_csv_file(str(fpath), pd.Timestamp(tdate))
+
+            except ValueError as exc:
+                # TIMESTAMP in file doesn't match filename — abort this file
+                log.error("[%d/%d] DATE MISMATCH — skipping %s:\n  %s",
+                          i, len(bhav_files), fpath.name, exc)
+                date_errors.append(fpath.name)
+                continue
+
             if df.empty:
-                log.info("[%d/%d] %s — no EQ+BE rows, skipped",
-                        i, len(bhav_files), fpath.name)
+                log.info("[%d/%d] %s — 0 rows after filtering (EQ/BE + TOTALTRADES≥%d)",
+                         i, len(bhav_files), fpath.name, MIN_TOTAL_TRADES)
                 continue
 
             rows = build_price_rows(df, tdate)
@@ -407,11 +486,11 @@ async def main():
 
             total_rows += len(rows)
             log.info("[%d/%d] %s → %d rows (total so far: %d)",
-                    i, len(bhav_files), fpath.name, len(rows), total_rows)
+                     i, len(bhav_files), fpath.name, len(rows), total_rows)
 
-        log.info("Skipped %d dates already in Supabase", skipped)
-
-        # ── 4. Now upsert price_history — FK constraint satisfied ─────
+        if date_errors:
+            log.warning("Files skipped due to date errors (%d): %s",
+                        len(date_errors), date_errors)
         
     elapsed = time.monotonic() - t0
 
