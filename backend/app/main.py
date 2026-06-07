@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 from app.core.database import init_db, close_db
-from app.api import trend, sector, symbol, search, admin, superstrength
+from app.api import trend, sector, symbol, search, admin, superstrength, auth, portfolio
 
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL, logging.INFO),
@@ -55,6 +55,8 @@ app.include_router(symbol.router,  prefix="/api/symbol",  tags=["Symbol"])
 app.include_router(search.router,  prefix="/api/search",  tags=["Search"])
 app.include_router(admin.router,        prefix="/api/admin",        tags=["Admin"])
 app.include_router(superstrength.router, prefix="/api/superstrength", tags=["Super Strength"])
+app.include_router(auth.router,          prefix="/api/auth",          tags=["Authentication"])
+app.include_router(portfolio.router,     prefix="/api/portfolio",     tags=["Portfolio"])
 
 
 # ── Root & health ─────────────────────────────────────────────────────
