@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TrendPulse — NSE Momentum Screener</title>
+<title>TrendPlus — NSE Momentum Screener</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -67,8 +67,6 @@ input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px s
 .app{display:grid;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
 .topbar{background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:0;z-index:100;box-shadow:var(--shadow-sm);}
 .logo{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--t0);margin-right:28px;display:flex;align-items:center;gap:8px;white-space:nowrap;letter-spacing:-0.5px;}
-.pulse{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 .nav{display:flex;align-items:center;height:100%;gap:4px;}
 .nav-btn{height:100%;padding:0 16px;color:var(--t2);font-size:13px;font-weight:500;border-bottom:2px solid transparent;transition:var(--tr);border-radius:4px 4px 0 0;}
@@ -342,6 +340,17 @@ html.light .scard{border-color:var(--border)}
 .sector-tab{background:transparent;color:var(--t2);font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;border:none;font-family:var(--font);transition:var(--tr)}
 .sector-tab:hover{color:var(--t0)}
 .sector-tab.active{background:var(--bg3);color:var(--t0)}
+
+/* ── PORTFOLIO & AUTH ───────────────────────── */
+.portfolio-wrap{padding:20px;display:flex;flex-direction:column;gap:18px}
+.auth-panel,.portfolio-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow-sm);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg1)}
+.panel-title{font-weight:700;color:var(--t0);font-size:14px}.panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
+.portfolio-grid{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:12px}.pf-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px}.pf-label{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}.pf-value{font-family:var(--font-mono);font-weight:700;font-size:18px;margin-top:8px;color:var(--t0)}
+.pf-actions{display:flex;gap:10px;flex-wrap:wrap}.pf-form{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr)) auto;gap:10px;padding:16px}.pf-form label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase}.pf-field{display:flex;flex-direction:column;gap:5px}.pf-note{font-size:12px;color:var(--t2);line-height:1.5;padding:0 16px 16px}.pf-table-wrap{overflow:auto}.status-pill{display:inline-flex;border:1px solid var(--border2);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800}.status-active{color:var(--green);background:var(--green-bg)}.status-sold{color:var(--t2);background:var(--bg2)}.status-missing{color:var(--amber);background:var(--amber-bg)}.rec{font-weight:800;font-size:11px}.rec-add{color:var(--green)}.rec-hold{color:var(--blue)}.rec-trim{color:var(--amber)}.rec-exit{color:var(--red)}.mini-bars{display:flex;flex-direction:column;gap:8px;padding:16px}.mini-bar{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:12px;color:var(--t1)}.mini-track{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden}.mini-fill{height:100%;background:var(--blue)}.auth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px}.hidden{display:none!important}.file-input{color:var(--t1);font-size:12px}.table-actions{display:flex;gap:6px;flex-wrap:wrap}.link-btn{color:var(--blue);font-size:12px;font-weight:700}.danger-btn{color:var(--red);font-size:12px;font-weight:700}
+@media(max-width:1200px){.portfolio-grid{grid-template-columns:repeat(3,1fr)}.pf-form{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){body{overflow:auto}.app{height:auto;min-height:100vh}.topbar{height:auto;min-height:52px;flex-wrap:wrap;padding:10px}.sidebar{display:none}.portfolio-grid,.auth-grid,.pf-form{grid-template-columns:1fr}.srch-input{width:160px}.srch-input:focus{width:190px}.mini-bar{grid-template-columns:1fr}.topbar-right{width:100%;flex-wrap:wrap}}
+
 @media(max-width:1100px){.sector-dash{grid-template-columns:1fr}.sector-kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.sector-dash{padding:12px}.sector-kpis{grid-template-columns:1fr}
   .sector-table th:nth-child(n+4),.sector-table td:nth-child(n+4){display:none}}
@@ -351,14 +360,16 @@ html.light .scard{border-color:var(--border)}
 <div class="app">
 
 <header class="topbar">
-  <div class="logo"><span class="pulse"></span>TrendPulse</div>
+  <div class="logo">TrendPlus</div>
   <nav class="nav">
     <button class="nav-btn active" id="nav-screener" onclick="switchView('screener')">Screener</button>
     <button class="nav-btn"        id="nav-sectors"  onclick="switchView('sectors')">Sectors</button>
     <button class="nav-btn"        id="nav-grouped"  onclick="switchView('grouped')">By Sector</button>
-    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">⚡ Super Strength</button>
+    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">Super Strength</button>
+    <button class="nav-btn"        id="nav-portfolio" onclick="switchView('portfolio')">Portfolio</button>
   </nav>
   <div class="topbar-right">
+      <button class="pb" id="authBtn" onclick="openAuth()" style="font-size:11.5px;padding:6px 12px;">Login</button>
       <button id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark" style="background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--t1);padding:4px 9px;font-size:13px;cursor:pointer">🌙</button>
     <div class="srch-wrap" id="srchWrap">
       <span class="srch-icon">⌕</span>
@@ -516,6 +527,65 @@ html.light .scard{border-color:var(--border)}
       <div id="grpWrap"></div>
     </div>
 
+
+
+    <div class="view" id="view-portfolio">
+      <div class="portfolio-wrap">
+        <section class="auth-panel" id="authPanel">
+          <div class="panel-head"><div><div class="panel-title">Account access</div><div class="panel-sub">Register with email OTP verification or login to manage your portfolio.</div></div></div>
+          <div class="auth-grid">
+            <input class="finput" id="authEmail" type="email" placeholder="Email"/>
+            <input class="finput" id="authOtp" type="text" placeholder="OTP"/>
+            <input class="finput" id="authPassword" type="password" placeholder="Password"/>
+            <button class="apply-btn" onclick="requestOtp()">Send OTP</button>
+            <button class="pb" onclick="verifyOtp()">Verify OTP</button>
+            <button class="apply-btn" onclick="registerUser()">Create Account</button>
+            <button class="pb" onclick="loginUser()">Login</button>
+          </div>
+          <div class="pf-note">OTP delivery is API-ready; development responses include the OTP so the flow can be tested before connecting an email provider.</div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="portfolioPanel">
+          <div class="panel-head">
+            <div><div class="panel-title">Portfolio Dashboard</div><div class="panel-sub">Active holdings are refreshed from latest TrendPlus market data whenever you visit.</div></div>
+            <div class="pf-actions"><input class="file-input" id="portfolioFile" type="file" accept=".csv,.xls,.xlsx"/><button class="pb" onclick="importPortfolio()">Upload Portfolio</button></div>
+          </div>
+          <div class="portfolio-grid" id="portfolioCards"></div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="holdingFormPanel">
+          <div class="panel-head"><div><div class="panel-title">Add Holding</div><div class="panel-sub">Manual entries require purchase date for performance tracking.</div></div></div>
+          <div class="pf-form">
+            <div class="pf-field"><label>Stock Symbol</label><input class="finput" id="holdSymbol" placeholder="INFY"/></div>
+            <div class="pf-field"><label>Quantity</label><input class="finput" id="holdQty" type="number" step="0.0001"/></div>
+            <div class="pf-field"><label>Average Buy Price</label><input class="finput" id="holdPrice" type="number" step="0.01"/></div>
+            <div class="pf-field"><label>Buy Date</label><input class="finput" id="holdDate" type="date"/></div>
+            <button class="apply-btn" onclick="saveHolding()" style="align-self:end">Save</button>
+          </div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="missingDatesPanel">
+          <div class="panel-head"><div><div class="panel-title">Purchase Date Missing</div><div class="panel-sub">Set dates now, or skip and edit later.</div></div></div>
+          <div id="missingDates"></div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="holdingsPanel">
+          <div class="panel-head"><div><div class="panel-title">Holdings</div><div class="panel-sub">Edit, delete, or mark active positions as sold.</div></div></div>
+          <div class="pf-table-wrap" id="holdingsTable"></div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="historyPanel">
+          <div class="panel-head"><div><div class="panel-title">Portfolio History</div><div class="panel-sub">Sold positions retain buy/sell dates, duration and realized returns.</div></div></div>
+          <div class="pf-table-wrap" id="historyTable"></div>
+        </section>
+
+        <section class="portfolio-panel hidden" id="analyticsPanel">
+          <div class="panel-head"><div><div class="panel-title">Portfolio Analytics</div><div class="panel-sub">Top movers, winners vs losers, sector allocation and dead-money stocks.</div></div></div>
+          <div id="portfolioAnalytics"></div>
+        </section>
+      </div>
+    </div>
+
     <div class="view" id="view-super">
       <div class="toolbar">
         <span class="cnt-badge" id="ssCount">— stocks</span>
@@ -584,6 +654,9 @@ let SORT_ORD = 'desc';
 let GRP_DATA = {};
 let GRP_OPEN = {};
 let srchTimer = null;
+let AUTH_TOKEN = localStorage.getItem('tp_token') || '';
+let VERIFY_TOKEN = '';
+let HOLDINGS = [];
 
 // ── FORMAT HELPERS ──────────────────────────────────────────────
 const f1   = v => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1);
@@ -653,8 +726,11 @@ function toast(msg, ms = 2400) {
   setTimeout(() => el.classList.remove('show'), ms);
 }
 
-async function apiFetch(path) {
-  const r = await fetch(API + path);
+async function apiFetch(path, options = {}) {
+  const headers = Object.assign({}, options.headers || {});
+  if (AUTH_TOKEN) headers.Authorization = 'Bearer ' + AUTH_TOKEN;
+  if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+  const r = await fetch(API + path, Object.assign({}, options, {headers}));
   if (!r.ok) { const t = await r.text().catch(() => r.statusText); throw new Error(`${r.status}: ${t}`); }
   return r.json();
 }
@@ -712,6 +788,7 @@ function switchView(v) {
   if (v === 'sectors') loadSectors();
   if (v === 'grouped') loadGrouped();
   if (v === 'super')   loadSuperStrength();
+  if (v === 'portfolio') loadPortfolio();
 }
 
 function onSortChange() {
@@ -1156,6 +1233,32 @@ function toggleGrp(s) { GRP_OPEN[s] = GRP_OPEN[s] === false; renderGrouped(); }
 function expandAll()   { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = true);  renderGrouped(); }
 function collapseAll() { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = false); renderGrouped(); }
 
+
+
+// ── AUTHENTICATION & PORTFOLIO ─────────────────────────────────
+function openAuth(){ switchView('portfolio'); }
+function setAuth(token){ AUTH_TOKEN = token || ''; if(token) localStorage.setItem('tp_token', token); else localStorage.removeItem('tp_token'); updateAuthUI(); }
+function updateAuthUI(){ const on=!!AUTH_TOKEN; document.getElementById('authBtn').textContent = on ? 'Account' : 'Login'; document.getElementById('authPanel')?.classList.toggle('hidden', on); ['portfolioPanel','holdingFormPanel','holdingsPanel','historyPanel','analyticsPanel'].forEach(id=>document.getElementById(id)?.classList.toggle('hidden', !on)); }
+async function requestOtp(){ try{ const email=document.getElementById('authEmail').value.trim(); const d=await apiFetch('/api/auth/request-otp',{method:'POST',body:JSON.stringify({email})}); toast(d.dev_otp ? `OTP: ${d.dev_otp}` : d.message, 6000); }catch(e){ toast(cleanErr(e.message),5000); } }
+async function verifyOtp(){ try{ const email=document.getElementById('authEmail').value.trim(); const otp=document.getElementById('authOtp').value.trim(); const d=await apiFetch('/api/auth/verify-otp',{method:'POST',body:JSON.stringify({email,otp})}); VERIFY_TOKEN=d.verification_token; toast('Email verified. Create your password.'); }catch(e){ toast(cleanErr(e.message),5000); } }
+async function registerUser(){ try{ const email=document.getElementById('authEmail').value.trim(); const password=document.getElementById('authPassword').value; const d=await apiFetch('/api/auth/register',{method:'POST',body:JSON.stringify({email,password,verification_token:VERIFY_TOKEN})}); setAuth(d.access_token); toast('Account created'); loadPortfolio(); }catch(e){ toast(cleanErr(e.message),5000); } }
+async function loginUser(){ try{ const email=document.getElementById('authEmail').value.trim(); const password=document.getElementById('authPassword').value; const d=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email,password})}); setAuth(d.access_token); toast('Logged in'); loadPortfolio(); }catch(e){ toast(cleanErr(e.message),5000); } }
+function cleanErr(msg){ try{ const j=JSON.parse(msg.replace(/^\d+:\s*/,'')); return j.detail || msg; }catch(_){ return msg; } }
+async function loadPortfolio(){ updateAuthUI(); if(!AUTH_TOKEN) return; try{ const [summary, holdings]=await Promise.all([apiFetch('/api/portfolio/summary'), apiFetch('/api/portfolio/holdings')]); HOLDINGS=holdings.data||[]; renderPortfolioCards(summary.cards||{}); renderHoldings(HOLDINGS); renderHistory(HOLDINGS.filter(h=>h.status==='SOLD')); renderPortfolioAnalytics(summary); renderMissingDates(HOLDINGS.filter(h=>h.requires_confirmation)); }catch(e){ toast(cleanErr(e.message),5000); if(e.message.startsWith('401')) setAuth(''); } }
+function renderPortfolioCards(c){ const items=[['Total Investment',inr(c.total_investment)],['Current Value',inr(c.current_value)],['Profit / Loss',inr(c.profit_loss)],['Return %',fPct(c.return_pct)],['Holdings',fNum(c.number_of_holdings)],['Winners',fNum(c.winning_holdings)],['Losers',fNum(c.losing_holdings)]]; document.getElementById('portfolioCards').innerHTML=items.map(([l,v])=>`<div class="pf-card"><div class="pf-label">${l}</div><div class="pf-value">${v}</div></div>`).join(''); }
+async function saveHolding(){ try{ const payload={symbol:holdSymbol.value.trim().toUpperCase(),quantity:Number(holdQty.value),avg_buy_price:Number(holdPrice.value),buy_date:holdDate.value}; if(!payload.symbol) throw new Error('Symbol Required'); if(!(payload.quantity>0)) throw new Error('Quantity > 0 required'); if(!(payload.avg_buy_price>0)) throw new Error('Price > 0 required'); if(!payload.buy_date) throw new Error('Buy Date Required'); await apiFetch('/api/portfolio/holdings',{method:'POST',body:JSON.stringify(payload)}); ['holdSymbol','holdQty','holdPrice','holdDate'].forEach(id=>document.getElementById(id).value=''); toast('Holding added'); loadPortfolio(); }catch(e){ toast(cleanErr(e.message),5000); } }
+async function importPortfolio(){ try{ const file=document.getElementById('portfolioFile').files[0]; if(!file) return toast('Choose a CSV, XLS, or XLSX file'); const fd=new FormData(); fd.append('file',file); const d=await apiFetch('/api/portfolio/import',{method:'POST',body:fd}); toast(`Imported ${d.imported.length}; skipped ${d.skipped.length}`,5000); loadPortfolio(); }catch(e){ toast(cleanErr(e.message),6000); } }
+function renderMissingDates(rows){ const panel=document.getElementById('missingDatesPanel'); if(!rows.length){ panel.classList.add('hidden'); return; } panel.classList.remove('hidden'); document.getElementById('missingDates').innerHTML=rows.map(h=>`<div class="pf-form" style="grid-template-columns:140px 1fr auto auto"><div><strong>${h.symbol}</strong><div class="panel-sub">Purchase Date Missing</div></div><input class="finput" id="md_${h.id}" type="date"/><button class="apply-btn" onclick="saveMissingDate(${h.id})">Save Now</button><button class="pb" onclick="toast('Skipped. Edit later from holdings table.')">Skip</button></div>`).join(''); }
+async function saveMissingDate(id){ const buy_date=document.getElementById('md_'+id).value; if(!buy_date) return toast('Select a date'); await apiFetch(`/api/portfolio/holdings/${id}`,{method:'PATCH',body:JSON.stringify({buy_date,requires_confirmation:false})}); toast('Purchase date saved'); loadPortfolio(); }
+function renderHoldings(rows){ const body=rows.map(h=>`<tr><td class="mono" onclick="openDP('${h.symbol}')">${h.symbol}</td><td>${fNum(h.quantity)}</td><td>${inr(h.avg_buy_price)}</td><td>${h.buy_date||'<span class="status-pill status-missing">Missing</span>'}</td><td>${h.days_held??'—'}</td><td>${inr(h.current_price)}</td><td>${inr(h.investment_amount)}</td><td>${inr(h.current_value)}</td><td class="${pCls(h.profit_loss)}">${inr(h.profit_loss)}</td><td class="${pCls(h.gain_pct)}">${fPct(h.gain_pct)}</td><td>${recHtml(h.recommendation)}</td><td><span class="status-pill ${h.status==='ACTIVE'?'status-active':'status-sold'}">${h.status}</span></td><td><div class="table-actions">${h.status==='ACTIVE'?`<button class="link-btn" onclick="editHolding(${h.id})">Edit</button><button class="link-btn" onclick="sellHolding(${h.id})">Mark Sold</button>`:''}<button class="danger-btn" onclick="deleteHolding(${h.id})">Delete</button></div></td></tr>`).join(''); document.getElementById('holdingsTable').innerHTML=`<table><thead><tr><th>Symbol</th><th>Qty</th><th>Avg Buy</th><th>Buy Date</th><th>Days</th><th>Current</th><th>Investment</th><th>Value</th><th>P/L</th><th>Gain %</th><th>Rec</th><th>Status</th><th>Actions</th></tr></thead><tbody>${body||'<tr><td colspan="13" style="text-align:center;color:var(--t2);padding:24px">No holdings yet</td></tr>'}</tbody></table>`; }
+
+function renderHistory(rows){ const body=rows.map(h=>`<tr><td class="mono">${h.symbol}</td><td>${h.buy_date||'—'}</td><td>${h.sell_date||'—'}</td><td>${h.days_held??'—'}</td><td>${inr(h.avg_buy_price)}</td><td>${inr(h.sell_price)}</td><td class="${pCls(h.profit_loss)}">${inr(h.profit_loss)}</td><td class="${pCls(h.gain_pct)}">${fPct(h.gain_pct)}</td><td><button class="danger-btn" onclick="deleteHolding(${h.id})">Delete</button></td></tr>`).join(''); document.getElementById('historyTable').innerHTML=`<table><thead><tr><th>Symbol</th><th>Buy Date</th><th>Sell Date</th><th>Duration</th><th>Buy Price</th><th>Sell Price</th><th>Realized P/L</th><th>Return %</th><th>Actions</th></tr></thead><tbody>${body||'<tr><td colspan="9" style="text-align:center;color:var(--t2);padding:24px">No sold holdings yet</td></tr>'}</tbody></table>`; }
+function recHtml(r){ if(!r) return '—'; const cls=r==='ADD MORE'?'rec-add':r==='HOLD'?'rec-hold':r==='TRIM'?'rec-trim':'rec-exit'; return `<span class="rec ${cls}">${r}</span>`; }
+async function editHolding(id){ const h=HOLDINGS.find(x=>x.id===id); if(!h) return; const quantity=prompt('Quantity', h.quantity); if(quantity===null) return; const avg_buy_price=prompt('Average buy price', h.avg_buy_price); if(avg_buy_price===null) return; const buy_date=prompt('Buy date (YYYY-MM-DD)', h.buy_date||''); if(buy_date===null) return; await apiFetch(`/api/portfolio/holdings/${id}`,{method:'PATCH',body:JSON.stringify({quantity:Number(quantity),avg_buy_price:Number(avg_buy_price),buy_date,requires_confirmation:false})}); toast('Holding updated'); loadPortfolio(); }
+async function sellHolding(id){ const sell_date=prompt('Sell date (YYYY-MM-DD)', new Date().toISOString().slice(0,10)); if(!sell_date) return; const sell_price=prompt('Sell price'); if(!sell_price) return; await apiFetch(`/api/portfolio/holdings/${id}/sell`,{method:'POST',body:JSON.stringify({sell_date,sell_price:Number(sell_price)})}); toast('Moved to Portfolio History'); loadPortfolio(); }
+async function deleteHolding(id){ if(!confirm('Delete this holding?')) return; await apiFetch(`/api/portfolio/holdings/${id}`,{method:'DELETE'}); toast('Holding deleted'); loadPortfolio(); }
+function renderPortfolioAnalytics(s){ const sectors=s.sector_allocation||[]; const dead=s.dead_money||[]; const bars=sectors.map(x=>`<div class="mini-bar"><div>${x.sector}</div><div class="mini-track"><div class="mini-fill" style="width:${Math.min(100,x.pct)}%"></div></div><div>${f1(x.pct)}%</div></div>`).join(''); document.getElementById('portfolioAnalytics').innerHTML=`<div class="portfolio-grid" style="grid-template-columns:repeat(2,1fr);padding:16px"><div><div class="panel-title">Sector Allocation</div><div class="mini-bars">${bars||'<span class="panel-sub">No active holdings</span>'}</div></div><div><div class="panel-title">Dead Money Stocks</div><div class="mini-bars">${dead.map(h=>`<div class="mini-bar"><div>${h.symbol}</div><div>${h.days_held} days</div><div>${fPct(h.gain_pct)}</div></div>`).join('')||'<span class="panel-sub">None</span>'}</div><div class="panel-title">Winners vs Losers</div><div class="pf-note">Winning Capital: ${f1(s.winners_vs_losers?.winning_capital_pct)}% · Losing Capital: ${f1(s.winners_vs_losers?.losing_capital_pct)}%</div></div></div>`; }
+
 // ── DETAIL PANEL ─────────────────────────────────────────────────
 async function openDP(sym) {
   const dp = document.getElementById('dp');
@@ -1330,7 +1433,7 @@ async function loadSuperStrength() {
     const d = await apiFetch('/api/superstrength?' + qs.toString());
     document.getElementById('ssCount').textContent = (d.total||0).toLocaleString() + ' stocks';
     if (!d.data || !d.data.length) {
-      document.getElementById('ssGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚡</div><div>No results</div></div>';
+      document.getElementById('ssGrid').innerHTML = '<div class="empty"><div>No results</div></div>';
       return;
     }
     document.getElementById('ssGrid').innerHTML = renderSSGrid(d.data);
@@ -1419,7 +1522,8 @@ if (localStorage.getItem('tp_theme') === 'light') document.documentElement.class
 
 // ── INIT ─────────────────────────────────────────────────────────
 (async () => {
-  await loadSectorList();
+  await updateAuthUI();
+  loadSectorList();
   await loadScreener();
 })();
 </script>
