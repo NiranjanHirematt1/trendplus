@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TrendPlus — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#0a0e17;--bg1:#11151c;--bg2:#1c2331;--bg3:#273041;--bg4:#333d52;
+  --border:#1e2634;--border2:#2a3548;
+  --t0:#f8fafc;--t1:#cbd5e1;--t2:#94a3b8;--t3:#64748b;
+  --green:#10b981;--green-d:#059669;--green-bg:rgba(16,185,129,.12);
+  --red:#ef4444;--red-d:#dc2626;--red-bg:rgba(239,68,68,.12);
+  --blue:#3b82f6;--blue-d:#2563eb;--blue-bg:rgba(59,130,246,.12);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.12);
+  --purple:#a855f7;--purple-bg:rgba(168,85,247,.12);
+  --font-mono:'JetBrains Mono',monospace;--font:'DM Sans',sans-serif;
+  --r:6px;--r2:12px;--tr:150ms ease-in-out;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);
+}
+html{font-size:13px;background:var(--bg0);color:var(--t0);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none;background:transparent}
+input,select{font-family:var(--font);outline:none;border:none}
+a{color:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px}
+.hidden{display:none!important}
+
+.topbar{height:52px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
+.logo{font-family:var(--font-mono);font-weight:700;font-size:15px;letter-spacing:-.5px;text-decoration:none;color:var(--t0)}
+.logo span{color:var(--t2);font-weight:500;margin-left:8px}
+.back-link{color:var(--t2);font-size:12.5px;text-decoration:none;font-weight:500}
+.back-link:hover{color:var(--t0)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+
+.wrap{max-width:1320px;margin:0 auto;padding:24px 20px 60px}
+
+/* Login gate */
+.login-wrap{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:28px;width:100%;max-width:640px}
+.login-card h1{font-size:16px;margin-bottom:4px}
+.login-card p{color:var(--t2);font-size:12.5px;margin-bottom:18px}
+.login-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:560px){.login-grid{grid-template-columns:1fr}}
+
+.finput{background:var(--bg2);border:1px solid var(--border2)!important;border-radius:var(--r);padding:9px 11px;color:var(--t0);font-size:13px;width:100%}
+.finput:focus{border-color:var(--blue)!important}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+
+.btn{padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;transition:var(--tr)}
+.btn-primary{background:var(--blue-d);color:#fff}
+.btn-primary:hover{background:var(--blue)}
+.btn-ghost{background:transparent;border:1px solid var(--border2)!important;color:var(--t1)}
+.btn-ghost:hover{color:var(--t0);border-color:var(--t2)!important}
+.btn-ai{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff}
+.btn-ai:hover{filter:brightness(1.1)}
+.btn-block{width:100%}
+.sub-link{display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--t3);text-decoration:none}
+.sub-link:hover{color:var(--t1)}
+
+/* Dashboard */
+.acct-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.acct-name{font-weight:700;font-size:15px}
+.acct-meta{color:var(--t2);font-size:12px}
+.acct-actions{margin-left:auto;display:flex;gap:8px}
+
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px}
+.card-label{font-size:10.5px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:5px}
+.card-value{font-family:var(--font-mono);font-weight:700;font-size:19px;margin-top:7px}
+.card-sub{font-size:11px;color:var(--t3);margin-top:3px}
+.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--t2)}
+
+.risk-pill{display:inline-flex;border-radius:999px;padding:2px 9px;font-size:10px;font-weight:800}
+.risk-diversified{color:var(--green);background:var(--green-bg)}
+.risk-concentrated{color:var(--amber);background:var(--amber-bg)}
+
+.panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:18px}
+.panel-head{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.panel-title{font-weight:700;font-size:14px}
+.panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
+.panel-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.pf-form{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr)) auto;gap:10px;padding:16px}
+@media(max-width:900px){.pf-form{grid-template-columns:repeat(2,1fr)}}
+.pf-field{display:flex;flex-direction:column;gap:5px}
+.pf-field label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase}
+.pf-note{font-size:12px;color:var(--t2);line-height:1.5;padding:0 16px 16px}
+.file-input{color:var(--t1);font-size:12px}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:9px 12px;color:var(--t2);font-weight:700;text-transform:uppercase;font-size:10.2px;letter-spacing:.3px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg2)}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--t1);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.pf-table-wrap{overflow:auto}
+.mono{font-family:var(--font-mono)}
+.sym-link{color:var(--blue);font-weight:700;font-family:var(--font-mono);cursor:pointer}
+.sym-link:hover{text-decoration:underline}
+
+.status-pill{display:inline-flex;border:1px solid var(--border2);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800}
+.status-active{color:var(--green);background:var(--green-bg)}
+.status-sold{color:var(--t2);background:var(--bg2)}
+.status-missing{color:var(--amber);background:var(--amber-bg)}
+.rec{font-weight:800;font-size:10.5px;display:inline-flex;border-radius:4px;padding:2px 7px}
+.rec-add,.action-ADD-MORE{color:var(--green);background:var(--green-bg)}
+.rec-hold,.action-HOLD{color:var(--blue);background:var(--blue-bg)}
+.rec-trim,.action-TRIM{color:var(--amber);background:var(--amber-bg)}
+.rec-exit,.action-EXIT-ALL{color:var(--red);background:var(--red-bg)}
+.table-actions{display:flex;gap:6px;flex-wrap:wrap}
+.link-btn{color:var(--blue);font-size:11.5px;font-weight:700}
+.link-btn:hover{text-decoration:underline}
+.danger-btn{color:var(--red);font-size:11.5px;font-weight:700}
+.danger-btn:hover{text-decoration:underline}
+.icon-btn{color:var(--t2);font-size:14px;cursor:pointer}
+.icon-btn:hover{color:var(--blue)}
+
+.ai-note{padding:14px 16px;font-size:12.5px;color:var(--t2);border-bottom:1px solid var(--border);background:var(--bg2)}
+.ai-badge-wrap{display:flex;flex-direction:column;gap:2px}
+.ai-conf{font-size:9.5px;color:var(--t3)}
+
+.mini-bars{display:flex;flex-direction:column;gap:8px;padding:16px}
+.mini-bar{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:12px;color:var(--t1)}
+.mini-track{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden}
+.mini-fill{height:100%;background:var(--blue)}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:800px){.analytics-grid{grid-template-columns:1fr}}
+.analytics-col{padding:4px 0}
+.analytics-col+.analytics-col{border-left:1px solid var(--border)}
+@media(max-width:800px){.analytics-col+.analytics-col{border-left:none;border-top:1px solid var(--border)}}
+
+.empty-row td{text-align:center;color:var(--t2);padding:22px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:10px 18px;font-size:12.5px;opacity:0;pointer-events:none;transition:var(--tr);z-index:999;max-width:90vw}
+.toast.show{opacity:1}
+.spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Trendline modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:500;padding:20px}
+.modal-card{background:var(--bg1);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:640px;box-shadow:var(--shadow-md)}
+.modal-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.modal-close{margin-left:auto;color:var(--t2);font-size:16px;cursor:pointer}
+.modal-close:hover{color:var(--t0)}
+.modal-body{padding:16px 18px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="logo" href="./index.html">TrendPlus <span>Portfolio</span></a>
+  <a class="back-link" href="./index.html">← Screener</a>
+  <div class="topbar-right">
+    <button class="btn btn-ghost hidden" id="logoutBtn" onclick="logoutUser()">Log out</button>
+  </div>
+</header>
+
+<!-- ── LOGIN / REGISTER GATE ───────────────────────────────── -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <h1>Account access</h1>
+    <p>Log in to manage your portfolio, or register for a new account. New accounts require admin approval before you can log in.</p>
+    <div class="login-grid">
+      <div>
+        <div class="panel-title" style="font-size:12px;margin-bottom:10px">Login</div>
+        <div class="field"><input class="finput" id="loginEmail" type="email" placeholder="Email"/></div>
+        <div class="field"><input class="finput" id="loginPassword" type="password" placeholder="Password"/></div>
+        <button class="btn btn-primary btn-block" onclick="loginUser()">Login</button>
+        <a href="./admin.html" class="sub-link">Admin Login</a>
+      </div>
+      <div>
+        <div class="panel-title" style="font-size:12px;margin-bottom:10px">Register</div>
+        <div class="field"><input class="finput" id="regFullName" type="text" placeholder="Full Name"/></div>
+        <div class="field"><input class="finput" id="regEmail" type="email" placeholder="Email"/></div>
+        <div class="field"><input class="finput" id="regPhone" type="tel" placeholder="Phone Number"/></div>
+        <div class="field"><input class="finput" id="regPassword" type="password" placeholder="Password (min 8 characters)"/></div>
+        <button class="btn btn-ghost btn-block" onclick="registerUser()">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ───────────────────────────────────────────── -->
+<div class="wrap hidden" id="dashboardScreen">
+
+  <div class="acct-row">
+    <div>
+      <div class="acct-name" id="acctName">Account</div>
+      <div class="acct-meta" id="acctMeta"></div>
+    </div>
+    <div class="acct-actions">
+      <button class="btn btn-ghost" onclick="togglePasswordForm()">Change Password</button>
+    </div>
+  </div>
+
+  <section class="panel hidden" id="passwordPanel">
+    <div class="panel-head"><div><div class="panel-title">Update Password</div></div></div>
+    <div class="pf-form">
+      <div class="pf-field"><label>Current Password</label><input class="finput" id="cpCurrent" type="password"/></div>
+      <div class="pf-field"><label>New Password</label><input class="finput" id="cpNew" type="password"/></div>
+      <div class="pf-field"><label>Confirm New Password</label><input class="finput" id="cpConfirm" type="password"/></div>
+      <div></div>
+      <button class="btn btn-primary" onclick="changePassword()" style="align-self:end">Update</button>
+    </div>
+  </section>
+
+  <div class="cards" id="dashboardCards"></div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">🤖 AI Portfolio Insights</div><div class="panel-sub">Gemini reviews each active holding's momentum, RSI, trend strength and P/L, and calls one of four actions.</div></div>
+      <div class="panel-actions">
+        <button class="btn btn-ai" id="aiBtn" onclick="runAIAnalysis()">✨ Analyze with AI</button>
+      </div>
+    </div>
+    <div id="aiResults"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">Portfolio Dashboard</div><div class="panel-sub">Active holdings are refreshed from latest TrendPlus market data whenever you visit.</div></div>
+      <div class="panel-actions">
+        <input class="file-input" id="portfolioFile" type="file" accept=".csv,.xls,.xlsx"/>
+        <button class="btn btn-ghost" onclick="importPortfolio()">Upload Portfolio</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="holdingFormPanel">
+    <div class="panel-head"><div><div class="panel-title">Add Holding</div><div class="panel-sub">Manual entries require purchase date for performance tracking.</div></div></div>
+    <div class="pf-form">
+      <div class="pf-field"><label>Stock Symbol</label><input class="finput" id="holdSymbol" placeholder="INFY"/></div>
+      <div class="pf-field"><label>Quantity</label><input class="finput" id="holdQty" type="number" step="0.0001"/></div>
+      <div class="pf-field"><label>Average Buy Price</label><input class="finput" id="holdPrice" type="number" step="0.01"/></div>
+      <div class="pf-field"><label>Buy Date</label><input class="finput" id="holdDate" type="date"/></div>
+      <button class="btn btn-primary" onclick="saveHolding()" style="align-self:end">Save</button>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="missingDatesPanel">
+    <div class="panel-head"><div><div class="panel-title">Purchase Date Missing</div><div class="panel-sub">Set dates now, or skip and edit later.</div></div></div>
+    <div id="missingDates"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><div class="panel-title">Holdings</div><div class="panel-sub">Click a symbol's trend icon to see its price line from purchase date to today.</div></div></div>
+    <div class="pf-table-wrap" id="holdingsTable"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><div class="panel-title">Portfolio History</div><div class="panel-sub">Sold positions retain buy/sell dates, duration and realized returns.</div></div></div>
+    <div class="pf-table-wrap" id="historyTable"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><div class="panel-title">Portfolio Analytics</div><div class="panel-sub">Sector allocation, dead-money stocks and estimated capital-gains tax.</div></div></div>
+    <div id="portfolioAnalytics"></div>
+  </section>
+
+</div>
+
+<!-- Trendline modal -->
+<div class="modal-overlay hidden" id="trendModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="panel-title" id="trendModalTitle">Trendline</div>
+      <span class="modal-close" onclick="closeTrendModal()">✕</span>
+    </div>
+    <div class="modal-body">
+      <canvas id="trendCanvas" height="220"></canvas>
+      <div class="pf-note" id="trendModalNote" style="padding:12px 0 0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const API = 'http://localhost:8000';
+let AUTH_TOKEN = localStorage.getItem('tp_token') || '';
+let CURRENT_USER = null;
+let HOLDINGS = [];
+let AI_RESULTS = {};
+let trendChart = null;
+
+const inr  = v => (v == null || isNaN(v)) ? '—' : '₹' + Number(v).toLocaleString('en-IN',{maximumFractionDigits:2});
+const fNum = v => (v == null || isNaN(v)) ? '—' : Number(v).toLocaleString('en-IN');
+const f1   = v => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1);
+const fPct = v => (v == null || isNaN(v)) ? '—' : (v >= 0 ? '+' : '') + Number(v).toFixed(2) + '%';
+const pCls = v => (v == null || isNaN(v)) ? 'neu' : Number(v) > 0 ? 'pos' : Number(v) < 0 ? 'neg' : 'neu';
+
+function toast(msg, ms = 3500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), ms);
+}
+function cleanErr(msg){ try{ const j=JSON.parse(msg.replace(/^\d+:\s*/,'')); return j.detail || msg; }catch(_){ return msg; } }
+
+async function apiFetch(path, options = {}) {
+  const headers = Object.assign({}, options.headers || {});
+  if (AUTH_TOKEN) headers.Authorization = 'Bearer ' + AUTH_TOKEN;
+  if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+  const r = await fetch(API + path, Object.assign({}, options, { headers }));
+  if (!r.ok) { const t = await r.text().catch(() => r.statusText); throw new Error(`${r.status}: ${t}`); }
+  return r.json();
+}
+
+function setAuth(token) {
+  AUTH_TOKEN = token || '';
+  if (token) localStorage.setItem('tp_token', token); else localStorage.removeItem('tp_token');
+}
+function showScreen() {
+  const on = !!AUTH_TOKEN;
+  document.getElementById('loginScreen').classList.toggle('hidden', on);
+  document.getElementById('dashboardScreen').classList.toggle('hidden', !on);
+  document.getElementById('logoutBtn').classList.toggle('hidden', !on);
+}
+function logoutUser() { setAuth(''); CURRENT_USER = null; showScreen(); toast('Logged out'); }
+
+async function registerUser() {
+  try {
+    const payload = {
+      full_name: document.getElementById('regFullName').value.trim(),
+      email: document.getElementById('regEmail').value.trim(),
+      phone: document.getElementById('regPhone').value.trim(),
+      password: document.getElementById('regPassword').value,
+    };
+    if (!payload.full_name) throw new Error('Full name is required');
+    if (!payload.email) throw new Error('Email is required');
+    if (!payload.phone) throw new Error('Phone number is required');
+    if (!payload.password || payload.password.length < 8) throw new Error('Password must be at least 8 characters');
+    const d = await apiFetch('/api/auth/register', { method: 'POST', body: JSON.stringify(payload) });
+    toast(d.message || 'Registration submitted. Awaiting admin approval.', 7000);
+    ['regFullName', 'regEmail', 'regPhone', 'regPassword'].forEach(id => document.getElementById(id).value = '');
+  } catch (e) { toast(cleanErr(e.message), 6000); }
+}
+async function loginUser() {
+  try {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const d = await apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+    setAuth(d.access_token); CURRENT_USER = d.user; showScreen(); toast('Logged in'); loadAll();
+  } catch (e) { toast(cleanErr(e.message), 6000); }
+}
+function togglePasswordForm() { document.getElementById('passwordPanel').classList.toggle('hidden'); }
+async function changePassword() {
+  try {
+    const current_password = document.getElementById('cpCurrent').value;
+    const new_password = document.getElementById('cpNew').value;
+    const confirm_password = document.getElementById('cpConfirm').value;
+    if (new_password !== confirm_password) throw new Error('New password and confirmation do not match');
+    await apiFetch('/api/auth/change-password', { method: 'POST', body: JSON.stringify({ current_password, new_password, confirm_password }) });
+    ['cpCurrent', 'cpNew', 'cpConfirm'].forEach(id => document.getElementById(id).value = '');
+    toast('Password updated');
+  } catch (e) { toast(cleanErr(e.message), 6000); }
+}
+
+async function loadAll() {
+  if (!AUTH_TOKEN) { showScreen(); return; }
+  try {
+    if (!CURRENT_USER) { const me = await apiFetch('/api/auth/me'); CURRENT_USER = me.user; }
+    document.getElementById('acctName').textContent = 'Hi, ' + (CURRENT_USER.full_name || CURRENT_USER.email);
+    document.getElementById('acctMeta').textContent = `${CURRENT_USER.email} · ${CURRENT_USER.phone || ''}`;
+    showScreen();
+    const [summary, holdings] = await Promise.all([apiFetch('/api/portfolio/summary'), apiFetch('/api/portfolio/holdings')]);
+    HOLDINGS = holdings.data || [];
+    AI_RESULTS = {};
+    renderCards(summary);
+    renderHoldings(HOLDINGS);
+    renderHistory(HOLDINGS.filter(h => h.status === 'SOLD'));
+    renderAnalytics(summary);
+    renderMissingDates(HOLDINGS.filter(h => h.requires_confirmation));
+    renderAIPlaceholder();
+  } catch (e) {
+    toast(cleanErr(e.message), 5000);
+    if (e.message.startsWith('401')) { setAuth(''); CURRENT_USER = null; showScreen(); }
+  }
+}
+
+function renderCards(summary) {
+  const c = summary.cards || {};
+  const risk = summary.risk || {};
+  const tax = summary.tax_estimate || {};
+  const items = [
+    ['Total Investment', inr(c.total_investment), ''],
+    ['Current Value', inr(c.current_value), ''],
+    ['Profit / Loss', `<span class="${pCls(c.profit_loss)}">${inr(c.profit_loss)}</span>`, ''],
+    ['Simple Return', `<span class="${pCls(c.return_pct)}">${fPct(c.return_pct)}</span>`, ''],
+    ['XIRR (Annualized)', c.xirr_pct != null ? `<span class="${pCls(c.xirr_pct)}">${fPct(c.xirr_pct)}</span>` : '—', 'Time-weighted for when each buy happened'],
+    ['Diversification', risk.diversification_score != null ? risk.diversification_score : '—',
+      risk.flag ? `<span class="risk-pill risk-${risk.flag}">${risk.flag}</span> top position ${f1(risk.top_position_pct)}%` : ''],
+    ['Holdings', fNum(c.number_of_holdings), `${fNum(c.winning_holdings)} up · ${fNum(c.losing_holdings)} down`],
+    ['Est. Tax If Sold Today', inr(tax.estimated_total_tax_if_sold_today), 'LTCG/STCG estimate, see Analytics'],
+  ];
+  document.getElementById('dashboardCards').innerHTML = items.map(([l, v, s]) =>
+    `<div class="card"><div class="card-label">${l}</div><div class="card-value">${v}</div>${s ? `<div class="card-sub">${s}</div>` : ''}</div>`).join('');
+}
+
+// ── AI ANALYSIS ────────────────────────────────────────────────
+function renderAIPlaceholder() {
+  const active = HOLDINGS.filter(h => h.status === 'ACTIVE');
+  document.getElementById('aiResults').innerHTML = active.length
+    ? `<div class="ai-note">Click "Analyze with AI" to get a Hold / Trim / Add More / Exit All verdict for each of your ${active.length} active holdings.</div>`
+    : `<div class="ai-note">No active holdings to analyze yet.</div>`;
+}
+async function runAIAnalysis() {
+  const btn = document.getElementById('aiBtn');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Analyzing…';
+  document.getElementById('aiResults').innerHTML = `<div class="ai-note"><span class="spin"></span> Gemini is reviewing your holdings…</div>`;
+  try {
+    const d = await apiFetch('/api/portfolio/ai-analysis', { method: 'POST' });
+    AI_RESULTS = d.data || {};
+    if (!Object.keys(AI_RESULTS).length) {
+      document.getElementById('aiResults').innerHTML = `<div class="ai-note">No active holdings to analyze.</div>`;
+    } else {
+      const rows = Object.entries(AI_RESULTS).map(([id, r]) => {
+        const h = HOLDINGS.find(x => String(x.id) === String(id));
+        const cls = 'action-' + r.action.replace(/\s+/g, '-');
+        return `<tr>
+          <td><span class="sym-link" onclick="openTrendModal(${id})">${h ? h.symbol : id}</span></td>
+          <td><span class="rec ${cls}">${r.action}</span></td>
+          <td class="mono">${r.confidence}%</td>
+          <td>${r.reasoning || ''}</td>
+        </tr>`;
+      }).join('');
+      document.getElementById('aiResults').innerHTML =
+        `<div class="pf-table-wrap"><table><thead><tr><th>Symbol</th><th>AI Verdict</th><th>Confidence</th><th>Reasoning</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+    renderHoldings(HOLDINGS); // re-render to show AI badges in the holdings table too
+    toast('AI analysis complete');
+  } catch (e) {
+    document.getElementById('aiResults').innerHTML = `<div class="ai-note" style="color:var(--red)">${cleanErr(e.message)}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+// ── HOLDINGS / HISTORY / ANALYTICS ──────────────────────────────
+function recommendation(h) {
+  // Mirrors the backend's rule-based heuristic for a quick local badge alongside the AI verdict.
+  const gain = Number(h.gain_pct || 0), momentum = Number(h.momentum_score || 0), rs = Number(h.rs_score || 0);
+  const trend = Number(h.trending_days || 0) / 12 * 100;
+  const score = gain * 0.25 + momentum * 0.30 + rs * 0.20 + trend * 0.15;
+  if (score >= 65 && gain >= 0) return 'ADD MORE';
+  if (score >= 45) return 'HOLD';
+  if (score >= 25 || gain > 10) return 'TRIM';
+  return 'EXIT';
+}
+function recHtml(r) { if (!r) return '—'; const cls = r === 'ADD MORE' ? 'rec-add' : r === 'HOLD' ? 'rec-hold' : r === 'TRIM' ? 'rec-trim' : 'rec-exit'; return `<span class="rec ${cls}">${r}</span>`; }
+function aiHtml(id) {
+  const r = AI_RESULTS[id];
+  if (!r) return '<span style="color:var(--t3)">—</span>';
+  const cls = 'action-' + r.action.replace(/\s+/g, '-');
+  return `<div class="ai-badge-wrap"><span class="rec ${cls}">${r.action}</span><span class="ai-conf">${r.confidence}% conf.</span></div>`;
+}
+
+function renderHoldings(rows) {
+  const body = rows.map(h => `<tr>
+    <td><span class="sym-link" onclick="openTrendModal(${h.id})">📈 ${h.symbol}</span></td>
+    <td>${fNum(h.quantity)}</td>
+    <td>${inr(h.avg_buy_price)}</td>
+    <td>${h.buy_date || '<span class="status-pill status-missing">Missing</span>'}</td>
+    <td>${h.days_held ?? '—'}</td>
+    <td>${inr(h.current_price)}</td>
+    <td>${inr(h.investment_amount)}</td>
+    <td>${inr(h.current_value)}</td>
+    <td class="${pCls(h.profit_loss)}">${inr(h.profit_loss)}</td>
+    <td class="${pCls(h.gain_pct)}">${fPct(h.gain_pct)}</td>
+    <td>${h.status === 'ACTIVE' ? recHtml(recommendation(h)) : '—'}</td>
+    <td>${h.status === 'ACTIVE' ? aiHtml(h.id) : '—'}</td>
+    <td><span class="status-pill ${h.status === 'ACTIVE' ? 'status-active' : 'status-sold'}">${h.status}</span></td>
+    <td><div class="table-actions">${h.status === 'ACTIVE' ? `<button class="link-btn" onclick="editHolding(${h.id})">Edit</button><button class="link-btn" onclick="sellHolding(${h.id})">Mark Sold</button>` : ''}<button class="danger-btn" onclick="deleteHolding(${h.id})">Delete</button></div></td>
+  </tr>`).join('');
+  document.getElementById('holdingsTable').innerHTML =
+    `<table><thead><tr><th>Symbol</th><th>Qty</th><th>Avg Buy</th><th>Buy Date</th><th>Days</th><th>Current</th><th>Investment</th><th>Value</th><th>P/L</th><th>Gain %</th><th>Rule Rec</th><th>AI Verdict</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${body || '<tr class="empty-row"><td colspan="14">No holdings yet — add one below or upload a broker file</td></tr>'}</tbody></table>`;
+}
+
+function renderHistory(rows) {
+  const body = rows.map(h => `<tr>
+    <td class="mono">${h.symbol}</td><td>${h.buy_date || '—'}</td><td>${h.sell_date || '—'}</td><td>${h.days_held ?? '—'}</td>
+    <td>${inr(h.avg_buy_price)}</td><td>${inr(h.sell_price)}</td>
+    <td class="${pCls(h.profit_loss)}">${inr(h.profit_loss)}</td><td class="${pCls(h.gain_pct)}">${fPct(h.gain_pct)}</td>
+    <td><button class="danger-btn" onclick="deleteHolding(${h.id})">Delete</button></td></tr>`).join('');
+  document.getElementById('historyTable').innerHTML =
+    `<table><thead><tr><th>Symbol</th><th>Buy Date</th><th>Sell Date</th><th>Duration</th><th>Buy Price</th><th>Sell Price</th><th>Realized P/L</th><th>Return %</th><th>Actions</th></tr></thead>
+    <tbody>${body || '<tr class="empty-row"><td colspan="9">No sold holdings yet</td></tr>'}</tbody></table>`;
+}
+
+function renderAnalytics(s) {
+  const sectors = s.sector_allocation || [];
+  const dead = s.dead_money || [];
+  const tax = s.tax_estimate || {};
+  const bars = sectors.map(x => `<div class="mini-bar"><div>${x.sector}</div><div class="mini-track"><div class="mini-fill" style="width:${Math.min(100, x.pct)}%"></div></div><div>${f1(x.pct)}%</div></div>`).join('');
+  document.getElementById('portfolioAnalytics').innerHTML = `
+    <div class="analytics-grid">
+      <div class="analytics-col">
+        <div class="panel-title" style="padding:12px 16px 0">Sector Allocation</div>
+        <div class="mini-bars">${bars || '<span class="panel-sub" style="padding:0 16px">No active holdings</span>'}</div>
+        <div class="panel-title" style="padding:0 16px 6px">Dead Money (180+ days, ±5%)</div>
+        <div class="mini-bars" style="padding-top:0">${dead.map(h => `<div class="mini-bar"><div>${h.symbol}</div><div>${h.days_held} days</div><div class="${pCls(h.gain_pct)}">${fPct(h.gain_pct)}</div></div>`).join('') || '<span class="panel-sub" style="padding:0 16px">None</span>'}</div>
+      </div>
+      <div class="analytics-col">
+        <div class="panel-title" style="padding:12px 16px 0">Winners vs Losers (by capital)</div>
+        <div class="pf-note">Winning Capital: ${f1(s.winners_vs_losers?.winning_capital_pct)}% · Losing Capital: ${f1(s.winners_vs_losers?.losing_capital_pct)}%</div>
+        <div class="panel-title" style="padding:8px 16px 0">Estimated Capital Gains Tax</div>
+        <div class="pf-note">
+          Short-term unrealized gain: ${inr(tax.stcg_unrealized_gain)} → est. tax ${inr(tax.estimated_stcg_tax)}<br/>
+          Long-term unrealized gain: ${inr(tax.ltcg_unrealized_gain)} (₹${fNum(tax.ltcg_exemption_used)} exempt) → est. tax ${inr(tax.estimated_ltcg_tax)}<br/>
+          <strong>Total if sold today: ${inr(tax.estimated_total_tax_if_sold_today)}</strong><br/>
+          <span style="color:var(--t3)">${tax.disclaimer || ''}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderMissingDates(rows) {
+  const panel = document.getElementById('missingDatesPanel');
+  if (!rows.length) { panel.classList.add('hidden'); return; }
+  panel.classList.remove('hidden');
+  document.getElementById('missingDates').innerHTML = rows.map(h => `<div class="pf-form" style="grid-template-columns:140px 1fr auto auto">
+    <div><strong>${h.symbol}</strong><div class="panel-sub">Purchase date missing</div></div>
+    <input class="finput" id="md_${h.id}" type="date"/>
+    <button class="btn btn-primary" onclick="saveMissingDate(${h.id})">Save Now</button>
+    <button class="btn btn-ghost" onclick="toast('Skipped. Edit later from holdings table.')">Skip</button>
+  </div>`).join('');
+}
+async function saveMissingDate(id) {
+  const buy_date = document.getElementById('md_' + id).value;
+  if (!buy_date) return toast('Select a date');
+  await apiFetch(`/api/portfolio/holdings/${id}`, { method: 'PATCH', body: JSON.stringify({ buy_date, requires_confirmation: false }) });
+  toast('Purchase date saved'); loadAll();
+}
+
+async function saveHolding() {
+  try {
+    const payload = { symbol: holdSymbol.value.trim().toUpperCase(), quantity: Number(holdQty.value), avg_buy_price: Number(holdPrice.value), buy_date: holdDate.value };
+    if (!payload.symbol) throw new Error('Symbol required');
+    if (!(payload.quantity > 0)) throw new Error('Quantity > 0 required');
+    if (!(payload.avg_buy_price > 0)) throw new Error('Price > 0 required');
+    if (!payload.buy_date) throw new Error('Buy date required');
+    await apiFetch('/api/portfolio/holdings', { method: 'POST', body: JSON.stringify(payload) });
+    ['holdSymbol', 'holdQty', 'holdPrice', 'holdDate'].forEach(id => document.getElementById(id).value = '');
+    toast('Holding added'); loadAll();
+  } catch (e) { toast(cleanErr(e.message), 5000); }
+}
+async function importPortfolio() {
+  try {
+    const file = document.getElementById('portfolioFile').files[0];
+    if (!file) return toast('Choose a CSV, XLS, or XLSX file');
+    const fd = new FormData(); fd.append('file', file);
+    const d = await apiFetch('/api/portfolio/import', { method: 'POST', body: fd });
+    toast(`Imported ${d.imported.length}; skipped ${d.skipped.length}`, 5000);
+    loadAll();
+  } catch (e) { toast(cleanErr(e.message), 6000); }
+}
+async function editHolding(id) {
+  const h = HOLDINGS.find(x => x.id === id); if (!h) return;
+  const quantity = prompt('Quantity', h.quantity); if (quantity === null) return;
+  const avg_buy_price = prompt('Average buy price', h.avg_buy_price); if (avg_buy_price === null) return;
+  const buy_date = prompt('Buy date (YYYY-MM-DD)', h.buy_date || ''); if (buy_date === null) return;
+  await apiFetch(`/api/portfolio/holdings/${id}`, { method: 'PATCH', body: JSON.stringify({ quantity: Number(quantity), avg_buy_price: Number(avg_buy_price), buy_date, requires_confirmation: false }) });
+  toast('Holding updated'); loadAll();
+}
+async function sellHolding(id) {
+  const sell_date = prompt('Sell date (YYYY-MM-DD)', new Date().toISOString().slice(0, 10)); if (!sell_date) return;
+  const sell_price = prompt('Sell price'); if (!sell_price) return;
+  await apiFetch(`/api/portfolio/holdings/${id}/sell`, { method: 'POST', body: JSON.stringify({ sell_date, sell_price: Number(sell_price) }) });
+  toast('Moved to Portfolio History'); loadAll();
+}
+async function deleteHolding(id) {
+  if (!confirm('Delete this holding?')) return;
+  await apiFetch(`/api/portfolio/holdings/${id}`, { method: 'DELETE' });
+  toast('Holding deleted'); loadAll();
+}
+
+// ── TRENDLINE MODAL ──────────────────────────────────────────────
+async function openTrendModal(id) {
+  const h = HOLDINGS.find(x => x.id === id);
+  if (!h) return;
+  document.getElementById('trendModal').classList.remove('hidden');
+  document.getElementById('trendModalTitle').textContent = `${h.symbol} — price since ${h.buy_date || 'purchase'}`;
+  document.getElementById('trendModalNote').textContent = 'Loading…';
+  try {
+    const d = await apiFetch(`/api/portfolio/holdings/${id}/trendline`);
+    const points = d.data || [];
+    if (!points.length) {
+      document.getElementById('trendModalNote').textContent = 'No price history available for this range yet.';
+      if (trendChart) { trendChart.destroy(); trendChart = null; }
+      return;
+    }
+    const labels = points.map(p => p.trade_date);
+    const prices = points.map(p => Number(p.close_price));
+    const buyLine = Array(labels.length).fill(Number(h.avg_buy_price));
+    if (trendChart) trendChart.destroy();
+    const ctx = document.getElementById('trendCanvas').getContext('2d');
+    trendChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: h.symbol, data: prices, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,.1)', fill: true, tension: 0.25, pointRadius: 0, borderWidth: 2 },
+          { label: 'Avg buy price', data: buyLine, borderColor: '#f59e0b', borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 11 } } } },
+        scales: {
+          x: { ticks: { color: '#64748b', maxTicksLimit: 8, font: { size: 10 } }, grid: { color: '#1e2634' } },
+          y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#1e2634' } },
+        },
+      },
+    });
+    const first = prices[0], last = prices[prices.length - 1];
+    const chg = first ? ((last - first) / first * 100) : 0;
+    document.getElementById('trendModalNote').innerHTML =
+      `Since ${labels[0]}: <span class="${pCls(chg)}">${fPct(chg)}</span> · vs your avg buy price ${inr(h.avg_buy_price)}, currently ${pCls(last - h.avg_buy_price) === 'pos' ? 'above' : 'below'} entry.`;
+  } catch (e) {
+    document.getElementById('trendModalNote').textContent = cleanErr(e.message);
+  }
+}
+function closeTrendModal() { document.getElementById('trendModal').classList.add('hidden'); }
+document.getElementById('trendModal').addEventListener('click', (e) => { if (e.target.id === 'trendModal') closeTrendModal(); });
+
+// ── INIT ─────────────────────────────────────────────────────────
+showScreen();
+if (AUTH_TOKEN) loadAll();
+</script>
+</body>
+</html>

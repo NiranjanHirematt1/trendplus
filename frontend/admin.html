@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TrendPlus — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#0a0e17; --bg1:#11151c; --bg2:#1c2331; --bg3:#273041; --bg4:#333d52;
+  --border:#1e2634; --border2:#2a3548;
+  --t0:#f8fafc; --t1:#cbd5e1; --t2:#94a3b8; --t3:#64748b;
+  --green:#10b981; --green-bg:rgba(16,185,129,.12);
+  --red:#ef4444; --red-bg:rgba(239,68,68,.12);
+  --blue:#3b82f6; --blue-d:#2563eb; --blue-bg:rgba(59,130,246,.12);
+  --amber:#f59e0b; --amber-bg:rgba(245,158,11,.12);
+  --font-mono:'JetBrains Mono',monospace; --font:'DM Sans',sans-serif;
+  --r:6px; --r2:12px; --tr:150ms ease-in-out;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);
+}
+html{font-size:13px;background:var(--bg0);color:var(--t0);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none}
+input{font-family:var(--font);outline:none;border:none}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px}
+
+.topbar{height:52px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;box-shadow:var(--shadow-sm)}
+.logo{font-family:var(--font-mono);font-weight:700;font-size:15px;letter-spacing:-.5px}
+.logo span{color:var(--t2);font-weight:500;margin-left:8px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+
+.wrap{max-width:1200px;margin:0 auto;padding:24px 20px}
+.hidden{display:none!important}
+
+/* Login screen */
+.login-wrap{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center}
+.login-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:32px;width:340px}
+.login-card h1{font-size:16px;margin-bottom:6px}
+.login-card p{color:var(--t2);font-size:12px;margin-bottom:20px}
+
+.finput{background:var(--bg2);border:1px solid var(--border2)!important;border-radius:var(--r);padding:9px 11px;color:var(--t0);font-size:13px;width:100%}
+.finput:focus{border-color:var(--blue)!important}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+
+.btn{padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;transition:var(--tr)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-d)}
+.btn-ghost{background:transparent;border:1px solid var(--border2)!important;color:var(--t1)}
+.btn-ghost:hover{color:var(--t0);border-color:var(--t2)!important}
+.btn-danger{background:transparent;color:var(--red);font-size:12px;font-weight:700}
+.btn-block{width:100%}
+
+/* Dashboard */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:16px}
+.card-label{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}
+.card-value{font-family:var(--font-mono);font-weight:700;font-size:24px;margin-top:8px}
+
+.panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:20px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.panel-title{font-weight:700;font-size:14px}
+.panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:10px 14px;color:var(--t2);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.3px;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--t1)}
+tr:last-child td{border-bottom:none}
+.pill{display:inline-flex;border:1px solid var(--border2);border-radius:999px;padding:2px 9px;font-size:10px;font-weight:800}
+.pill-pending{color:var(--amber);background:var(--amber-bg)}
+.pill-active{color:var(--green);background:var(--green-bg)}
+.pill-disabled{color:var(--red);background:var(--red-bg)}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.link-btn{color:var(--blue);font-size:12px;font-weight:700}
+.link-btn:hover{text-decoration:underline}
+
+.placeholder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:16px}
+.placeholder-card{background:var(--bg2);border:1px dashed var(--border2);border-radius:var(--r2);padding:16px;text-align:center;color:var(--t3)}
+.placeholder-card .ph-title{color:var(--t2);font-weight:700;font-size:12.5px;margin-bottom:4px}
+.placeholder-card .ph-sub{font-size:11px}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:10px 18px;font-size:12.5px;opacity:0;pointer-events:none;transition:var(--tr);z-index:999}
+.toast.show{opacity:1}
+.empty-row td{text-align:center;color:var(--t2);padding:24px}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">TrendPlus <span>Admin</span></div>
+  <div class="topbar-right">
+    <button class="btn btn-ghost hidden" id="logoutBtn" onclick="adminLogout()">Log out</button>
+  </div>
+</header>
+
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <h1>Admin Login</h1>
+    <p>Restricted access. Admin credentials are separate from user accounts.</p>
+    <div class="field"><label>Username</label><input class="finput" id="adminUsername" type="text" autocomplete="username"/></div>
+    <div class="field"><label>Password</label><input class="finput" id="adminPassword" type="password" autocomplete="current-password"/></div>
+    <button class="btn btn-primary btn-block" onclick="adminLogin()">Log in</button>
+  </div>
+</div>
+
+<div class="wrap hidden" id="dashboardScreen">
+
+  <div class="cards" id="dashboardCards"></div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">Pending Users</div><div class="panel-sub">New registrations awaiting approval</div></div>
+    </div>
+    <div style="overflow:auto">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Registered</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="pendingBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">Existing Users</div><div class="panel-sub">Approved accounts</div></div>
+    </div>
+    <div style="overflow:auto">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Created</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">Modules</div><div class="panel-sub">Reserved for future features</div></div>
+    </div>
+    <div class="placeholder-grid">
+      <div class="placeholder-card"><div class="ph-title">Portfolio Analyzer</div><div class="ph-sub">Coming soon</div></div>
+      <div class="placeholder-card"><div class="ph-title">Website Analytics</div><div class="ph-sub">Coming soon</div></div>
+      <div class="placeholder-card"><div class="ph-title">User Feedback</div><div class="ph-sub">Coming soon</div></div>
+      <div class="placeholder-card"><div class="ph-title">Contact Messages</div><div class="ph-sub">Coming soon</div></div>
+      <div class="placeholder-card"><div class="ph-title">Activity Logs</div><div class="ph-sub">Coming soon</div></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://localhost:8000'; // same backend as the main app (frontend/index.html)
+
+let ADMIN_TOKEN = sessionStorage.getItem('tp_admin_token') || '';
+
+function toast(msg, ms = 3000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), ms);
+}
+function cleanErr(msg){ try{ const j=JSON.parse(msg.replace(/^\d+:\s*/,'')); return j.detail || msg; }catch(_){ return msg; } }
+
+async function adminFetch(path, options = {}) {
+  const headers = Object.assign({}, options.headers || {});
+  if (ADMIN_TOKEN) headers.Authorization = 'Bearer ' + ADMIN_TOKEN;
+  if (options.body) headers['Content-Type'] = 'application/json';
+  const r = await fetch(API + path, Object.assign({}, options, { headers }));
+  if (!r.ok) { const t = await r.text().catch(() => r.statusText); throw new Error(`${r.status}: ${t}`); }
+  return r.json();
+}
+
+function setAdminToken(token) {
+  ADMIN_TOKEN = token || '';
+  if (token) sessionStorage.setItem('tp_admin_token', token); else sessionStorage.removeItem('tp_admin_token');
+  updateScreens();
+}
+function updateScreens() {
+  const on = !!ADMIN_TOKEN;
+  document.getElementById('loginScreen').classList.toggle('hidden', on);
+  document.getElementById('dashboardScreen').classList.toggle('hidden', !on);
+  document.getElementById('logoutBtn').classList.toggle('hidden', !on);
+}
+function adminLogout() { setAdminToken(''); toast('Logged out'); }
+
+async function adminLogin() {
+  try {
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value;
+    const d = await adminFetch('/api/admin/panel/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+    setAdminToken(d.access_token);
+    toast('Welcome back, ' + d.admin.username);
+    loadAll();
+  } catch (e) { toast(cleanErr(e.message), 5000); }
+}
+
+async function loadAll() {
+  if (!ADMIN_TOKEN) return;
+  await Promise.all([loadDashboard(), loadPending(), loadUsers()]);
+}
+
+async function loadDashboard() {
+  try {
+    const d = await adminFetch('/api/admin/panel/dashboard');
+    const items = [['Total Users', d.total_users], ['Pending Users', d.pending_users], ['Active Users', d.active_users], ['Disabled Users', d.disabled_users]];
+    document.getElementById('dashboardCards').innerHTML = items.map(([l, v]) =>
+      `<div class="card"><div class="card-label">${l}</div><div class="card-value">${v ?? 0}</div></div>`).join('');
+  } catch (e) { toast(cleanErr(e.message), 5000); if (e.message.startsWith('401')) setAdminToken(''); }
+}
+
+async function loadPending() {
+  try {
+    const d = await adminFetch('/api/admin/panel/pending-users');
+    const rows = d.data || [];
+    document.getElementById('pendingBody').innerHTML = rows.length ? rows.map(u => `
+      <tr>
+        <td>${escapeHtml(u.full_name)}</td>
+        <td>${escapeHtml(u.email)}</td>
+        <td>${escapeHtml(u.phone)}</td>
+        <td>${fmtDate(u.created_at)}</td>
+        <td><span class="pill ${u.status === 'pending' ? 'pill-pending' : 'pill-disabled'}">${u.status}</span></td>
+        <td class="actions">
+          <button class="link-btn" onclick="approveUser(${u.id})">Approve</button>
+          <button class="link-btn" onclick="rejectUser(${u.id})">Reject</button>
+          <button class="btn-danger" onclick="deletePending(${u.id})">Delete</button>
+        </td>
+      </tr>`).join('') : `<tr class="empty-row"><td colspan="6">No pending registrations</td></tr>`;
+  } catch (e) { toast(cleanErr(e.message), 5000); }
+}
+
+async function loadUsers() {
+  try {
+    const d = await adminFetch('/api/admin/panel/users');
+    const rows = d.data || [];
+    document.getElementById('usersBody').innerHTML = rows.length ? rows.map(u => `
+      <tr>
+        <td>${escapeHtml(u.full_name)}</td>
+        <td>${escapeHtml(u.email)}</td>
+        <td>${escapeHtml(u.phone || '—')}</td>
+        <td>${fmtDate(u.created_at)}</td>
+        <td>${u.last_login_at ? fmtDate(u.last_login_at) : '—'}</td>
+        <td><span class="pill ${u.active ? 'pill-active' : 'pill-disabled'}">${u.active ? 'Active' : 'Disabled'}</span></td>
+        <td class="actions">
+          ${u.active
+            ? `<button class="link-btn" onclick="disableUser(${u.id})">Disable</button>`
+            : `<button class="link-btn" onclick="enableUser(${u.id})">Enable</button>`}
+          <button class="link-btn" onclick="resetPassword(${u.id})">Reset Password</button>
+          <button class="btn-danger" onclick="deleteUser(${u.id})">Delete</button>
+        </td>
+      </tr>`).join('') : `<tr class="empty-row"><td colspan="7">No users yet</td></tr>`;
+  } catch (e) { toast(cleanErr(e.message), 5000); }
+}
+
+async function approveUser(id) { try { await adminFetch(`/api/admin/panel/pending-users/${id}/approve`, { method: 'POST' }); toast('User approved'); loadAll(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function rejectUser(id) { try { await adminFetch(`/api/admin/panel/pending-users/${id}/reject`, { method: 'POST' }); toast('Registration rejected'); loadAll(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function deletePending(id) { if (!confirm('Delete this pending registration?')) return; try { await adminFetch(`/api/admin/panel/pending-users/${id}`, { method: 'DELETE' }); toast('Deleted'); loadAll(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function enableUser(id) { try { await adminFetch(`/api/admin/panel/users/${id}/enable`, { method: 'POST' }); toast('User enabled'); loadUsers(); loadDashboard(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function disableUser(id) { try { await adminFetch(`/api/admin/panel/users/${id}/disable`, { method: 'POST' }); toast('User disabled'); loadUsers(); loadDashboard(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function deleteUser(id) { if (!confirm('Delete this user permanently?')) return; try { await adminFetch(`/api/admin/panel/users/${id}`, { method: 'DELETE' }); toast('User deleted'); loadAll(); } catch (e) { toast(cleanErr(e.message), 5000); } }
+async function resetPassword(id) {
+  if (!confirm('Generate a new temporary password for this user?')) return;
+  try {
+    const d = await adminFetch(`/api/admin/panel/users/${id}/reset-password`, { method: 'POST' });
+    prompt('Temporary password (copy and share securely with the user):', d.temporary_password);
+  } catch (e) { toast(cleanErr(e.message), 5000); }
+}
+
+function escapeHtml(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fmtDate(s) { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+updateScreens();
+if (ADMIN_TOKEN) loadAll();
+</script>
+</body>
+</html>
