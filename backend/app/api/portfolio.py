@@ -9,8 +9,10 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from app.api.deps import current_user
 from app.core.database import get_pool
 from app.models.portfolio import HoldingCreate, HoldingSold, HoldingUpdate, PortfolioCreate
+from app.services import ai_analysis
 from app.services import portfolio_intelligence as pi
-from app.services.portfolio_analytics import concentration_risk, portfolio_xirr
+from app.services.ai_analysis import AIAnalysisError
+from app.services.portfolio_analytics import compute_peak_drawdowns, concentration_risk, portfolio_xirr
 from app.services.portfolio_import import parse_portfolio_file
 
 router = APIRouter()
@@ -135,6 +137,11 @@ async def portfolio_summary(user=Depends(current_user), pool=Depends(get_pool)):
         sector = r.get("sector") or "Unclassified"
         sector_totals[sector] = sector_totals.get(sector, 0) + float(r["current_value"] or 0)
     dead = [r for r in active if (r.get("days_held") or 0) > 180 and -5 <= float(r.get("gain_pct") or 0) <= 5]
+    trailing_stop_watch = sorted(
+        [r for r in active if (r.get("drawdown_from_peak_pct") or 0) >= 12],
+        key=lambda r: float(r.get("drawdown_from_peak_pct") or 0),
+        reverse=True,
+    )
 
     return {
         "portfolio_id": pid,
@@ -163,7 +170,31 @@ async def portfolio_summary(user=Depends(current_user), pool=Depends(get_pool)):
         },
         "sector_allocation": [{"sector": k, "value": v, "pct": (v / current_value * 100) if current_value else 0} for k, v in sorted(sector_totals.items())],
         "dead_money": dead,
+        "trailing_stop_watch": trailing_stop_watch,
     }
+
+
+async def apply_peak_drawdowns(conn, active: list[dict]) -> None:
+    """Trailing-stop data: highest close since each holding's buy date, and how
+    far the current price has pulled back from that peak. Mutates `active` in place."""
+    buy_dates = [h["buy_date"] for h in active if h.get("buy_date")]
+    if not buy_dates:
+        return
+    symbols = list({h["symbol"] for h in active})
+    rows = await conn.fetch(
+        """
+        select symbol, trade_date, close_price
+        from price_history
+        where symbol = any($1::text[]) and trade_date >= $2
+        """,
+        symbols, min(buy_dates),
+    )
+    price_rows = [as_dict(r) for r in rows]
+    drawdowns = compute_peak_drawdowns(price_rows, active)
+    for h in active:
+        dd = drawdowns.get(h["id"])
+        h["peak_price"] = dd["peak_price"] if dd else None
+        h["drawdown_from_peak_pct"] = dd["drawdown_from_peak_pct"] if dd else None
 
 
 async def enriched_holdings(conn, portfolio_id: int, active_only: bool = True):
@@ -216,6 +247,8 @@ async def enriched_holdings(conn, portfolio_id: int, active_only: bool = True):
                 d["annualized_return"] = ((1 + d["gain_pct"] / 100) ** (365 / max(d["days_held"], 1)) - 1) * 100
             else:
                 d["annualized_return"] = None
+
+        await apply_peak_drawdowns(conn, active)
 
     return result
 
@@ -339,6 +372,37 @@ async def import_holdings(file: UploadFile = File(...), user=Depends(current_use
             d["requires_confirmation"] = not d.pop("buy_date_confirmed")
             imported.append(d)
     return {"imported": imported, "skipped": skipped, "warnings": warnings, "requires_confirmation": [r for r in imported if r.get("requires_confirmation")]}
+
+
+@router.post("/ai-advisor", summary="AI-powered Hold/Trim/Add More/Exit All verdicts for active holdings (Gemini)")
+async def ai_advisor(user=Depends(current_user), pool=Depends(get_pool)):
+    async with pool.acquire() as conn:
+        pid = await ensure_portfolio(conn, user["id"])
+        active = await enriched_holdings(conn, pid, active_only=True)
+
+    if not active:
+        return {"data": []}
+
+    try:
+        verdicts = await ai_analysis.analyze_holdings(active)
+    except AIAnalysisError as exc:
+        raise HTTPException(503, str(exc))
+
+    data = []
+    for h in active:
+        v = verdicts.get(h["id"], {})
+        data.append({
+            "id": h["id"],
+            "symbol": h["symbol"],
+            "company_name": h.get("company_name"),
+            "sector": h.get("sector"),
+            "gain_pct": h.get("gain_pct"),
+            "position_score": h.get("position_score"),
+            "action": v.get("action", "HOLD"),
+            "reasoning": v.get("reasoning") or "No reasoning returned.",
+            "confidence": v.get("confidence", 50),
+        })
+    return {"data": data}
 
 
 @router.get("/holdings/{holding_id}/trendline", summary="Holding trendline from buy date to current/sell date")
