@@ -40,24 +40,52 @@ a{color:inherit}
 
 .wrap{max-width:1320px;margin:0 auto;padding:24px 20px 60px}
 
-/* Login gate */
-.login-wrap{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:28px;width:100%;max-width:640px}
-.login-card h1{font-size:16px;margin-bottom:4px}
-.login-card p{color:var(--t2);font-size:12.5px;margin-bottom:18px}
-.login-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:560px){.login-grid{grid-template-columns:1fr}}
+/* ── Auth gate: split brand / form layout ────────────────────── */
+.login-wrap{min-height:calc(100vh - 52px);display:flex;align-items:stretch;justify-content:center}
+.auth-shell{display:grid;grid-template-columns:1fr 1fr;max-width:1040px;width:100%;margin:auto;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow-md)}
+@media(max-width:860px){.auth-shell{grid-template-columns:1fr;max-width:480px}}
+
+.auth-brand{background:linear-gradient(165deg,var(--bg1) 0%,var(--bg0) 100%);border-right:1px solid var(--border);padding:40px 34px;display:flex;flex-direction:column}
+@media(max-width:860px){.auth-brand{border-right:none;border-bottom:1px solid var(--border);padding:30px 28px}}
+.auth-brand .logo{font-size:18px;margin-bottom:6px}
+.auth-brand-tag{color:var(--t2);font-size:13px;line-height:1.55;margin-bottom:28px}
+.auth-feature-list{display:flex;flex-direction:column;gap:16px;margin-top:auto}
+.auth-feature{display:flex;gap:12px;align-items:flex-start}
+.auth-feature-icon{width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px}
+.auth-feature-text b{display:block;font-size:12.5px;color:var(--t0);font-weight:700;margin-bottom:1px}
+.auth-feature-text span{font-size:11.5px;color:var(--t3);line-height:1.4}
+
+.auth-panel{background:var(--bg1);padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:860px){.auth-panel{padding:30px 28px}}
+.auth-panel h1{font-size:18px;margin-bottom:6px}
+.auth-panel p.auth-sub{color:var(--t2);font-size:12.5px;margin-bottom:24px;line-height:1.5}
+.auth-choice-btns{display:flex;flex-direction:column;gap:12px}
+.auth-choice-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:16px 18px;border-radius:var(--r2);text-align:left;transition:var(--tr)}
+.auth-choice-btn .ac-title{font-size:13.5px;font-weight:700;color:var(--t0);margin-bottom:2px}
+.auth-choice-btn .ac-sub{font-size:11.5px;color:var(--t3)}
+.auth-choice-btn.primary{background:var(--blue-bg);border:1px solid rgba(59,130,246,.35)}
+.auth-choice-btn.primary:hover{border-color:var(--blue);transform:translateY(-1px)}
+.auth-choice-btn.ghost{background:var(--bg2);border:1px solid var(--border2)}
+.auth-choice-btn.ghost:hover{border-color:var(--t2);transform:translateY(-1px)}
+.auth-choice-btn .ac-arrow{color:var(--t3);font-size:16px}
+
+.auth-back{display:inline-flex;align-items:center;gap:6px;color:var(--t3);font-size:12px;font-weight:600;margin-bottom:18px;cursor:pointer;width:fit-content}
+.auth-back:hover{color:var(--t1)}
+.auth-admin-link{display:block;text-align:center;margin-top:18px;font-size:11.5px;color:var(--t3);text-decoration:none;padding-top:16px;border-top:1px solid var(--border)}
+.auth-admin-link:hover{color:var(--t1)}
 
 .finput{background:var(--bg2);border:1px solid var(--border2)!important;border-radius:var(--r);padding:9px 11px;color:var(--t0);font-size:13px;width:100%}
-.finput:focus{border-color:var(--blue)!important}
+.finput:focus{border-color:var(--blue)!important;box-shadow:0 0 0 3px var(--blue-bg)}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .field label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 
 .btn{padding:9px 16px;border-radius:var(--r);font-size:13px;font-weight:600;transition:var(--tr)}
-.btn-primary{background:var(--blue-d);color:#fff}
-.btn-primary:hover{background:var(--blue)}
+.btn-primary{background:var(--blue-d);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.btn-primary:hover{background:var(--blue);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.btn-primary:active{transform:translateY(0)}
 .btn-ghost{background:transparent;border:1px solid var(--border2)!important;color:var(--t1)}
 .btn-ghost:hover{color:var(--t0);border-color:var(--t2)!important}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
 .btn-block{width:100%}
 .sub-link{display:block;text-align:center;margin-top:10px;font-size:11px;color:var(--t3);text-decoration:none}
 .sub-link:hover{color:var(--t1)}
@@ -70,7 +98,8 @@ a{color:inherit}
 
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 @media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
-.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px;transition:var(--tr)}
+.card:hover{border-color:var(--border2);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
 .card-label{font-size:10.5px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:5px}
 .card-value{font-family:var(--font-mono);font-weight:700;font-size:19px;margin-top:7px}
 .card-sub{font-size:11px;color:var(--t3);margin-top:3px}
@@ -80,9 +109,10 @@ a{color:inherit}
 .risk-diversified{color:var(--green);background:var(--green-bg)}
 .risk-concentrated{color:var(--amber);background:var(--amber-bg)}
 
-.panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:18px}
+.panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:18px;transition:var(--tr)}
 .panel-head{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.panel-title{font-weight:700;font-size:14px}
+.panel-title{font-weight:700;font-size:14px;position:relative;padding-left:11px}
+.panel-title::before{content:'';position:absolute;left:0;top:1px;bottom:1px;width:3px;border-radius:2px;background:var(--blue)}
 .panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
 .panel-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
@@ -213,25 +243,74 @@ tr:last-child td{border-bottom:none}
 
 <!-- ── LOGIN / REGISTER GATE ───────────────────────────────── -->
 <div class="login-wrap" id="loginScreen">
-  <div class="login-card">
-    <h1>Account access</h1>
-    <p>Log in to manage your portfolio, or register for a new account. New accounts require admin approval before you can log in.</p>
-    <div class="login-grid">
-      <div>
-        <div class="panel-title" style="font-size:12px;margin-bottom:10px">Login</div>
+  <div class="auth-shell">
+
+    <div class="auth-brand">
+      <div class="logo">TrendPlus <span>Portfolio</span></div>
+      <p class="auth-brand-tag">Track your real holdings against live TrendPlus market data — position scoring, capital rotation, and AI-backed hold/trim signals in one dashboard.</p>
+      <div class="auth-feature-list">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">◆</div>
+          <div class="auth-feature-text"><b>Position Intelligence</b><span>Every holding scored on momentum, RS, trend and risk.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">↻</div>
+          <div class="auth-feature-text"><b>Capital Rotation Alerts</b><span>See when a screener stock is materially stronger than a laggard you hold.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">✦</div>
+          <div class="auth-feature-text"><b>AI Portfolio Advisor</b><span>Gemini-backed Hold / Trim / Add / Exit read on every active position.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">▾</div>
+          <div class="auth-feature-text"><b>Trailing Stop Watch</b><span>Flags positions pulling back hard from their post-purchase peak.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+
+      <!-- Choice view -->
+      <div id="authChoice">
+        <h1>Welcome</h1>
+        <p class="auth-sub">Log in to your existing account, or create a new one. New accounts require admin approval before you can log in.</p>
+        <div class="auth-choice-btns">
+          <button class="auth-choice-btn primary" onclick="showAuthView('login')">
+            <div><div class="ac-title">I already have an account</div><div class="ac-sub">Log in to manage your portfolio</div></div>
+            <span class="ac-arrow">→</span>
+          </button>
+          <button class="auth-choice-btn ghost" onclick="showAuthView('register')">
+            <div><div class="ac-title">I'm new here</div><div class="ac-sub">Register for a new account</div></div>
+            <span class="ac-arrow">→</span>
+          </button>
+        </div>
+        <a href="./admin.html" class="auth-admin-link">Login as Admin</a>
+      </div>
+
+      <!-- Login view -->
+      <div id="authLogin" class="hidden">
+        <div class="auth-back" onclick="showAuthView('choice')">← Back</div>
+        <h1>Log in</h1>
+        <p class="auth-sub">Enter your credentials to access your portfolio.</p>
         <div class="field"><input class="finput" id="loginEmail" type="email" placeholder="Email"/></div>
         <div class="field"><input class="finput" id="loginPassword" type="password" placeholder="Password"/></div>
         <button class="btn btn-primary btn-block" onclick="loginUser()">Login</button>
-        <a href="./admin.html" class="sub-link">Admin Login</a>
+        <a href="./admin.html" class="auth-admin-link">Login as Admin</a>
       </div>
-      <div>
-        <div class="panel-title" style="font-size:12px;margin-bottom:10px">Register</div>
+
+      <!-- Register view -->
+      <div id="authRegister" class="hidden">
+        <div class="auth-back" onclick="showAuthView('choice')">← Back</div>
+        <h1>Create account</h1>
+        <p class="auth-sub">New accounts require admin approval before you can log in.</p>
         <div class="field"><input class="finput" id="regFullName" type="text" placeholder="Full Name"/></div>
         <div class="field"><input class="finput" id="regEmail" type="email" placeholder="Email"/></div>
         <div class="field"><input class="finput" id="regPhone" type="tel" placeholder="Phone Number"/></div>
         <div class="field"><input class="finput" id="regPassword" type="password" placeholder="Password (min 8 characters)"/></div>
         <button class="btn btn-ghost btn-block" onclick="registerUser()">Register</button>
+        <a href="./admin.html" class="auth-admin-link">Login as Admin</a>
       </div>
+
     </div>
   </div>
 </div>
@@ -400,6 +479,12 @@ function showScreen() {
   document.getElementById('loginScreen').classList.toggle('hidden', on);
   document.getElementById('dashboardScreen').classList.toggle('hidden', !on);
   document.getElementById('logoutBtn').classList.toggle('hidden', !on);
+  if (!on) showAuthView('choice');
+}
+function showAuthView(view) {
+  document.getElementById('authChoice').classList.toggle('hidden', view !== 'choice');
+  document.getElementById('authLogin').classList.toggle('hidden', view !== 'login');
+  document.getElementById('authRegister').classList.toggle('hidden', view !== 'register');
 }
 function logoutUser() { setAuth(''); CURRENT_USER = null; showScreen(); toast('Logged out'); }
 
@@ -418,6 +503,7 @@ async function registerUser() {
     const d = await apiFetch('/api/auth/register', { method: 'POST', body: JSON.stringify(payload) });
     toast(d.message || 'Registration submitted. Awaiting admin approval.', 7000);
     ['regFullName', 'regEmail', 'regPhone', 'regPassword'].forEach(id => document.getElementById(id).value = '');
+    showAuthView('choice');
   } catch (e) { toast(cleanErr(e.message), 6000); }
 }
 async function loginUser() {
