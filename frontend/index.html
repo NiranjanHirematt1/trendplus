@@ -1187,12 +1187,19 @@ async function openDP(sym) {
   });
   
   // 1. TRADINGVIEW LINK (Symbol)
-  document.getElementById('dpSym').textContent = sym;
-  const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
   const dpSymEl = document.getElementById('dpSym');
-  dpSymEl.style.cursor = 'pointer'; dpSymEl.style.color = 'var(--blue)';
+  dpSymEl.textContent = sym;
+  const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
+
+  dpSymEl.style.cursor = 'pointer'; 
+  dpSymEl.style.color = 'var(--blue)';
   dpSymEl.title = `Open ${sym} on TradingView ↗`;
-  dpSymEl.onclick = () => window.open(tvUrl, '_blank', 'noopener,noreferrer');
+
+  dpSymEl.onclick = (e) => {
+    e.stopPropagation(); 
+    e.preventDefault();  
+    window.open(tvUrl, '_blank', 'noopener,noreferrer');
+  };
   
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
@@ -1200,16 +1207,22 @@ async function openDP(sym) {
     const lat  = d.latest || {};
     
     // 2. SCREENER.IN LINK (Company Name)
-    // Placed here so it doesn't get overwritten by the fetch
     const dpNameEl = document.getElementById('dpName');
     const compName = info.company_name || sym;
     const screenerId = sym;
+  
     dpNameEl.textContent = compName + ' ↗';
     dpNameEl.style.cursor = 'pointer';
     dpNameEl.style.transition = 'color 0.2s';
     dpNameEl.title = `Open ${compName} on Screener ↗`;
-    dpNameEl.onclick = () => window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
+  
+    dpNameEl.onclick = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
+    };
 
+    // --- DOM UPDATES FOR THE REST OF THE PANEL ---
     document.getElementById('dpPrice').innerHTML =
       `<span class="mono">${inr(lat.close_price)}</span> <span class="${pCls(lat.chg_1d)} mono" style="font-size:16px;margin-left:8px;">${fPct(lat.chg_1d)}</span>`;
       
@@ -1263,6 +1276,7 @@ async function openDP(sym) {
       document.getElementById('dpPeers').innerHTML = '<div style="color:var(--t2);font-size:13px;padding:8px 0;font-weight:500;">No peers found</div>';
     }
   } catch(e) {
+    // This is the single, correct catch block for the entire function
     document.getElementById('dpMetrics').innerHTML = `<div style="color:var(--red);padding:12px;font-size:13px;background:var(--red-bg);border:1px solid var(--red-d);border-radius:var(--r2);">Error: ${e.message}</div>`;
   }
 }
