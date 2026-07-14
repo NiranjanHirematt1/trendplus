@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TrendPulse — NSE Momentum Screener</title>
+<title>TrendPlus — NSE Momentum Screener</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -67,8 +67,6 @@ input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px s
 .app{display:grid;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
 .topbar{background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:0;z-index:100;box-shadow:var(--shadow-sm);}
 .logo{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--t0);margin-right:28px;display:flex;align-items:center;gap:8px;white-space:nowrap;letter-spacing:-0.5px;}
-.pulse{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 .nav{display:flex;align-items:center;height:100%;gap:4px;}
 .nav-btn{height:100%;padding:0 16px;color:var(--t2);font-size:13px;font-weight:500;border-bottom:2px solid transparent;transition:var(--tr);border-radius:4px 4px 0 0;}
@@ -342,6 +340,17 @@ html.light .scard{border-color:var(--border)}
 .sector-tab{background:transparent;color:var(--t2);font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;border:none;font-family:var(--font);transition:var(--tr)}
 .sector-tab:hover{color:var(--t0)}
 .sector-tab.active{background:var(--bg3);color:var(--t0)}
+
+/* ── PORTFOLIO & AUTH ───────────────────────── */
+.portfolio-wrap{padding:20px;display:flex;flex-direction:column;gap:18px}
+.auth-panel,.portfolio-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow-sm);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg1)}
+.panel-title{font-weight:700;color:var(--t0);font-size:14px}.panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
+.portfolio-grid{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:12px}.pf-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px}.pf-label{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}.pf-value{font-family:var(--font-mono);font-weight:700;font-size:18px;margin-top:8px;color:var(--t0)}
+.pf-actions{display:flex;gap:10px;flex-wrap:wrap}.pf-form{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr)) auto;gap:10px;padding:16px}.pf-form label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase}.pf-field{display:flex;flex-direction:column;gap:5px}.pf-note{font-size:12px;color:var(--t2);line-height:1.5;padding:0 16px 16px}.pf-table-wrap{overflow:auto}.status-pill{display:inline-flex;border:1px solid var(--border2);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800}.status-active{color:var(--green);background:var(--green-bg)}.status-sold{color:var(--t2);background:var(--bg2)}.status-missing{color:var(--amber);background:var(--amber-bg)}.rec{font-weight:800;font-size:11px}.rec-add{color:var(--green)}.rec-hold{color:var(--blue)}.rec-trim{color:var(--amber)}.rec-exit{color:var(--red)}.mini-bars{display:flex;flex-direction:column;gap:8px;padding:16px}.mini-bar{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:12px;color:var(--t1)}.mini-track{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden}.mini-fill{height:100%;background:var(--blue)}.auth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px}.hidden{display:none!important}.file-input{color:var(--t1);font-size:12px}.table-actions{display:flex;gap:6px;flex-wrap:wrap}.link-btn{color:var(--blue);font-size:12px;font-weight:700}.danger-btn{color:var(--red);font-size:12px;font-weight:700}
+@media(max-width:1200px){.portfolio-grid{grid-template-columns:repeat(3,1fr)}.pf-form{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){body{overflow:auto}.app{height:auto;min-height:100vh}.topbar{height:auto;min-height:52px;flex-wrap:wrap;padding:10px}.sidebar{display:none}.portfolio-grid,.auth-grid,.pf-form{grid-template-columns:1fr}.srch-input{width:160px}.srch-input:focus{width:190px}.mini-bar{grid-template-columns:1fr}.topbar-right{width:100%;flex-wrap:wrap}}
+
 @media(max-width:1100px){.sector-dash{grid-template-columns:1fr}.sector-kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.sector-dash{padding:12px}.sector-kpis{grid-template-columns:1fr}
   .sector-table th:nth-child(n+4),.sector-table td:nth-child(n+4){display:none}}
@@ -351,14 +360,16 @@ html.light .scard{border-color:var(--border)}
 <div class="app">
 
 <header class="topbar">
-  <div class="logo"><span class="pulse"></span>TrendPulse</div>
+  <div class="logo">TrendPlus</div>
   <nav class="nav">
     <button class="nav-btn active" id="nav-screener" onclick="switchView('screener')">Screener</button>
     <button class="nav-btn"        id="nav-sectors"  onclick="switchView('sectors')">Sectors</button>
     <button class="nav-btn"        id="nav-grouped"  onclick="switchView('grouped')">By Sector</button>
-    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">⚡ Super Strength</button>
+    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">Super Strength</button>
+    <a class="nav-btn"             id="nav-portfolio" href="./portfolio.html" style="display:inline-flex;align-items:center;text-decoration:none">Portfolio</a>
   </nav>
   <div class="topbar-right">
+      <a class="pb" id="authBtn" href="./portfolio.html" style="font-size:11.5px;padding:6px 12px;display:inline-flex;align-items:center;text-decoration:none">Login</a>
       <button id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark" style="background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--t1);padding:4px 9px;font-size:13px;cursor:pointer">🌙</button>
     <div class="srch-wrap" id="srchWrap">
       <span class="srch-icon">⌕</span>
@@ -468,565 +479,987 @@ html.light .scard{border-color:var(--border)}
           <option value="adx_14">ADX 14</option>
           <option value="rank_52w">52W Rank</option>
           <option value="macd_hist">MACD Hist</option>
-          <option value="volume">Volume</option>
+          <option value="weighted_rpi">Weighted RPI</option>
+          <option value="rpi_2w">RPI 2-Week</option>
+          <option value="rpi_3m">RPI 3-Month</option>
+          <option value="rpi_6m">RPI 6-Month</option>
+          <option value="rsi_1d">RSI 1-Day</option>
+          <option value="rsi_1w">RSI 1-Week</option>
+          <option value="total_trades">Total Trades</option>
+          <option value="close_price">Price</option>
+        </select>
+        <select class="tb-sel" id="sortOrd" onchange="onSortChange()">
+          <option value="desc">↓ Desc</option>
+          <option value="asc">↑ Asc</option>
         </select>
         <div class="vtoggle">
-          <button class="active" title="Table View">☰</button>
-          <button title="Grid View">⊞</button>
+          <button class="active" id="btnTable">▤ Table</button>
         </div>
       </div>
-      
-      <div class="twrap">
-        <table id="mainTable">
-          <thead>
-            <tr>
-              <th onclick="sortData('symbol')">Symbol</th>
-              <th onclick="sortData('name')">Company</th>
-              <th onclick="sortData('momentum_score')">Mom Score</th>
-              <th onclick="sortData('rs_score')">RS Score</th>
-              <th onclick="sortData('trending_days')">Trend Days</th>
-              <th onclick="sortData('chg_12d')">12D Chg %</th>
-              <th onclick="sortData('chg_1d')">1D Chg %</th>
-              <th onclick="sortData('rsi_14')">RSI 14</th>
-              <th onclick="sortData('adx_14')">ADX 14</th>
-              <th onclick="sortData('macd_hist')">MACD</th>
-              <th>EMA Signal</th>
-              <th>12-Day Matrix</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            <!-- Data populated by JS -->
-          </tbody>
-        </table>
-      </div>
-
-      <div class="pgn">
-        <button class="pb" id="btnPrev" onclick="prevPage()">Previous</button>
-        <button class="pb cur">1</button>
-        <button class="pb" id="btnNext" onclick="nextPage()">Next</button>
-        <div class="pg-info" id="pageInfo">Showing 1-50 of 0</div>
-      </div>
+      <div id="tableWrap"></div>
+      <div id="pgnWrap"></div>
     </div>
 
-    <!-- SECTORS VIEW -->
     <div class="view" id="view-sectors">
-      <div class="sector-dash">
-        <div class="sector-main">
-          <div class="sector-kpis">
-            <div class="sector-kpi">
-              <div class="sector-kpi-l">Top Sector</div>
-              <div class="sector-kpi-v" id="kpiTopSec">-</div>
-            </div>
-            <div class="sector-kpi">
-              <div class="sector-kpi-l">Avg Momentum</div>
-              <div class="sector-kpi-v" id="kpiAvgMom">-</div>
-            </div>
-            <div class="sector-kpi">
-              <div class="sector-kpi-l">Adv/Dec</div>
-              <div class="sector-kpi-v" id="kpiAD">-</div>
-            </div>
-            <div class="sector-kpi">
-              <div class="sector-kpi-l">New 52W Highs</div>
-              <div class="sector-kpi-v pos" id="kpi52w">-</div>
-            </div>
-          </div>
-          
-          <div class="sector-panel">
-            <div class="sector-panel-h">
-              <div class="sector-panel-title">Sector Performance Rankings</div>
-            </div>
-            <table class="sector-table">
-              <thead>
-                <tr>
-                  <th>Sector</th>
-                  <th>Strength</th>
-                  <th>Mom Score</th>
-                  <th>Avg 12D Chg</th>
-                  <th>Top Stock</th>
-                  <th>Breadth</th>
-                </tr>
-              </thead>
-              <tbody id="sectorTableBody">
-                <!-- Populated by JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <div class="sector-side">
-          <div class="sector-panel" id="sectorDetailPanel" style="display:none;">
-            <div class="sector-panel-h">
-              <div class="sector-panel-title" id="sdTitle">Sector Detail</div>
-              <div class="sector-panel-sub" id="sdCount">0 stocks</div>
-            </div>
-            <div class="sector-story">
-              <strong>Momentum Analysis:</strong>
-              <p id="sdStory">Select a sector to view detailed momentum analysis and top performing components.</p>
-            </div>
-            <div class="sector-stock-list" id="sdStocks">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-        </div>
+      <div class="toolbar">
+        <span class="cnt-badge" id="secCount">— sectors</span>
+        <select class="tb-sel" id="secSort" onchange="loadSectors()">
+          <option value="sector_score">Sector Strength</option>
+          <option value="avg_chg_today">Today Move</option>
+          <option value="avg_rs_score">Avg RS Score</option>
+          <option value="avg_chg_12d">Avg 12d%</option>
+          <option value="avg_chg_5d">Avg 5d%</option>
+          <option value="avg_trending_days">Avg Trending Days</option>
+          <option value="pct_stocks_up">% Stocks Up</option>
+          <option value="avg_rsi_14">Avg RSI</option>
+          <option value="stock_count">Stock Count</option>
+        </select>
       </div>
+      <div id="secGrid"></div>
     </div>
 
-    <!-- GROUPED VIEW -->
     <div class="view" id="view-grouped">
-      <div id="groupedContent">
-        <!-- Populated by JS -->
+      <div class="toolbar">
+        <span class="cnt-badge" id="grpCount">— stocks</span>
+        <button class="pb" onclick="expandAll()">Expand All</button>
+        <button class="pb" onclick="collapseAll()">Collapse All</button>
       </div>
+      <div id="grpWrap"></div>
     </div>
 
-    <!-- SUPER STRENGTH VIEW -->
+
     <div class="view" id="view-super">
-      <div class="ss-tabs">
-        <button class="ss-tab active">Top Momentum (90+)</button>
-        <button class="ss-tab">RSI > 70 + ADX > 25</button>
-        <button class="ss-tab">Golden Cross Today</button>
+      <div class="toolbar">
+        <span class="cnt-badge" id="ssCount">— stocks</span>
+        <select class="tb-sel" id="ssMinC" onchange="loadSuperStrength()">
+          <option value="7">Score 7/7 — Perfect</option>
+          <option value="6">Score 6+ — Excellent</option>
+          <option value="5" selected>Score 5+ — Strong</option>
+          <option value="4">Score 4+ — Building</option>
+        </select>
+        <select class="tb-sel" id="ssCap" onchange="loadSuperStrength()">
+          <option value="">All Caps</option>
+          <option>Large Cap</option><option>Mid Cap</option><option>Small Cap</option>
+        </select>
+        <select class="tb-sel" id="ssSec" onchange="loadSuperStrength()">
+          <option value="">All Sectors</option>
+        </select>
       </div>
-      <div class="twrap">
-        <table class="sector-table">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Score</th>
-              <th>RSI</th>
-              <th>ADX</th>
-              <th>Setup Notes</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="superTableBody">
-            <!-- Populated by JS -->
-          </tbody>
-        </table>
-      </div>
+      <div id="ssCriteria" style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;background:var(--bg0)"></div>
+      <div id="ssGrid"><div class="ld"><div class="spin"></div> Loading…</div></div>
     </div>
 
-  </div>
-</div>
-
-<!-- DETAIL PANEL (Slide out) -->
-<div class="dp" id="detailPanel">
+  </div></div></div><div class="dp" id="dp">
   <div class="dp-hdr">
     <div class="dp-hdr-info">
-      <div class="dp-sym"><span id="dpSym">RELIANCE</span> <span class="tv-badge">NSE</span></div>
-      <div class="dp-name" id="dpName">Reliance Industries Ltd.</div>
-      <div class="dp-price" id="dpPrice">₹ 2,954.20</div>
+      <span class="dp-sym" id="dpSym"
+         title="Open in TradingView" style="cursor:pointer">—</span>
+      <div class="dp-name"  id="dpName"></div>
+      <div class="dp-price" id="dpPrice"></div>
+      <div id="dpMeta" style="font-size:12px;color:var(--t2);margin-top:6px"></div>
     </div>
-    <button class="dp-close" onclick="closeDetail()">✕</button>
+    <button class="dp-close" onclick="closeDP()">✕</button>
   </div>
-  
   <div class="dp-sec">
-    <div class="dp-sec-ttl">Core Momentum</div>
-    <div class="metric-grid">
-      <div class="mbox">
-        <div class="mbox-l">Momentum Score</div>
-        <div class="mbox-v lg tp-hi" id="dpMom">94</div>
-      </div>
-      <div class="mbox">
-        <div class="mbox-l">Trending Days</div>
-        <div class="mbox-v lg" id="dpTrend">8 / 12</div>
-      </div>
-      <div class="mbox">
-        <div class="mbox-l">RSI (14)</div>
-        <div class="mbox-v" id="dpRSI">76.4</div>
-      </div>
-      <div class="mbox">
-        <div class="mbox-l">ADX (14)</div>
-        <div class="mbox-v" id="dpADX">32.1</div>
-      </div>
+    <div class="dp-sec-ttl">Key Metrics</div>
+    <div class="metric-grid" id="dpMetrics">
+      <div class="ld"><div class="spin"></div></div>
     </div>
   </div>
-  
   <div class="dp-sec">
-    <div class="dp-sec-ttl">12-Day Performance Matrix</div>
-    <div class="mat-detail" id="dpMat">
-      <!-- Generated by JS -->
-    </div>
+    <div class="dp-sec-ttl">MACD &amp; EMA</div>
+    <div class="metric-grid" id="dpMACDEMA"></div>
   </div>
-  
   <div class="dp-sec">
-    <div class="dp-sec-ttl">Technical Signals</div>
-    <div class="metric-grid">
-      <div class="mbox span2">
-        <div class="mbox-l">EMA 50 / 200 Status</div>
-        <div class="mbox-v ema-gc" id="dpEma">Golden Cross (2 days ago)</div>
-      </div>
-      <div class="mbox">
-        <div class="mbox-l">MACD Histogram</div>
-        <div class="mbox-v pos" id="dpMacd">+14.2 (Bullish)</div>
-      </div>
-      <div class="mbox">
-        <div class="mbox-l">Near 52W High</div>
-        <div class="mbox-v" id="dp52w">Yes (-2.1%)</div>
-      </div>
-    </div>
+    <div class="dp-sec-ttl">12-Day Matrix <span style="font-size:11px;color:var(--t2);font-weight:400;text-transform:none;letter-spacing:0;">(download Excel for full matrix)</span></div>
+    <div class="mat-detail" id="dpMatrix"></div>
+  </div>
+  <div class="dp-sec" style="border-bottom:none;">
+    <div class="dp-sec-ttl">Sector Peers</div>
+    <div id="dpPeers"></div>
   </div>
 </div>
 
-<div class="toast" id="toast">Settings applied successfully</div>
+<div class="toast" id="toast"></div>
 
-<!-- APP LOGIC -->
 <script>
-  // -- Dummy Data Generation --
-  const SECTORS = ['IT', 'Financials', 'Energy', 'Auto', 'Pharma', 'FMCG', 'Metals'];
-  const CAPS = ['Large Cap', 'Mid Cap', 'Small Cap'];
-  let stocks = [];
-  
-  function generateDummyData() {
-    for (let i = 1; i <= 250; i++) {
-      let rsi = 30 + Math.random() * 55;
-      let adx = 10 + Math.random() * 40;
-      let trendDays = Math.floor(Math.random() * 13);
-      let momScore = Math.floor(rsi * 0.5 + adx * 0.3 + trendDays * 2);
-      if (momScore > 100) momScore = 100;
-      
-      let matrix = [];
-      let total12d = 0;
-      for (let j=0; j<12; j++) {
-        let chg = (Math.random() * 4) - 1.5;
-        matrix.push(chg);
-        total12d += chg;
-      }
-      
-      stocks.push({
-        id: i,
-        symbol: `STOCK${i}`,
-        name: `Sample Company ${i} Ltd.`,
-        sector: SECTORS[Math.floor(Math.random() * SECTORS.length)],
-        cap: CAPS[Math.floor(Math.random() * CAPS.length)],
-        price: (100 + Math.random() * 3000).toFixed(2),
-        momentum_score: momScore,
-        rs_score: Math.floor(Math.random() * 100),
-        trending_days: trendDays,
-        chg_12d: total12d.toFixed(2),
-        chg_1d: matrix[11].toFixed(2),
-        rsi_14: rsi.toFixed(1),
-        adx_14: adx.toFixed(1),
-        macd_hist: ((Math.random() * 10) - 4).toFixed(2),
-        near_52w: Math.random() > 0.7,
-        ema_signal: Math.random() > 0.8 ? 'golden_cross' : (Math.random() > 0.4 ? 'above_200' : 'approaching'),
-        matrix: matrix
-      });
+'use strict';
+
+// ── CONFIG ─────────────────────────────────────────────────────
+const API = 'http://localhost:8000';
+
+// ── STATE ──────────────────────────────────────────────────────
+let VIEW     = 'screener';
+let PAGE     = 1;
+let SORT_BY  = 'momentum_score';
+let SORT_ORD = 'desc';
+let GRP_DATA = {};
+let GRP_OPEN = {};
+let srchTimer = null;
+let AUTH_TOKEN = localStorage.getItem('tp_token') || '';
+
+// ── FORMAT HELPERS ──────────────────────────────────────────────
+const f1   = v => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1);
+const f2   = v => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(2);
+const fPct = v => (v == null || isNaN(v)) ? '—' : (v >= 0 ? '+' : '') + Number(v).toFixed(2) + '%';
+const inr  = v => (v == null || isNaN(v)) ? '—' : '₹' + Number(v).toLocaleString('en-IN',{maximumFractionDigits:2});
+const fNum = v => (v == null || isNaN(v)) ? '—' : Number(v).toLocaleString('en-IN');
+const pCls = v => (v == null || isNaN(v)) ? 'neu' : Number(v) > 0 ? 'pos' : Number(v) < 0 ? 'neg' : 'neu';
+
+function tpill(d) {
+  if (d == null) return '—';
+  const n = Number(d);
+  const cls = n >= 9 ? 'tp-hi' : n >= 5 ? 'tp-med' : 'tp-lo';
+  return `<span class="tp ${cls}">${n}/12</span>`;
+}
+
+function mbar(s) {
+  if (s == null || isNaN(s)) return '—';
+  const n = Math.round(Number(s));
+  const col = n >= 70 ? '#10b981' : n >= 40 ? '#f59e0b' : '#ef4444';
+  return `<div class="mbar"><span class="mono" style="font-size:11.5px;font-weight:700;color:${col};min-width:22px">${n}</span><div class="mbar-bg"><div class="mbar-fg" style="width:${n}%;background:${col}"></div></div></div>`;
+}
+
+function matCells(pm, ema50, ema200) {
+  if (!pm || typeof pm !== 'object') return Array(12).fill('<td class="mat-td"><span style="color:var(--t3)">—</span></td>').join('');
+  const keys = [...Object.keys(pm).slice(0,12)].sort().reverse();
+  const aboveEma = ema50 != null && ema200 != null && Number(ema50) > Number(ema200);
+  const cells = [];
+  for (let i = 0; i < 12; i++) {
+    const k = keys[i];
+    const borderL = i === 0 ? 'border-left:2px solid var(--border2);' : '';
+    if (!k) { cells.push(`<td class="mat-td" style="${borderL}"><span style="color:var(--t3)">—</span></td>`); continue;
     }
+    const raw = pm[k];
+    if (raw == null) { cells.push(`<td class="mat-td" style="${borderL}"><span style="color:var(--t3)">—</span></td>`); continue;
+    }
+    const pct = Number(raw);
+    const cls = pct > 0 ? (aboveEma ? 'mat-dg' : 'mat-g') : pct < 0 ? 'mat-r' : 'mat-n';
+    const lbl = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
+    cells.push(`<td class="mat-td" style="${borderL}" title="${k}: ${lbl}"><div class="mat-box ${cls}">${lbl}</div></td>`);
   }
+  return cells.join('');
+}
 
-  // -- State --
-  let currentSort = 'momentum_score';
-  let sortDesc = true;
-  let currentPage = 1;
-  const itemsPerPage = 50;
-  let filteredStocks = [];
+function emaBadge(sig) {
+  if (!sig) return '—';
+  const map = { golden_cross:['ema-gc','Golden ✓'], above_200:['ema-a2','Above 200'], approaching:['ema-ap','Near 200'] };
+  const [cls, label] = map[sig] || ['', sig];
+  return `<span class="ema ${cls}">${label}</span>`;
+}
 
-  // -- Initialization --
-  window.onload = () => {
-    generateDummyData();
-    filteredStocks = [...stocks];
-    document.getElementById('datePill').innerText = new Date().toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
-    populateSectors();
-    renderTable();
-    renderSectorSidebar();
+function macdCell(hist) {
+  if (hist == null || isNaN(hist)) return '—';
+  const n = Number(hist);
+  return `<span class="${n > 0 ? 'macd-bull' : 'macd-bear'}">${n > 0 ? '▲' : '▼'} ${f2(n)}</span>`;
+}
+
+function capBadge(c) {
+  if (!c) return '';
+  const k = c === 'Large Cap' ? 'L' : c === 'Mid Cap' ? 'M' : 'S';
+  return `<span class="cap cap-${k}">${c.replace(' Cap','')}</span>`;
+}
+
+function toast(msg, ms = 2400) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), ms);
+}
+
+async function apiFetch(path, options = {}) {
+  const headers = Object.assign({}, options.headers || {});
+  if (AUTH_TOKEN) headers.Authorization = 'Bearer ' + AUTH_TOKEN;
+  if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+  const r = await fetch(API + path, Object.assign({}, options, {headers}));
+  if (!r.ok) { const t = await r.text().catch(() => r.statusText); throw new Error(`${r.status}: ${t}`); }
+  return r.json();
+}
+
+function loading(id) { document.getElementById(id).innerHTML = '<div class="ld"><div class="spin"></div> Loading…</div>'; }
+
+function strHash(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xfffffff; return h;
+}
+
+const SECTOR_MAP = {
+  "Agri - Animal Feed":"Agriculture","Agri - Edible Oil":"Agriculture","Agri - Misc":"Agriculture",
+  "Agri - Rice":"Agriculture","Agri - Sugar":"Agriculture","Agri - Tea/Coffee":"Agriculture",
+  "Agrichem - Fertilizers":"Agriculture","Agrichem - Protection":"Agriculture",
+  "Auto - 2W":"Auto & Ancillaries","Auto - CV":"Auto & Ancillaries","Auto - Misc":"Auto & Ancillaries",
+  "Auto - OEM Suppliers":"Auto & Ancillaries","Auto - PV/Trucks":"Auto & Ancillaries",
+  "Auto - Replacement":"Auto & Ancillaries","Auto - Tyres":"Auto & Ancillaries",
+  "Automobile and Auto Components":"Auto & Ancillaries",
+  "Financials - Private Bank":"Banking","Financials - PSU Bank":"Banking","Financials - Housing":"Banking",
+  "Engineering":"Capital Goods","Electronic - Equipment":"Capital Goods","Industrial - Bearings":"Capital Goods",
+  "Industrial - Consumables":"Capital Goods","Industrial - Pumps/Engines":"Capital Goods",
+  "Chemicals - Bulk":"Chemicals","Chemicals - Misc":"Chemicals","Chemicals - Petro":"Chemicals","Chemicals - Specialty":"Chemicals",
+  "Construction Materials":"Construction","Infra - Cement":"Construction","Infra - Ceramics":"Construction",
+  "Infra - Construction":"Construction","Infra - Diversified":"Construction","Infra - Granites/Marbles":"Construction","Infra - Plastic Pipes":"Construction",
+  "Consumption - Appliances":"Consumer Durables","Consumption - Electronics":"Consumer Durables","Consumption - Jewelry":"Consumer Durables",
+  "Consumption - Misc":"Consumer Durables","Consumption - Paints":"Consumer Durables","Consumption - Retail":"Consumer Durables",
+  "Leisure - Hotels":"Consumer Services","Leisure - Misc":"Consumer Services","Human Resources":"Consumer Services","Services":"Consumer Services",
+  "Defense - Misc":"Defence","Defense - Ship Building":"Defence","Defense - Technology":"Defence",
+  "Others":"Diversified",
+  "Fast Moving Consumer Goods":"FMCG","Beverages - Alcohol":"FMCG","Consumption - FMCG":"FMCG","Consumption - Dairy":"FMCG","Consumption - Personal":"FMCG","Forest Materials":"FMCG",
+  "Financials - AMC":"Financial Services","Financials - Broking":"Financial Services","Financials - Life":"Financial Services","Financials - MFI":"Financial Services",
+  "Financials - Misc":"Financial Services","Financials - NBFC":"Financial Services","Financials - Non-Life":"Financial Services","Financials - Ratings":"Financial Services",
+  "Healthcare":"Healthcare & Pharma","Healthcare - Biotech":"Healthcare & Pharma","Healthcare - Hospitals":"Healthcare & Pharma","Healthcare - Pharma":"Healthcare & Pharma",
+  "IT - Equipments":"Information Technology","IT - Product/Platform":"Information Technology","IT - Services":"Information Technology","IT - Software/Consulting":"Information Technology",
+  "Media - Films":"Media & Entertainment","Media - Publishing":"Media & Entertainment","Media - TV Broadcast":"Media & Entertainment","Media Entertainment & Publication":"Media & Entertainment",
+  "Metals - Aluminium":"Metals & Mining","Metals - Casting/Forging":"Metals & Mining","Metals - Copper":"Metals & Mining","Metals - Iron & Steel":"Metals & Mining",
+  "Metals - Misc":"Metals & Mining","Metals - Pipe & Tube":"Metals & Mining","Mining - Coal":"Metals & Mining",
+  "Oil and Gas":"Oil, Gas & Energy","Oil Gas & Consumable Fuels":"Oil, Gas & Energy","Petro - Refineries":"Oil, Gas & Energy",
+  "Paper":"Paper & Packaging","Packaging":"Paper & Packaging",
+  "Power - Equipment":"Power","Power - Misc":"Power","Power - Wiring":"Power","Utilities":"Power","Utility - Gas":"Power","Utility - Misc":"Power",
+  "Realty":"Real Estate","Telecommunication":"Telecom",
+  "Textile - Apparels":"Textiles","Textile - Misc":"Textiles","Textile - Spinning/Yarn":"Textiles","Textiles - Polyester":"Textiles","Leather Products":"Textiles",
+  "Transport - Logistics":"Transport & Logistics","Transport - Shipping":"Transport & Logistics",
+};
+function normSector(s){ s=(s||'').trim(); return SECTOR_MAP[s]||s; }
+
+// ── NAVIGATION ──────────────────────────────────────────────────
+function switchView(v) {
+  VIEW = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.getElementById('nav-' + v).classList.add('active');
+  if (v === 'sectors') loadSectors();
+  if (v === 'grouped') loadGrouped();
+  if (v === 'super')   loadSuperStrength();
+}
+
+function onSortChange() {
+  SORT_BY  = document.getElementById('sortBy').value;
+  SORT_ORD = document.getElementById('sortOrd').value;
+  PAGE = 1; loadScreener();
+}
+
+function sortBy(col) {
+  const validCols = ['momentum_score','rs_score','trending_days','chg_12d','chg_5d',
+    'chg_1d','rsi_14','rsi_1d','adx_14','rank_52w','macd_hist','weighted_rpi',
+    'rpi_2w','rpi_3m','rpi_6m','total_trades','close_price','ema_signal'];
+  if (!validCols.includes(col)) return;
+  SORT_ORD = SORT_BY === col ? (SORT_ORD === 'desc' ? 'asc' : 'desc') : 'desc';
+  SORT_BY  = col;
+  document.getElementById('sortBy').value  = SORT_BY;
+  document.getElementById('sortOrd').value = SORT_ORD;
+  PAGE = 1; loadScreener();
+}
+
+// ── FILTERS ─────────────────────────────────────────────────────
+function getFilters() {
+  return {
+    min_trending:  parseInt(document.getElementById('fT').value)   || 0,
+    min_momentum:  parseFloat(document.getElementById('fM').value) || 0,
+    min_rsi:       parseFloat(document.getElementById('fR').value) || 0,
+    min_adx:       parseFloat(document.getElementById('fA').value) || 0,
+    min_chg_12d:   document.getElementById('fC').value,
+    min_trades:    parseInt(document.getElementById('fTrd').value)  || 0,
+    cap_category:  document.getElementById('fCap').value,
+    near_52w_high: document.getElementById('fN52').value,
+    macd_bullish:  document.getElementById('fMACD').value,
+    ema_signal:    document.getElementById('fEMA').value,
+    sector:        document.getElementById('fSec').value,
+  };
+}
+
+function buildQS(f, extra = {}) {
+  const p = new URLSearchParams();
+  const add = (k, v) => { if (v !== '' && v != null && v !== 0) p.set(k, v); };
+  add('min_trending', f.min_trending); add('min_momentum', f.min_momentum);
+  add('min_rsi', f.min_rsi); add('min_adx', f.min_adx);
+  if (f.min_chg_12d !== '') add('min_chg_12d', f.min_chg_12d);
+  add('min_trades', f.min_trades); add('cap_category', f.cap_category);
+  if (f.near_52w_high !== '') p.set('near_52w_high', f.near_52w_high);
+  if (f.macd_bullish  !== '') p.set('macd_bullish',  f.macd_bullish);
+  add('ema_signal', f.ema_signal); add('sector', f.sector);
+  Object.entries(extra).forEach(([k, v]) => { if (v != null) p.set(k, v); });
+  const s = p.toString(); return s ? '?' + s : '';
+}
+
+function applyFilters() { PAGE = 1; loadScreener(); }
+
+function resetFilters() {
+  ['fT','fM','fR','fA'].forEach(id => document.getElementById(id).value = '0');
+  document.getElementById('fC').value = '';
+  document.getElementById('fTrd').value = '0';
+  ['fCap','fN52','fMACD','fEMA','fSec'].forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('.sec-item').forEach(x => x.classList.remove('active'));
+  PAGE = 1; loadScreener();
+}
+
+// ── SCREENER ─────────────────────────────────────────────────────
+async function loadScreener() {
+  loading('tableWrap');
+  document.getElementById('pgnWrap').innerHTML = '';
+  const f  = getFilters();
+  const qs = buildQS(f, { sort_by: SORT_BY, order: SORT_ORD, page: PAGE, page_size: 50 });
+  try {
+    const d = await apiFetch('/api/trend' + qs);
+    document.getElementById('totalCount').textContent = (d.total || 0).toLocaleString() + ' stocks';
+    if (d.date) document.getElementById('datePill').textContent = d.date;
+    if (!d.data || !d.data.length) {
+      document.getElementById('tableWrap').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No stocks match filters</div></div>';
+      return;
+    }
+    document.getElementById('tableWrap').innerHTML = renderTable(d.data);
+    document.getElementById('tableWrap').querySelectorAll('tr[data-sym]').forEach(tr => {
+      tr.addEventListener('click', () => openDP(tr.dataset.sym));
+    });
+    renderPagination(d.page, d.pages, d.total);
+  } catch (e) {
+    document.getElementById('tableWrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderTable(rows) {
+  const hdr = `<thead><tr>
+    <th style="text-align:left" onclick="sortBy('symbol')">Symbol ⇅</th>
+    <th style="text-align:left" onclick="sortBy('company_name')">Company ⇅</th>
+    <th onclick="sortBy('trending_days')">Trend ⇅</th>
+    <th onclick="sortBy('rsi_14')">RSI14 ⇅</th>
+    <th onclick="sortBy('rsi_1d')">RSI1D ⇅</th>
+    <th onclick="sortBy('adx_14')">ADX ⇅</th>
+    <th onclick="sortBy('ema_signal')">EMA</th>
+    <th onclick="sortBy('macd_hist')">MACD ⇅</th>
+    <th onclick="sortBy('rs_score')">RS ⇅</th>
+    <th onclick="sortBy('weighted_rpi')" style="color:#c084fc">wRPI ⇅</th>
+    <th onclick="sortBy('momentum_score')">Mom ⇅</th>
+    <th onclick="sortBy('close_price')">Price ⇅</th>
+    <th onclick="sortBy('chg_12d')">12d% ⇅</th>
+    <th onclick="sortBy('chg_5d')">5d% ⇅</th>
+    <th onclick="sortBy('chg_1d')">1d% ⇅</th>
+    <th class="mat-th" style="border-left:2px solid var(--border2)">D12</th>
+    <th class="mat-th">D11</th><th class="mat-th">D10</th><th class="mat-th">D9</th>
+    <th class="mat-th">D8</th><th class="mat-th">D7</th><th class="mat-th">D6</th>
+    <th class="mat-th">D5</th><th class="mat-th">D4</th><th class="mat-th">D3</th>
+    <th class="mat-th">D2</th><th class="mat-th">D1</th>
+  </tr></thead>`;
+  const body = rows.map(r => `
+    <tr data-sym="${r.symbol}">
+      <td><div class="sym-cell">${r.symbol}</div>${capBadge(r.cap_category)}</td>
+      <td>
+        <div class="name-cell" title="${r.company_name||''}">${r.company_name||''}</div>
+        <span class="sec-tag">${r.sector||''}</span>
+      </td>
+      <td>${tpill(r.trending_days)}</td>
+      <td class="mono" style="${Number(r.rsi_14)>60?'color:var(--green);font-weight:700':Number(r.rsi_14)<40?'color:var(--red)':''}">${f1(r.rsi_14)}</td>
+      <td class="mono" style="${Number(r.rsi_1d)>60?'color:var(--green);font-weight:700':''}">${f1(r.rsi_1d)}</td>
+      <td class="mono">${f1(r.adx_14)}</td>
+      <td>${emaBadge(r.ema_signal)}</td>
+      <td>${macdCell(r.macd_hist)}</td>
+      <td class="mono">${f1(r.rs_score)}</td>
+      <td class="mono" style="color:#c084fc;font-weight:700;">${f1(r.weighted_rpi)}</td>
+      <td>${mbar(r.momentum_score)}</td>
+      <td class="mono">${inr(r.close_price)}</td>
+      <td class="${pCls(r.chg_12d)} mono" style="font-weight:600;">${fPct(r.chg_12d)}</td>
+      <td class="${pCls(r.chg_5d)} mono">${fPct(r.chg_5d)}</td>
+      <td class="${pCls(r.chg_1d)} mono">${fPct(r.chg_1d)}</td>
+      ${matCells(r.pct_matrix, r.ema_50, r.ema_200)}
+    </tr>`).join('');
+  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
+}
+
+function renderPagination(page, pages, total) {
+  if (!pages || pages <= 1) return;
+  const from = (page-1)*50+1, to = Math.min(page*50, total);
+  const set = new Set([1, pages, page-1, page, page+1].filter(n => n>=1 && n<=pages));
+  const arr = [...set].sort((a,b)=>a-b);
+  let btns = '', prev = 0;
+  arr.forEach(n => {
+    if (n - prev > 1) btns += `<span style="color:var(--t3);padding:0 6px;font-weight:700;">…</span>`;
+    btns += `<button class="pb${n===page?' cur':''}" onclick="goPage(${n})">${n}</button>`;
+    prev = n;
+  });
+  document.getElementById('pgnWrap').innerHTML = `
+    <div class="pgn">
+      <button class="pb" onclick="goPage(${page-1})" ${page<=1?'disabled':''}>‹ Prev</button>
+      ${btns}
+      <button class="pb" onclick="goPage(${page+1})" ${page>=pages?'disabled':''}>Next ›</button>
+      <span class="pg-info">${from}–${to} of ${total.toLocaleString()}</span>
+    </div>`;
+}
+
+function goPage(n) { PAGE = n; loadScreener(); document.querySelector('.content-area').scrollTop = 0; }
+
+// ── SECTOR DASHBOARD ─────────────────────────────────────────────
+let SECTOR_ROWS = [];
+let SELECTED_SECTOR = '';
+let SECTOR_STOCK_TAB = 'gainers';
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, Number(v || 0))); }
+
+function sectorScore(s) {
+  // Uses only fields that ARE stored in sector_daily (avg_momentum=0, so excluded)
+  const chg12 = clamp(s.avg_chg_12d,  -20,  20);
+  const chg5  = clamp(s.avg_chg_5d,   -10,  10);
+  const chgT  = clamp(s.avg_chg_today, -5,   5);
+  const bread = clamp(s.pct_stocks_up,   0, 100);
+  const rs    = clamp(s.avg_rs_score,    0, 100);
+  const trend = clamp(s.avg_trending_days, 0, 12);
+  const nearH = clamp(s.pct_near_high,   0, 100);
+  const adx   = clamp(s.avg_adx_14,      0,  50);
+  return Math.round(
+    ((chg12 + 20) / 40 * 28)   // 28 pts — 12d price move
+    + ((chg5 + 10) / 20 * 18)  // 18 pts — 5d price move
+    + ((chgT +  5) / 10 * 14)  // 14 pts — today move
+    + (bread * 0.18)            // 18 pts — breadth
+    + (rs    * 0.12)            // 12 pts — RS score
+    + (trend / 12 * 6)          //  6 pts — trending days
+    + (nearH * 0.02)            //  2 pts — near 52w high
+    + (adx   / 50 * 2)          //  2 pts — ADX
+  );
+}
+function scoreClass(v){ return v >= 60 ? 'strong' : v >= 38 ? 'neutral' : 'weak'; }
+function breadthColor(v){ return v >= 60 ? '#10b981' : v >= 40 ? '#f59e0b' : '#ef4444'; }
+function sectorSortVal(s, sort){ return sort === 'sector_score' ? s.sector_score : Number(s[sort] ?? -1e18); }
+
+async function loadSectors() {
+  loading('secGrid');
+  const sort = document.getElementById('secSort').value;
+  try {
+    const apiSort = sort === 'sector_score' ? 'avg_chg_12d' : sort;
+    const d = await apiFetch(`/api/sector?sort_by=${apiSort}&order=desc`);
+    const raw = d.data || [];
+    const agg = {};
+    raw.forEach(r=>{
+      const k = normSector(r.sector);
+      const n = Number(r.stock_count||0);
+      if(!agg[k]) agg[k]={sector:k,stock_count:0,stocks_up:0,stocks_down:0,stocks_near_high:0,_w:0};
+      const a=agg[k];
+      a.stock_count+=n; a.stocks_up+=Number(r.stocks_up||0);
+      a.stocks_down+=Number(r.stocks_down||0); a.stocks_near_high+=Number(r.stocks_near_high||0);
+      a._w+=n;
+      ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today",
+       "avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=>{
+        if(r[f]!=null){ a[f]=(a[f]||0)+Number(r[f])*n; }
+      });
+    });
+    SECTOR_ROWS = Object.values(agg).map(a=>{
+      const w=Math.max(a._w,1); delete a._w;
+      ["avg_trending_days","avg_chg_12d","avg_chg_5d","avg_chg_today",
+       "avg_rsi_14","avg_adx_14","avg_rs_score","avg_momentum","pct_near_high"].forEach(f=>{
+        a[f]=a[f]===undefined?null:(a[f]/w);
+      });
+      a.pct_stocks_up = a.stock_count ? (a.stocks_up*100/a.stock_count) : 0;
+      a.sector_score = sectorScore(a);
+      return a;
+    });
+    SECTOR_ROWS.sort((x,y)=> sectorSortVal(y,sort)-sectorSortVal(x,sort));
+    if(!SELECTED_SECTOR || !SECTOR_ROWS.some(s=>s.sector===SELECTED_SECTOR))
+      SELECTED_SECTOR = SECTOR_ROWS[0]?.sector || '';
+    document.getElementById('secCount').textContent = SECTOR_ROWS.length + ' sectors';
+    if(!SECTOR_ROWS.length){
+      document.getElementById('secGrid').innerHTML='<div class="empty"><div class="empty-icon">📊</div><div>No sector data</div></div>';
+      return;
+    }
+    renderSectorDashboard(d.date || '');
+    if(SELECTED_SECTOR) loadSectorDetail(SELECTED_SECTOR);
+  } catch(e){
+    document.getElementById('secGrid').innerHTML=`<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderSectorDashboard(date) {
+  const sorted = [...SECTOR_ROWS].sort((a,b)=>sectorSortVal(b,'sector_score')-sectorSortVal(a,'sector_score'));
+  const top  = sorted[0];
+  const topToday = [...SECTOR_ROWS].sort((a,b)=>Number(b.avg_chg_today||0)-Number(a.avg_chg_today||0))[0];
+  const weak = [...SECTOR_ROWS].sort((a,b)=>Number(a.avg_chg_today||0)-Number(b.avg_chg_today||0))[0];
+  const adv  = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stocks_up||0),0);
+  const tot  = SECTOR_ROWS.reduce((a,s)=>a+Number(s.stock_count||0),0);
+  const broad= tot ? Math.round(adv*100/tot) : 0;
+  const hot  = SECTOR_ROWS.filter(s=>s.sector_score>=60).length;
+  document.getElementById('secGrid').innerHTML = `
+    <div class="sector-dash">
+      <div class="sector-main">
+        <div class="sector-kpis">
+          ${sectorKpi('Strongest sector', top?.sector||'—', 'Score ' + (top?.sector_score||'—'), 'pos')}
+          ${sectorKpi('Best today', topToday?.sector||'—', fPct(topToday?.avg_chg_today), pCls(topToday?.avg_chg_today))}
+          ${sectorKpi('Market breadth', broad+'%', `${adv}/${tot} stocks positive`, broad>=55?'pos':broad>=45?'neu':'neg')}
+          ${sectorKpi('Strong sectors', hot, 'score 60+', hot?'pos':'neu')}
+        </div>
+        <div class="sector-panel">
+          <div class="sector-panel-h">
+            <div class="sector-panel-title">Sector Rankings</div>
+            <div class="sector-panel-sub">${date||'latest session'}</div>
+          </div>
+          ${sectorMoverTable()}
+        </div>
+      </div>
+      <div class="sector-side">
+        <div class="sector-panel" id="sectorStoryPanel"></div>
+        <div class="sector-panel" id="sectorStockPanel">
+          <div class="ld"><div class="spin"></div> Loading stocks…</div>
+        </div>
+      </div>
+    </div>`;
+  renderSectorStory();
+}
+
+function sectorKpi(label, value, sub, cls='') {
+  return `<div class="sector-kpi"><div class="sector-kpi-l">${label}</div><div class="sector-kpi-v ${cls}">${value??'—'}</div><div class="sector-kpi-s">${sub??''}</div></div>`;
+}
+
+function sectorMoverTable() {
+  return `<div class="twrap"><table class="sector-table">
+    <thead><tr>
+      <th>Sector</th><th>Score</th><th>Today</th><th>5d</th><th>12d</th>
+      <th>Breadth</th><th>RS Score</th>
+    </tr></thead>
+    <tbody>${SECTOR_ROWS.map((s,i)=>{
+      const up  = Math.round(Number(s.pct_stocks_up||0));
+      const sel = s.sector===SELECTED_SECTOR ? ' active' : '';
+      return `<tr class="${sel}" onclick="selectSector('${encodeURIComponent(s.sector)}')">
+        <td><div class="sector-name-cell"><span class="sector-rank">${i+1}</span>${s.sector}</div></td>
+        <td><span class="sector-score ${scoreClass(s.sector_score)}">${s.sector_score}</span></td>
+        <td class="${pCls(s.avg_chg_today)} mono" style="font-weight:600;">${fPct(s.avg_chg_today)}</td>
+        <td class="${pCls(s.avg_chg_5d)} mono">${fPct(s.avg_chg_5d)}</td>
+        <td class="${pCls(s.avg_chg_12d)} mono">${fPct(s.avg_chg_12d)}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end">
+            <span class="mono" style="display:inline-block; width:36px; text-align:right;">${up}%</span>
+            <div class="sector-bar"><div class="sector-bar-fill" style="width:${up}%;background:${breadthColor(up)}"></div></div>
+          </div>
+        </td>
+        <td class="mono" style="color:var(--blue);font-weight:600;">${f1(s.avg_rs_score)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+}
+
+function selectSector(enc) {
+  SELECTED_SECTOR = decodeURIComponent(enc);
+  renderSectorDashboard(document.getElementById('datePill').textContent);
+  loadSectorDetail(SELECTED_SECTOR);
+}
+
+function renderSectorStory() {
+  const s = SECTOR_ROWS.find(x=>x.sector===SELECTED_SECTOR) || SECTOR_ROWS[0];
+  if (!s) return;
+  const panel = document.getElementById('sectorStoryPanel');
+  if (!panel) return;
+  const up = Math.round(Number(s.pct_stocks_up||0));
+  const todayCls = pCls(s.avg_chg_today);
+  panel.innerHTML = `
+    <div class="sector-panel-h">
+      <div class="sector-panel-title">${s.sector}</div>
+      <div class="sector-panel-sub">sector story</div>
+    </div>
+    <div class="sector-story">
+      <strong>${s.sector}</strong> is ${Number(s.avg_chg_today||0)>=0?'leading positive action':'under pressure'} today
+      with <strong class="${todayCls}">${fPct(s.avg_chg_today)}</strong>.
+      Breadth is <strong>${up}%</strong> (${s.stocks_up}/${s.stock_count} stocks up),
+      avg RS score <strong style="color:var(--blue)">${f1(s.avg_rs_score)}</strong>,
+      12d move <strong class="${pCls(s.avg_chg_12d)}">${fPct(s.avg_chg_12d)}</strong>,
+      and <strong>${s.stocks_near_high}</strong> stocks near 52-week highs.
+    </div>
+    <div class="sector-chips">
+      <span class="sector-chip">Score ${s.sector_score}</span>
+      <span class="sector-chip">12d ${fPct(s.avg_chg_12d)}</span>
+      <span class="sector-chip">Avg RSI ${f1(s.avg_rsi_14)}</span>
+      <span class="sector-chip">Avg ADX ${f1(s.avg_adx_14)}</span>
+      <span class="sector-chip">Avg Trend ${f1(s.avg_trending_days)}</span>
+    </div>
+    <div class="sector-action-row">
+      <button class="pb" onclick="drillSector('${encodeURIComponent(s.sector)}')">Open Screener</button>
+      <button class="pb" onclick="switchView('grouped')">Compare Groups</button>
+    </div>`;
+}
+
+async function loadSectorDetail(name) {
+  const panel = document.getElementById('sectorStockPanel');
+  if (!panel) return;
+  panel.innerHTML = '<div class="ld"><div class="spin"></div> Loading stocks…</div>';
+  try {
+    const qs = new URLSearchParams({ sector: name, sort_by: 'momentum_score', order: 'desc', page_size: '30' });
+    const d = await apiFetch('/api/trend?' + qs.toString());
+    renderSectorStocks(d.data || [], d.total || 0);
+  } catch(e) {
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
+  }
+}
+
+function renderSectorStocks(stocks, total) {
+  const sorted = [...stocks].sort((a,b)=>{
+    if(SECTOR_STOCK_TAB==='losers') return Number(a.chg_1d||0)-Number(b.chg_1d||0);
+    if(SECTOR_STOCK_TAB==='volume') return Number(b.total_trades||0)-Number(a.total_trades||0);
+    return Number(b.chg_1d||0)-Number(a.chg_1d||0);
+  }).slice(0,10);
+  const rows = sorted.map(r=>`
+    <div class="sector-stock-row" onclick="openDP('${r.symbol}')">
+      <div><div class="sector-stock-sym">${r.symbol}</div><div style="margin-top:4px">${tpill(r.trending_days)}</div></div>
+      <div class="sector-stock-name" title="${r.company_name||''}">${r.company_name||''}</div>
+      <div class="${pCls(r.chg_1d)} mono" style="font-size:13px;font-weight:700">${fPct(r.chg_1d)}</div>
+      <div class="mono" style="font-size:12px;font-weight:600;color:var(--blue)">${f1(r.rs_score)}</div>
+    </div>`).join('') || '<div style="padding:24px;color:var(--t2);font-size:13px;text-align:center">No stocks found</div>';
+  document.getElementById('sectorStockPanel').innerHTML = `
+    <div class="sector-panel-h">
+      <div class="sector-panel-title">Top Stocks${total>10?` <span style="font-size:11px;color:var(--t2);font-weight:400;margin-left:6px">${total} total</span>`:''}</div>
+      <div class="sector-tabs">${sectorTab('gainers','Gainers')}${sectorTab('losers','Losers')}${sectorTab('volume','Volume')}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:85px minmax(0,1fr) 65px 45px;font-size:10.5px;color:var(--t2);padding:8px 16px 6px;border-bottom:1px solid var(--border);letter-spacing:.5px;text-transform:uppercase;font-weight:600;">
+      <span>Symbol</span><span>Company</span><span style="text-align:right">1d%</span><span style="text-align:right">RS</span>
+    </div>
+    <div class="sector-stock-list">${rows}</div>`;
+}
+
+function sectorTab(tab, label) {
+  return `<button class="sector-tab ${SECTOR_STOCK_TAB===tab?'active':''}" onclick="setSectorStockTab('${tab}')">${label}</button>`;
+}
+function setSectorStockTab(tab) { SECTOR_STOCK_TAB = tab; loadSectorDetail(SELECTED_SECTOR); }
+function drillSector(enc) { const name = decodeURIComponent(enc); document.getElementById('fSec').value = name; switchView('screener'); applyFilters(); }
+
+// ── GROUPED ───────────────────────────────────────────────────────
+async function loadGrouped() {
+  loading('grpWrap');
+  try {
+    const d = await apiFetch('/api/trend?page_size=200&sort_by=momentum_score&order=desc');
+    if (!d.data || !d.data.length) { document.getElementById('grpWrap').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No data</div></div>'; return; }
+    GRP_DATA = {};
+    d.data.forEach(r => { const s = normSector(r.sector)||'(No Sector)'; (GRP_DATA[s]=GRP_DATA[s]||[]).push(r); });
+    document.getElementById('grpCount').textContent = d.total.toLocaleString() + ' stocks';
+    renderGrouped();
+  } catch(e) { document.getElementById('grpWrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`; }
+}
+
+function renderGrouped() {
+  const secs = Object.keys(GRP_DATA).sort();
+  document.getElementById('grpWrap').innerHTML = secs.map(s => {
+    const stocks = GRP_DATA[s];
+    const isOpen = GRP_OPEN[s] !== false;
+    const avgMom = Math.round(stocks.reduce((a,r)=>a+(r.momentum_score||0),0)/stocks.length);
+    const col = avgMom>=70?'#10b981':avgMom>=40?'#f59e0b':'#ef4444';
+    const sid = encodeURIComponent(s);
+    const tbl = `<div class="twrap"><table>
+      <thead><tr><th>Symbol</th><th>Company</th><th>Trend</th><th>12d%</th><th>5d%</th><th>1d%</th><th>EMA</th><th>Mom</th><th>Price</th>
+      <th class="mat-th" style="border-left:2px solid var(--border2)">D12</th>
+      <th class="mat-th">D11</th><th class="mat-th">D10</th><th class="mat-th">D9</th>
+      <th class="mat-th">D8</th><th class="mat-th">D7</th><th class="mat-th">D6</th>
+      <th class="mat-th">D5</th><th class="mat-th">D4</th><th class="mat-th">D3</th>
+      <th class="mat-th">D2</th><th class="mat-th">D1</th>
+      </tr></thead>
+      <tbody>${stocks.slice(0,30).map(r=>`
+        <tr data-sym="${r.symbol}">
+          <td><span class="sym-cell">${r.symbol}</span> ${capBadge(r.cap_category)}</td>
+          <td class="name-cell">${r.company_name||''}</td>
+          <td>${tpill(r.trending_days)}</td>
+          <td class="${pCls(r.chg_12d)} mono" style="font-weight:600;">${fPct(r.chg_12d)}</td>
+          <td class="${pCls(r.chg_5d)} mono">${fPct(r.chg_5d)}</td>
+          <td class="${pCls(r.chg_1d)} mono">${fPct(r.chg_1d)}</td>
+          <td>${emaBadge(r.ema_signal)}</td>
+          <td>${mbar(r.momentum_score)}</td>
+          <td class="mono">${inr(r.close_price)}</td>
+          ${matCells(r.pct_matrix, r.ema_50, r.ema_200)}
+        </tr>`).join('')}
+      </tbody></table></div>`;
+    return `<div>
+      <div class="grp-hdr" onclick="toggleGrp('${s.replace(/'/g,"\\'")}')">
+        <span class="grp-arrow ${isOpen?'open':''}">▶</span>
+        <span class="grp-name">${s}</span>
+        <span class="grp-meta"><span>${stocks.length} stocks</span><span style="color:${col};font-weight:700;">Mom ${avgMom}</span></span>
+      </div>
+      <div id="grp-${sid}" style="display:${isOpen?'block':'none'}">${tbl}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('grpWrap').querySelectorAll('tr[data-sym]').forEach(tr => {
+    tr.addEventListener('click', () => openDP(tr.dataset.sym));
+  });
+}
+
+function toggleGrp(s) { GRP_OPEN[s] = GRP_OPEN[s] === false; renderGrouped(); }
+function expandAll()   { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = true);  renderGrouped(); }
+function collapseAll() { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = false); renderGrouped(); }
+
+
+
+// ── AUTH LABEL (login/portfolio state now lives in portfolio.html) ─────
+function updateAuthUI(){ const el=document.getElementById('authBtn'); if(el) el.textContent = AUTH_TOKEN ? 'Account' : 'Login'; }
+
+
+// ── DETAIL PANEL ─────────────────────────────────────────────────
+async function openDP(sym) {
+  const dp = document.getElementById('dp');
+  dp.classList.add('open');
+  ['dpSym','dpName','dpPrice','dpMeta','dpMetrics','dpMACDEMA','dpMatrix','dpPeers'].forEach(id => {
+    document.getElementById(id).innerHTML = id === 'dpMetrics' ? '<div class="ld"><div class="spin"></div></div>' : '';
+  });
+
+  // 1. TRADINGVIEW LINK (Symbol) — plain element, no native href/target,
+  //    so there is nothing for a mobile browser to navigate natively
+  //    (this is what previously caused a second tab to open on mobile).
+  const dpSymEl = document.getElementById('dpSym');
+  dpSymEl.textContent = sym;
+  const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
+
+  dpSymEl.style.cursor = 'pointer';
+  dpSymEl.style.color = 'var(--blue)';
+  dpSymEl.title = `Open ${sym} on TradingView ↗`;
+
+  dpSymEl.onclick = () => {
+    window.open(tvUrl, '_blank', 'noopener,noreferrer');
   };
 
-  // -- View Switching --
-  function switchView(viewId) {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('nav-' + viewId).classList.add('active');
+  try {
+    const d    = await apiFetch(`/api/symbol/${sym}`);
+    const info = d.info   || {};
+    const lat  = d.latest || {};
     
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + viewId).classList.add('active');
+    // 2. SCREENER.IN LINK (Company Name)
+    const dpNameEl = document.getElementById('dpName');
+    const compName = info.company_name || sym;
+    const screenerId = sym;
+  
+    dpNameEl.textContent = compName + ' ↗';
+    dpNameEl.style.cursor = 'pointer';
+    dpNameEl.style.transition = 'color 0.2s';
+    dpNameEl.title = `Open ${compName} on Screener ↗`;
+  
+    dpNameEl.onclick = () => {
+      window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
+    };
 
-    if (viewId === 'sectors') renderSectorDash();
-    if (viewId === 'grouped') renderGrouped();
-    if (viewId === 'super') renderSuper();
-  }
-
-  // -- Table Rendering --
-  function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    
-    // Sort
-    filteredStocks.sort((a, b) => {
-      let valA = parseFloat(a[currentSort]) || a[currentSort];
-      let valB = parseFloat(b[currentSort]) || b[currentSort];
-      if (typeof valA === 'string') return sortDesc ? valB.localeCompare(valA) : valA.localeCompare(valB);
-      return sortDesc ? valB - valA : valA - valB;
-    });
-
-    document.getElementById('totalCount').innerText = `${filteredStocks.length} stocks`;
-
-    // Paginate
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageData = filteredStocks.slice(start, end);
-
-    document.getElementById('pageInfo').innerText = `Showing ${start + 1}-${Math.min(end, filteredStocks.length)} of ${filteredStocks.length}`;
-    document.getElementById('btnPrev').disabled = currentPage === 1;
-    document.getElementById('btnNext').disabled = end >= filteredStocks.length;
-
-    pageData.forEach(s => {
-      let tr = document.createElement('tr');
-      tr.onclick = () => openDetail(s);
+    // --- DOM UPDATES FOR THE REST OF THE PANEL ---
+    document.getElementById('dpPrice').innerHTML =
+      `<span class="mono">${inr(lat.close_price)}</span> <span class="${pCls(lat.chg_1d)} mono" style="font-size:16px;margin-left:8px;">${fPct(lat.chg_1d)}</span>`;
       
-      // Matrix HTML
-      let matHtml = `<div class="mat-row">`;
-      s.matrix.forEach(val => {
-        let cls = val > 1.5 ? 'mat-dg' : (val > 0 ? 'mat-g' : (val < -1 ? 'mat-r' : 'mat-n'));
-        matHtml += `<div class="mat-box ${cls}">${val > 0 ? '+' : ''}${val.toFixed(1)}</div>`;
-      });
-      matHtml += `</div>`;
-
-      // Signal HTML
-      let emaHtml = s.ema_signal === 'golden_cross' ? '<span class="ema ema-gc">Golden Cross</span>' : 
-                   (s.ema_signal === 'above_200' ? '<span class="above200">Above 200</span>' : '<span class="neu">Appr. 200</span>');
-
-      tr.innerHTML = `
-        <td><div class="sym-cell">${s.symbol}</div><div class="sec-tag">${s.sector}</div></td>
-        <td><div class="name-cell">${s.name}</div><span class="cap cap-${s.cap.charAt(0)}">${s.cap.charAt(0)}</span></td>
-        <td><span class="tp ${s.momentum_score > 80 ? 'tp-hi' : (s.momentum_score > 50 ? 'tp-med' : 'tp-lo')}">${s.momentum_score}</span></td>
-        <td class="mono">${s.rs_score}</td>
-        <td class="mono">${s.trending_days}/12</td>
-        <td class="mono ${s.chg_12d > 0 ? 'pos' : 'neg'}">${s.chg_12d}%</td>
-        <td class="mono ${s.chg_1d > 0 ? 'pos' : 'neg'}">${s.chg_1d}%</td>
-        <td class="mono ${s.rsi_14 > 60 ? 'pos' : ''}">${s.rsi_14}</td>
-        <td class="mono ${s.adx_14 > 25 ? 'pos' : ''}">${s.adx_14}</td>
-        <td class="mono ${s.macd_hist > 0 ? 'pos' : 'neg'}">${s.macd_hist}</td>
-        <td>${emaHtml}</td>
-        <td>${matHtml}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function sortData(field) {
-    if (currentSort === field) sortDesc = !sortDesc;
-    else { currentSort = field; sortDesc = true; }
-    document.getElementById('sortBy').value = field;
-    currentPage = 1;
-    renderTable();
-  }
-
-  function onSortChange() {
-    currentSort = document.getElementById('sortBy').value;
-    sortDesc = true;
-    currentPage = 1;
-    renderTable();
-  }
-
-  function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
-  function nextPage() { if (currentPage * itemsPerPage < filteredStocks.length) { currentPage++; renderTable(); } }
-
-  // -- Filtering Sidebar --
-  function populateSectors() {
-    const sel = document.getElementById('fSec');
-    SECTORS.forEach(sec => {
-      let opt = document.createElement('option');
-      opt.value = sec;
-      opt.innerText = sec;
-      sel.appendChild(opt);
-    });
-  }
-
-  function renderSectorSidebar() {
-    const sb = document.getElementById('sbSecList');
-    sb.innerHTML = '';
+    document.getElementById('dpMeta').innerHTML =
+      `<span style="font-weight:600;color:var(--t1)">${info.sector||''}</span> ${capBadge(info.cap_category)} <span class="mono" style="margin-left:12px;color:var(--t2)">Vol: ${fNum(lat.total_trades)}</span>`;
+      
+    document.getElementById('dpMetrics').innerHTML = `
+      <div class="mbox"><div class="mbox-l">Trending Days</div><div class="mbox-v lg">${tpill(lat.trending_days)}</div></div>
+      <div class="mbox"><div class="mbox-l">Momentum Score</div><div class="mbox-v">${mbar(lat.momentum_score)}</div></div>
+      <div class="mbox"><div class="mbox-l">RS Score</div><div class="mbox-v" style="color:var(--blue)">${f1(lat.rs_score)}</div></div>
+      <div class="mbox"><div class="mbox-l">Weighted RPI</div><div class="mbox-v" style="color:#c084fc">${f1(lat.weighted_rpi)}</div></div>
+      <div class="mbox"><div class="mbox-l">RSI 14</div><div class="mbox-v ${Number(lat.rsi_14)>60?'pos':Number(lat.rsi_14)<40?'neg':''}">${f1(lat.rsi_14)}</div></div>
+      <div class="mbox"><div class="mbox-l">ADX 14</div><div class="mbox-v">${f1(lat.adx_14)}</div></div>
+      <div class="mbox"><div class="mbox-l">52W High %</div><div class="mbox-v ${pCls(lat.pct_from_high)}">${fPct(lat.pct_from_high)}</div></div>
+      <div class="mbox"><div class="mbox-l">12d Change</div><div class="mbox-v ${pCls(lat.chg_12d)}">${fPct(lat.chg_12d)}</div></div>`;
+      
+    document.getElementById('dpMACDEMA').innerHTML = `
+      <div class="mbox"><div class="mbox-l">MACD Hist</div><div class="mbox-v">${macdCell(lat.macd_hist)}</div></div>
+      <div class="mbox"><div class="mbox-l">MACD Line/Sig</div><div class="mbox-v mono" style="font-size:13px">${f2(lat.macd_line)} / ${f2(lat.macd_signal)}</div></div>
+      <div class="mbox"><div class="mbox-l">EMA 50</div><div class="mbox-v mono">${inr(lat.ema_50)}</div></div>
+      <div class="mbox"><div class="mbox-l">EMA 200</div><div class="mbox-v mono">${inr(lat.ema_200)}</div></div>
+      <div class="mbox span2"><div class="mbox-l">EMA Signal</div><div class="mbox-v">${emaBadge(lat.ema_signal)||'—'}</div></div>`;
+      
+    const pm  = lat.pct_matrix  || {};
+    const bm  = lat.bool_matrix || {};
+    const keys = Object.keys(pm).length ? Object.keys(pm).slice(0,12) : Object.keys(bm).slice(0,12);
+    const aboveEma = lat.ema_50 != null && lat.ema_200 != null && Number(lat.ema_50) > Number(lat.ema_200);
     
-    let secCounts = {};
-    filteredStocks.forEach(s => secCounts[s.sector] = (secCounts[s.sector] || 0) + 1);
-    
-    SECTORS.forEach(sec => {
-      let cnt = secCounts[sec] || 0;
-      let div = document.createElement('div');
-      div.className = 'sec-item';
-      div.innerHTML = `<div class="sec-dot" style="background:var(--blue)"></div>${sec} <span class="sec-cnt">${cnt}</span>`;
-      div.onclick = () => {
-        document.getElementById('fSec').value = sec;
-        applyFilters();
-      };
-      sb.appendChild(div);
-    });
-  }
-
-  function applyFilters() {
-    const fT = parseFloat(document.getElementById('fT').value) || 0;
-    const fM = parseFloat(document.getElementById('fM').value) || 0;
-    const fR = parseFloat(document.getElementById('fR').value) || 0;
-    const fA = parseFloat(document.getElementById('fA').value) || 0;
-    const fC = parseFloat(document.getElementById('fC').value) || -999;
-    const fCap = document.getElementById('fCap').value;
-    const fN52 = document.getElementById('fN52').value;
-    const fMACD = document.getElementById('fMACD').value;
-    const fEMA = document.getElementById('fEMA').value;
-    const fSec = document.getElementById('fSec').value;
-
-    filteredStocks = stocks.filter(s => {
-      if (s.trending_days < fT) return false;
-      if (s.momentum_score < fM) return false;
-      if (parseFloat(s.rsi_14) < fR) return false;
-      if (parseFloat(s.adx_14) < fA) return false;
-      if (parseFloat(s.chg_12d) < fC) return false;
-      if (fCap && s.cap !== fCap) return false;
-      if (fN52 && s.near_52w.toString() !== fN52) return false;
-      if (fMACD) {
-        if (fMACD === 'true' && s.macd_hist <= 0) return false;
-        if (fMACD === 'false' && s.macd_hist > 0) return false;
-      }
-      if (fEMA && s.ema_signal !== fEMA) return false;
-      if (fSec && s.sector !== fSec) return false;
-      return true;
-    });
-
-    currentPage = 1;
-    renderTable();
-    renderSectorSidebar();
-    showToast("Filters applied");
-  }
-
-  function resetFilters() {
-    document.querySelectorAll('.finput, .fselect').forEach(el => el.value = el.tagName === 'SELECT' ? '' : '0');
-    document.getElementById('fC').value = '';
-    applyFilters();
-  }
-
-  // -- Detail Panel --
-  function openDetail(s) {
-    document.getElementById('dpSym').innerText = s.symbol;
-    document.getElementById('dpName').innerText = s.name;
-    document.getElementById('dpPrice').innerText = '₹ ' + s.price;
-    document.getElementById('dpMom').innerText = s.momentum_score;
-    document.getElementById('dpTrend').innerText = `${s.trending_days} / 12`;
-    document.getElementById('dpRSI').innerText = s.rsi_14;
-    document.getElementById('dpADX').innerText = s.adx_14;
-    
-    document.getElementById('dpMom').className = `mbox-v lg ${s.momentum_score > 80 ? 'tp-hi' : (s.momentum_score > 50 ? 'tp-med' : 'tp-lo')}`;
-    
-    let matHtml = '';
-    s.matrix.forEach((val, i) => {
-      let cls = val > 1.5 ? 'mdc-dg' : (val > 0 ? 'mdc t' : (val < -1 ? 'mdc f' : 'mdc n'));
-      matHtml += `<div class="${cls}">
-        <div class="mdc-date">D${i+1}</div>
-        <div class="mdc-val">${val > 0 ? '+' : ''}${val.toFixed(1)}</div>
-      </div>`;
-    });
-    document.getElementById('dpMat').innerHTML = matHtml;
-    
-    document.getElementById('detailPanel').classList.add('open');
-  }
-
-  function closeDetail() {
-    document.getElementById('detailPanel').classList.remove('open');
-  }
-
-  // -- Sector Dash Logic --
-  function renderSectorDash() {
-    const tbody = document.getElementById('sectorTableBody');
-    tbody.innerHTML = '';
-    
-    let secStats = SECTORS.map(sec => {
-      let inSec = stocks.filter(s => s.sector === sec);
-      let avgMom = inSec.reduce((acc, s) => acc + s.momentum_score, 0) / inSec.length;
-      let avgChg = inSec.reduce((acc, s) => acc + parseFloat(s.chg_12d), 0) / inSec.length;
-      let topStock = inSec.reduce((max, s) => s.momentum_score > max.momentum_score ? s : max, inSec[0]);
-      let breadth = inSec.filter(s => parseFloat(s.chg_12d) > 0).length / inSec.length * 100;
-      return { sec, avgMom, avgChg, topStock, breadth, inSec };
-    }).sort((a,b) => b.avgMom - a.avgMom);
-
-    document.getElementById('kpiTopSec').innerText = secStats[0].sec;
-    document.getElementById('kpiAvgMom').innerText = secStats[0].avgMom.toFixed(1);
-    
-    secStats.forEach((st, idx) => {
-      let tr = document.createElement('tr');
-      let strClass = st.avgMom > 65 ? 'strong' : (st.avgMom > 45 ? 'neutral' : 'weak');
-      tr.innerHTML = `
-        <td><div class="sector-name-cell"><span class="sector-rank">${idx+1}</span>${st.sec}</div></td>
-        <td><span class="sector-score ${strClass}">${st.avgMom.toFixed(1)}</span></td>
-        <td>
-           <div class="sector-bar"><div class="sector-bar-fill" style="width:${st.avgMom}%;background:var(--${strClass === 'strong'?'green':(strClass==='weak'?'red':'amber')})"></div></div>
-        </td>
-        <td class="pos">+${st.avgChg.toFixed(2)}%</td>
-        <td class="mono" style="color:var(--blue)">${st.topStock.symbol}</td>
-        <td>${st.breadth.toFixed(0)}% > 0</td>
-      `;
-      tr.onclick = () => showSectorDetail(st);
-      tbody.appendChild(tr);
-    });
-    
-    // Show first by default
-    if(secStats.length > 0) showSectorDetail(secStats[0]);
-  }
-
-  function showSectorDetail(st) {
-    document.getElementById('sectorDetailPanel').style.display = 'block';
-    document.getElementById('sdTitle').innerText = st.sec + ' Analysis';
-    document.getElementById('sdCount').innerText = st.inSec.length + ' stocks';
-    document.getElementById('sdStory').innerText = `${st.sec} exhibits an average momentum score of ${st.avgMom.toFixed(1)}. Market breadth is ${st.breadth > 50 ? 'positive' : 'negative'} with ${st.breadth.toFixed(0)}% of components showing 12-day gains. Top component is ${st.topStock.symbol}.`;
-    
-    let listHtml = '';
-    st.inSec.sort((a,b) => b.momentum_score - a.momentum_score).slice(0, 10).forEach(s => {
-      listHtml += `
-        <div class="sector-stock-row" onclick="openDetail({symbol:'${s.symbol}', name:'${s.name}', price:'${s.price}', momentum_score:${s.momentum_score}, trending_days:${s.trending_days}, rsi_14:'${s.rsi_14}', adx_14:'${s.adx_14}', matrix: [0,0,0,0,0,0,0,0,0,0,0,0]})">
-          <div class="sector-stock-sym">${s.symbol}</div>
-          <div class="sector-stock-name">${s.name}</div>
-          <div><span class="tp tp-hi">${s.momentum_score}</span></div>
-          <div class="pos">+${s.chg_12d}%</div>
-        </div>
-      `;
-    });
-    document.getElementById('sdStocks').innerHTML = listHtml;
-  }
-
-  function renderGrouped() {
-    const cont = document.getElementById('groupedContent');
-    cont.innerHTML = '';
-    SECTORS.forEach(sec => {
-      let div = document.createElement('div');
-      div.className = 'grp-hdr';
-      div.innerHTML = `<div class="grp-name">${sec}</div><div class="grp-meta">View Components</div>`;
-      cont.appendChild(div);
-    });
-  }
-
-  function renderSuper() {
-    const tbody = document.getElementById('superTableBody');
-    tbody.innerHTML = '';
-    stocks.filter(s => s.momentum_score > 90).slice(0,10).forEach(s => {
-      tbody.innerHTML += `
-        <tr>
-          <td class="sym-cell">${s.symbol}</td>
-          <td><span class="tp tp-hi">${s.momentum_score}</span></td>
-          <td class="pos">${s.rsi_14}</td>
-          <td class="pos">${s.adx_14}</td>
-          <td>Strong trending momentum, RSI > 70</td>
-          <td><button class="pb" style="padding:4px 8px;font-size:11px" onclick="openDetail({symbol:'${s.symbol}', name:'${s.name}', price:'${s.price}', momentum_score:${s.momentum_score}, trending_days:${s.trending_days}, rsi_14:'${s.rsi_14}', adx_14:'${s.adx_14}', matrix:[0,0,0,0,0,0,0,0,0,0,0,0]})">Analyze</button></td>
-        </tr>
-      `;
-    });
-  }
-
-  // -- Utilities --
-  function toggleTheme() {
-    document.documentElement.classList.toggle('light');
-    const btn = document.getElementById('themeBtn');
-    if (document.documentElement.classList.contains('light')) {
-      btn.innerText = '☀️';
+    if (keys.length) {
+      const sortedKeys = [...keys].sort().reverse();
+      document.getElementById('dpMatrix').innerHTML = sortedKeys.map(k => {
+        const raw = pm[k]; const v = bm[k];
+        let pv = raw != null ? ((Number(raw)>=0?'+':'')+Number(raw).toFixed(1)+'%') : '?';
+        const matCls = v === true ? (aboveEma ? 'mdc-dg' : 'mdc t') : v === false ? 'mdc f' : 'mdc n';
+        return `<div class="${matCls}"><div class="mdc-date">${k.slice(5)}</div><div class="mdc-val">${pv}</div></div>`;
+      }).join('');
     } else {
-      btn.innerText = '🌙';
+      document.getElementById('dpMatrix').innerHTML = '<div style="color:var(--t2);font-size:13px;padding:8px 0;font-weight:500;">No matrix stored. <button class="pb" onclick="downloadExcel()" style="font-size:12px;margin-left:8px;background:var(--blue-d);color:#fff;border-color:var(--blue-d);">⬇ Download Excel</button></div>';
     }
+    
+    if (d.peers && d.peers.length) {
+      document.getElementById('dpPeers').innerHTML =
+        `<table class="peers-tbl"><thead><tr><th>Symbol</th><th>12d%</th><th>RSI</th><th>EMA</th><th>Mom</th></tr></thead>
+        <tbody>${d.peers.map(p=>`
+          <tr class="${p.symbol===sym?'self':''}">
+            <td onclick="openDP('${p.symbol}')">${p.symbol}</td>
+            <td class="${pCls(p.chg_12d)}" style="font-family:var(--font-mono);font-weight:600;">${fPct(p.chg_12d)}</td>
+            <td class="mono">${f1(p.rsi_14)}</td><td>${emaBadge(p.ema_signal)}</td><td>${mbar(p.momentum_score)}</td>
+          </tr>`).join('')}</tbody></table>`;
+    } else {
+      document.getElementById('dpPeers').innerHTML = '<div style="color:var(--t2);font-size:13px;padding:8px 0;font-weight:500;">No peers found</div>';
+    }
+  } catch(e) {
+    // This is the single, correct catch block for the entire function
+    document.getElementById('dpMetrics').innerHTML = `<div style="color:var(--red);padding:12px;font-size:13px;background:var(--red-bg);border:1px solid var(--red-d);border-radius:var(--r2);">Error: ${e.message}</div>`;
   }
+}
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
+function closeDP() { document.getElementById('dp').classList.remove('open'); }
 
-  function downloadExcel() {
-    showToast("Excel download initiated...");
+// ── EXCEL DOWNLOAD ───────────────────────────────────────────────
+async function downloadExcel() {
+  const btn = document.getElementById('xlBtn');
+  const orig = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = '⏳ Building…'; btn.disabled = true; }
+  try {
+    const datePill = document.getElementById('datePill').textContent;
+    const dateParam = (datePill && datePill !== '—') ? '?date=' + datePill : '';
+    const resp = await fetch(API + '/api/superstrength/excel' + dateParam);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status + ': ' + await resp.text());
+    const blob = await resp.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    const cd = resp.headers.get('content-disposition') || '';
+    a.download = cd.match(/filename="(.+?)"/)?.[1] || `${datePill || 'today'}_trend_matrix.xlsx`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Excel downloaded ✓');
+  } catch(e) { toast('Excel failed: ' + e.message); }
+  finally { if (btn) { btn.textContent = orig || '⬇ Excel'; btn.disabled = false; } }
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────
+document.getElementById('srchInput').addEventListener('input', function() {
+  const q = this.value.trim();
+  clearTimeout(srchTimer);
+  if (!q) { document.getElementById('srchDD').classList.remove('open'); return; }
+  srchTimer = setTimeout(async () => {
+    try {
+      const d   = await apiFetch(`/api/search?q=${encodeURIComponent(q)}`);
+      const sdd = document.getElementById('srchDD');
+      if (!d.results || !d.results.length) {
+        sdd.innerHTML = '<div style="padding:16px;color:var(--t2);font-size:13px;text-align:center;font-weight:500;">No results</div>';
+      } else {
+        sdd.innerHTML = d.results.slice(0,8).map(r =>
+          `<div class="sr-item" data-sym="${r.symbol}">
+            <span class="sr-sym">${r.symbol}</span>
+            <span class="sr-name">${r.company_name||''}</span>
+            ${capBadge(r.cap_category)}
+          </div>`).join('');
+        sdd.querySelectorAll('.sr-item').forEach(el => {
+          el.addEventListener('click', () => {
+            document.getElementById('srchInput').value = '';
+            sdd.classList.remove('open');
+            openDP(el.dataset.sym);
+          });
+        });
+      }
+      sdd.classList.add('open');
+    } catch(e) {}
+  }, 280);
+});
+document.getElementById('srchInput').addEventListener('blur', () => {
+  setTimeout(() => document.getElementById('srchDD').classList.remove('open'), 400);
+});
+
+// ── SUPER STRENGTH ───────────────────────────────────────────────
+let SS_SORT_BY = 'momentum_score';
+let SS_SORT_ORD = 'desc';
+
+function ssSortBy(col) {
+  SS_SORT_ORD = SS_SORT_BY === col ? (SS_SORT_ORD === 'desc' ? 'asc' : 'desc') : 'desc';
+  SS_SORT_BY  = col;
+  loadSuperStrength();
+}
+
+async function loadSuperStrength() {
+  loading('ssGrid');
+  const minC   = document.getElementById('ssMinC').value || '5';
+  const cap    = document.getElementById('ssCap').value;
+  const sector = document.getElementById('ssSec').value;
+  const qs = new URLSearchParams();
+  qs.set('min_trending', minC);
+  if (cap)    qs.set('cap_category', cap);
+  if (sector) qs.set('sector', sector);
+  qs.set('sort_by', SS_SORT_BY);
+  qs.set('order', SS_SORT_ORD);
+  qs.set('page_size', '200');
+  try {
+    const d = await apiFetch('/api/superstrength?' + qs.toString());
+    document.getElementById('ssCount').textContent = (d.total||0).toLocaleString() + ' stocks';
+    if (!d.data || !d.data.length) {
+      document.getElementById('ssGrid').innerHTML = '<div class="empty"><div>No results</div></div>';
+      return;
+    }
+    document.getElementById('ssGrid').innerHTML = renderSSGrid(d.data);
+    document.getElementById('ssGrid').querySelectorAll('tr[data-sym]').forEach(tr => {
+      tr.addEventListener('click', () => openDP(tr.dataset.sym));
+    });
+  } catch(e) {
+    document.getElementById('ssGrid').innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><div>${e.message}</div></div>`;
   }
+}
+
+function renderSSGrid(rows) {
+  const arrow = col => col === SS_SORT_BY ? (SS_SORT_ORD === 'desc' ? ' ↓' : ' ↑') : ' ⇅';
+  const hdr = `<thead><tr>
+    <th style="text-align:left">Company</th>
+    <th style="text-align:left">Sector</th>
+    <th>Cap</th>
+    <th onclick="ssSortBy('trending_days')" style="cursor:pointer">Trend${arrow('trending_days')}</th>
+    <th onclick="ssSortBy('weighted_rpi')" style="color:#c084fc;cursor:pointer">wRPI${arrow('weighted_rpi')}</th>
+    <th onclick="ssSortBy('momentum_score')" style="cursor:pointer">Mom${arrow('momentum_score')}</th>
+    <th onclick="ssSortBy('rsi_14')" style="cursor:pointer">RSI14${arrow('rsi_14')}</th>
+    <th onclick="ssSortBy('adx_14')" style="cursor:pointer">ADX${arrow('adx_14')}</th>
+    <th onclick="ssSortBy('chg_12d')" style="cursor:pointer">12d%${arrow('chg_12d')}</th>
+    <th onclick="ssSortBy('close_price')" style="cursor:pointer">Price${arrow('close_price')}</th>
+    <th>EMA</th><th>MACD</th>
+  </tr></thead>`;
+  const body = rows.map(r => `
+    <tr data-sym="${r.symbol}">
+      <td style="text-align:left"><div style="font-weight:700;color:var(--blue);cursor:pointer" onclick="openDP('${r.symbol}')">${r.company_name||r.symbol}</div></td>
+      <td style="text-align:left;font-size:12px;color:var(--t1)">${r.sector||'—'}</td>
+      <td>${capBadge(r.cap_category)}</td>
+      <td>${tpill(r.trending_days)}</td>
+      <td class="mono" style="color:#c084fc;font-weight:700;">${f1(r.weighted_rpi)}</td>
+      <td>${mbar(r.momentum_score)}</td>
+      <td class="mono ${Number(r.rsi_14)>60?'pos':Number(r.rsi_14)<40?'neg':''}">${f1(r.rsi_14)}</td>
+      <td class="mono">${f1(r.adx_14)}</td>
+      <td class="${pCls(r.chg_12d)} mono" style="font-weight:600;">${fPct(r.chg_12d)}</td>
+      <td class="mono">${inr(r.close_price)}</td>
+      <td>${emaBadge(r.ema_signal)}</td>
+      <td>${macdCell(r.macd_hist)}</td>
+    </tr>`).join('');
+  return `<div class="twrap"><table>${hdr}<tbody>${body}</tbody></table></div>`;
+}
+
+// ── SIDEBAR SECTOR LIST ──────────────────────────────────────────
+async function loadSectorList() {
+  try {
+    const d   = await apiFetch('/api/sector/list');
+    const sel = document.getElementById('fSec');
+    const lst = document.getElementById('sbSecList');
+    const ssSel = document.getElementById('ssSec');
+    const normMap = {};
+    (d.sectors || []).forEach(s => {
+      const canonical = normSector(s.sector);
+      if(!normMap[canonical]) normMap[canonical]={sector:canonical, symbol_count:0};
+      normMap[canonical].symbol_count += Number(s.symbol_count||0);
+    });
+    const sectors = Object.values(normMap).sort((a,b)=>a.sector.localeCompare(b.sector));
+    sectors.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.sector; opt.textContent = s.sector;
+      sel.appendChild(opt);
+      if(ssSel){ const ssOpt = document.createElement('option'); ssOpt.value = s.sector; ssOpt.textContent = s.sector; ssSel.appendChild(ssOpt); }
+      const div = document.createElement('div');
+      div.className = 'sec-item'; div.dataset.sec = s.sector;
+      const hue = strHash(s.sector) * 137 % 360;
+      div.innerHTML = `<span class="sec-dot" style="background:hsl(${hue}, 65%, 55%)"></span>${s.sector}<span class="sec-cnt">${s.symbol_count}</span>`;
+      div.addEventListener('click', () => {
+        document.querySelectorAll('.sec-item').forEach(x=>x.classList.remove('active'));
+        div.classList.add('active');
+        document.getElementById('fSec').value = s.sector;
+        switchView('screener'); applyFilters();
+      });
+      lst.appendChild(div);
+    });
+  } catch(e) {}
+}
+
+// ── THEME ────────────────────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('tp_theme', isLight ? 'light' : 'dark');
+}
+if (localStorage.getItem('tp_theme') === 'light') document.documentElement.classList.add('light');
+
+// ── INIT ─────────────────────────────────────────────────────────
+(async () => {
+  await updateAuthUI();
+  loadSectorList();
+  await loadScreener();
+  // Deep link from Portfolio (Capital Rotation / Opportunity Queue) straight to a stock's detail panel
+  const deepLinkSymbol = new URLSearchParams(location.search).get('symbol');
+  if (deepLinkSymbol) openDP(deepLinkSymbol.toUpperCase());
+})();
 </script>
 </body>
 </html>
