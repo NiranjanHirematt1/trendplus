@@ -1,0 +1,57 @@
+name: Daily Engine Run
+
+on:
+  schedule:
+    # 4:15 PM IST = 10:45 UTC (NSE closes 3:30 PM IST, bhav ready ~4 PM)
+    - cron: '45 10 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      trade_date:
+        description: 'Override date YYYY-MM-DD (blank = today)'
+        required: false
+        default: ''
+
+jobs:
+  run-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run engine
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TRADE_DATE:   ${{ github.event.inputs.trade_date }}
+        run: python scripts/run_engine_cli.py
+
+      - name: Mark failure in DB
+        if: failure()
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python - <<'EOF'
+          import asyncio, asyncpg, os, datetime
+          async def mark():
+              pool = await asyncpg.create_pool(os.environ["DATABASE_URL"], min_size=1, max_size=2)
+              async with pool.acquire() as conn:
+                  await conn.execute("""
+                      insert into market_calendar (trade_date, engine_status, error_message)
+                      values ($1, 'error', 'GitHub Actions job failed')
+                      on conflict (trade_date) do update set
+                          engine_status = 'error',
+                          error_message = 'GitHub Actions job failed'
+                  """, datetime.date.today())
+              await pool.close()
+          asyncio.run(mark())
+          EOF
