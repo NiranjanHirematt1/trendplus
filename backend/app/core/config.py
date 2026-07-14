@@ -9,7 +9,6 @@ class Settings(BaseSettings):
     DB_MIN_POOL:  int = 2
     DB_MAX_POOL:  int = 10
     DB_STATEMENT_CACHE_SIZE: int = 0
-    GEMINI_API_KEY: str
 
     # ── Data paths (used by engine) ───────────────────────
     DATA_FOLDER:       str = ""   # folder with YYYYMMDD_NSE.csv files
@@ -20,11 +19,6 @@ class Settings(BaseSettings):
     # Used to protect POST /api/admin/* endpoints
     # Set to a long random string in production
     ADMIN_SECRET: str = "change-me-in-production"
-
-    # ── AI (Gemini) ─────────────────────────────────────────
-    # Used for AI-powered holding analysis (Hold / Trim / Add More / Exit All)
-    GEMINI_API_KEY: str
-    GEMINI_MODEL:   str = "gemini-2.0-flash"
 
     # ── App settings ──────────────────────────────────────
     APP_ENV:      str = "production"   # 'development' | 'production'

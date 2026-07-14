@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TrendPlus — NSE Momentum Screener</title>
+<title>TrendPulse — NSE Momentum Screener</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -67,6 +67,8 @@ input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px s
 .app{display:grid;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
 .topbar{background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:0;z-index:100;box-shadow:var(--shadow-sm);}
 .logo{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--t0);margin-right:28px;display:flex;align-items:center;gap:8px;white-space:nowrap;letter-spacing:-0.5px;}
+.pulse{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 .nav{display:flex;align-items:center;height:100%;gap:4px;}
 .nav-btn{height:100%;padding:0 16px;color:var(--t2);font-size:13px;font-weight:500;border-bottom:2px solid transparent;transition:var(--tr);border-radius:4px 4px 0 0;}
@@ -340,17 +342,6 @@ html.light .scard{border-color:var(--border)}
 .sector-tab{background:transparent;color:var(--t2);font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;border:none;font-family:var(--font);transition:var(--tr)}
 .sector-tab:hover{color:var(--t0)}
 .sector-tab.active{background:var(--bg3);color:var(--t0)}
-
-/* ── PORTFOLIO & AUTH ───────────────────────── */
-.portfolio-wrap{padding:20px;display:flex;flex-direction:column;gap:18px}
-.auth-panel,.portfolio-panel{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow-sm);overflow:hidden}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg1)}
-.panel-title{font-weight:700;color:var(--t0);font-size:14px}.panel-sub{color:var(--t2);font-size:12px;margin-top:2px}
-.portfolio-grid{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:12px}.pf-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);padding:14px}.pf-label{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}.pf-value{font-family:var(--font-mono);font-weight:700;font-size:18px;margin-top:8px;color:var(--t0)}
-.pf-actions{display:flex;gap:10px;flex-wrap:wrap}.pf-form{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr)) auto;gap:10px;padding:16px}.pf-form label{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase}.pf-field{display:flex;flex-direction:column;gap:5px}.pf-note{font-size:12px;color:var(--t2);line-height:1.5;padding:0 16px 16px}.pf-table-wrap{overflow:auto}.status-pill{display:inline-flex;border:1px solid var(--border2);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:800}.status-active{color:var(--green);background:var(--green-bg)}.status-sold{color:var(--t2);background:var(--bg2)}.status-missing{color:var(--amber);background:var(--amber-bg)}.rec{font-weight:800;font-size:11px}.rec-add{color:var(--green)}.rec-hold{color:var(--blue)}.rec-trim{color:var(--amber)}.rec-exit{color:var(--red)}.mini-bars{display:flex;flex-direction:column;gap:8px;padding:16px}.mini-bar{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:12px;color:var(--t1)}.mini-track{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden}.mini-fill{height:100%;background:var(--blue)}.auth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px}.hidden{display:none!important}.file-input{color:var(--t1);font-size:12px}.table-actions{display:flex;gap:6px;flex-wrap:wrap}.link-btn{color:var(--blue);font-size:12px;font-weight:700}.danger-btn{color:var(--red);font-size:12px;font-weight:700}
-@media(max-width:1200px){.portfolio-grid{grid-template-columns:repeat(3,1fr)}.pf-form{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:680px){body{overflow:auto}.app{height:auto;min-height:100vh}.topbar{height:auto;min-height:52px;flex-wrap:wrap;padding:10px}.sidebar{display:none}.portfolio-grid,.auth-grid,.pf-form{grid-template-columns:1fr}.srch-input{width:160px}.srch-input:focus{width:190px}.mini-bar{grid-template-columns:1fr}.topbar-right{width:100%;flex-wrap:wrap}}
-
 @media(max-width:1100px){.sector-dash{grid-template-columns:1fr}.sector-kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.sector-dash{padding:12px}.sector-kpis{grid-template-columns:1fr}
   .sector-table th:nth-child(n+4),.sector-table td:nth-child(n+4){display:none}}
@@ -360,16 +351,14 @@ html.light .scard{border-color:var(--border)}
 <div class="app">
 
 <header class="topbar">
-  <div class="logo">TrendPlus</div>
+  <div class="logo"><span class="pulse"></span>TrendPulse</div>
   <nav class="nav">
     <button class="nav-btn active" id="nav-screener" onclick="switchView('screener')">Screener</button>
     <button class="nav-btn"        id="nav-sectors"  onclick="switchView('sectors')">Sectors</button>
     <button class="nav-btn"        id="nav-grouped"  onclick="switchView('grouped')">By Sector</button>
-    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">Super Strength</button>
-    <a class="nav-btn"             id="nav-portfolio" href="./portfolio.html" style="display:inline-flex;align-items:center;text-decoration:none">Portfolio</a>
+    <button class="nav-btn"        id="nav-super"    onclick="switchView('super')">⚡ Super Strength</button>
   </nav>
   <div class="topbar-right">
-      <a class="pb" id="authBtn" href="./portfolio.html" style="font-size:11.5px;padding:6px 12px;display:inline-flex;align-items:center;text-decoration:none">Login</a>
       <button id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark" style="background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--t1);padding:4px 9px;font-size:13px;cursor:pointer">🌙</button>
     <div class="srch-wrap" id="srchWrap">
       <span class="srch-icon">⌕</span>
@@ -527,7 +516,6 @@ html.light .scard{border-color:var(--border)}
       <div id="grpWrap"></div>
     </div>
 
-
     <div class="view" id="view-super">
       <div class="toolbar">
         <span class="cnt-badge" id="ssCount">— stocks</span>
@@ -586,7 +574,7 @@ html.light .scard{border-color:var(--border)}
 'use strict';
 
 // ── CONFIG ─────────────────────────────────────────────────────
-const API = 'http://localhost:8000';
+const API = 'https://trendplus-lvkt.onrender.com';
 
 // ── STATE ──────────────────────────────────────────────────────
 let VIEW     = 'screener';
@@ -596,7 +584,6 @@ let SORT_ORD = 'desc';
 let GRP_DATA = {};
 let GRP_OPEN = {};
 let srchTimer = null;
-let AUTH_TOKEN = localStorage.getItem('tp_token') || '';
 
 // ── FORMAT HELPERS ──────────────────────────────────────────────
 const f1   = v => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1);
@@ -666,11 +653,8 @@ function toast(msg, ms = 2400) {
   setTimeout(() => el.classList.remove('show'), ms);
 }
 
-async function apiFetch(path, options = {}) {
-  const headers = Object.assign({}, options.headers || {});
-  if (AUTH_TOKEN) headers.Authorization = 'Bearer ' + AUTH_TOKEN;
-  if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = headers['Content-Type'] || 'application/json';
-  const r = await fetch(API + path, Object.assign({}, options, {headers}));
+async function apiFetch(path) {
+  const r = await fetch(API + path);
   if (!r.ok) { const t = await r.text().catch(() => r.statusText); throw new Error(`${r.status}: ${t}`); }
   return r.json();
 }
@@ -1172,12 +1156,6 @@ function toggleGrp(s) { GRP_OPEN[s] = GRP_OPEN[s] === false; renderGrouped(); }
 function expandAll()   { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = true);  renderGrouped(); }
 function collapseAll() { Object.keys(GRP_DATA).forEach(s => GRP_OPEN[s] = false); renderGrouped(); }
 
-
-
-// ── AUTH LABEL (login/portfolio state now lives in portfolio.html) ─────
-function updateAuthUI(){ const el=document.getElementById('authBtn'); if(el) el.textContent = AUTH_TOKEN ? 'Account' : 'Login'; }
-
-
 // ── DETAIL PANEL ─────────────────────────────────────────────────
 async function openDP(sym) {
   const dp = document.getElementById('dp');
@@ -1187,19 +1165,15 @@ async function openDP(sym) {
   });
   
   // 1. TRADINGVIEW LINK (Symbol)
-  const dpSymEl = document.getElementById('dpSym');
-  dpSymEl.textContent = sym;
+  document.getElementById('dpSym').textContent = sym;
   const tvUrl = `https://www.tradingview.com/chart/?symbol=NSE%3A${sym}`;
-
+  const dpSymEl = document.getElementById('dpSym');
   dpSymEl.style.cursor = 'pointer'; 
   dpSymEl.style.color = 'var(--blue)';
   dpSymEl.title = `Open ${sym} on TradingView ↗`;
-
-  dpSymEl.onclick = (e) => {
-    e.stopPropagation(); 
-    e.preventDefault();  
-    window.open(tvUrl, '_blank', 'noopener,noreferrer');
-  };
+  
+  // Assign the URL directly to the href attribute
+  dpSymEl.href = tvUrl;
   
   try {
     const d    = await apiFetch(`/api/symbol/${sym}`);
@@ -1207,22 +1181,16 @@ async function openDP(sym) {
     const lat  = d.latest || {};
     
     // 2. SCREENER.IN LINK (Company Name)
+    // Placed here so it doesn't get overwritten by the fetch
     const dpNameEl = document.getElementById('dpName');
     const compName = info.company_name || sym;
     const screenerId = sym;
-  
     dpNameEl.textContent = compName + ' ↗';
     dpNameEl.style.cursor = 'pointer';
     dpNameEl.style.transition = 'color 0.2s';
     dpNameEl.title = `Open ${compName} on Screener ↗`;
-  
-    dpNameEl.onclick = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
-    };
+    dpNameEl.onclick = () => window.open(`https://www.screener.in/company/${screenerId}/`, '_blank', 'noopener,noreferrer');
 
-    // --- DOM UPDATES FOR THE REST OF THE PANEL ---
     document.getElementById('dpPrice').innerHTML =
       `<span class="mono">${inr(lat.close_price)}</span> <span class="${pCls(lat.chg_1d)} mono" style="font-size:16px;margin-left:8px;">${fPct(lat.chg_1d)}</span>`;
       
@@ -1276,7 +1244,6 @@ async function openDP(sym) {
       document.getElementById('dpPeers').innerHTML = '<div style="color:var(--t2);font-size:13px;padding:8px 0;font-weight:500;">No peers found</div>';
     }
   } catch(e) {
-    // This is the single, correct catch block for the entire function
     document.getElementById('dpMetrics').innerHTML = `<div style="color:var(--red);padding:12px;font-size:13px;background:var(--red-bg);border:1px solid var(--red-d);border-radius:var(--r2);">Error: ${e.message}</div>`;
   }
 }
@@ -1366,7 +1333,7 @@ async function loadSuperStrength() {
     const d = await apiFetch('/api/superstrength?' + qs.toString());
     document.getElementById('ssCount').textContent = (d.total||0).toLocaleString() + ' stocks';
     if (!d.data || !d.data.length) {
-      document.getElementById('ssGrid').innerHTML = '<div class="empty"><div>No results</div></div>';
+      document.getElementById('ssGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚡</div><div>No results</div></div>';
       return;
     }
     document.getElementById('ssGrid').innerHTML = renderSSGrid(d.data);
@@ -1455,12 +1422,8 @@ if (localStorage.getItem('tp_theme') === 'light') document.documentElement.class
 
 // ── INIT ─────────────────────────────────────────────────────────
 (async () => {
-  await updateAuthUI();
-  loadSectorList();
+  await loadSectorList();
   await loadScreener();
-  // Deep link from Portfolio (Capital Rotation / Opportunity Queue) straight to a stock's detail panel
-  const deepLinkSymbol = new URLSearchParams(location.search).get('symbol');
-  if (deepLinkSymbol) openDP(deepLinkSymbol.toUpperCase());
 })();
 </script>
 </body>
